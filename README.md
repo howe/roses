@@ -174,18 +174,6 @@ messageServiceConsumer.confirmAndSendMessage(reliableMessage.getMessageId());
 #### 幂等性校验
 消息的投递有重试机制，所以在消息的消费端需要加上幂等性校验，使得多次消费消息也可以让业务实际只执行一次，在account模块中幂等性的判断通过订单号来标识操作的唯一性。
 
-```
-
-//幂等判断
-EntityWrapper<FlowRecord> wrapper = new EntityWrapper<>();
-wrapper.eq("order_id", goodsFlowParam.getId());
-
-List<FlowRecord> flowRecords = this.selectList(wrapper);
-if (flowRecords != null && !flowRecords.isEmpty()) {
-    return;
-}
-```
-
 ### 5. 分布式配置中心roses-config
 在Roses中，正如您所见，所有的模块都是在一个大工程下，但是实际日常开发中，模块往往分隔在多个项目中，每个项目有单独的小组来维护，小组与小组之间甚至代码都不是可见。当项目中的一些通用配置变动时，例如数据库地址，账号密码等，要么你通知各个小组修改他们的配置，要么你自己打开所有项目修改一遍。如果使用了分布式配置中心，可以把所有项目的配置收集起来，集中配置，那么你只需要打开配置中心的git仓库来修改配置，从而简化配置的维护工作。
 
