@@ -114,37 +114,7 @@ response.addHeader(RosesConstants.REQUEST_NO_HEADER_NAME, requestNo);
 
 ```
 
-为了让Feign调用中，自动填充网关生成的唯一号，Roses增加了RosesFeignHeaderProcessInterceptor拦截器，实现如下：
-```java
-public class RosesFeignHeaderProcessInterceptor implements RequestInterceptor {
-
-    @Override
-    public void apply(RequestTemplate requestTemplate) {
-
-        //当前feign远程调用环境不是由http接口发起，例如test单元测试中的feign调用或者项目启动后的feign调用
-        HttpServletRequest request = null;
-
-        try {
-            request = HttpContext.getRequest();
-        } catch (NullPointerException e) {
-
-            //被调环境中不存在request对象，则不往header里添加当前请求环境的header
-            return;
-        }
-        if (request != null) {
-            Enumeration<String> headerNames = request.getHeaderNames();
-            if (headerNames != null) {
-                while (headerNames.hasMoreElements()) {
-                    String name = headerNames.nextElement();
-                    String values = request.getHeader(name);
-                    requestTemplate.header(name, values);
-                }
-            }
-        }
-    }
-}
-
-```
+为了让Feign调用中，自动填充网关生成的唯一号，Roses增加了RosesFeignHeaderProcessInterceptor拦截器
 
 ### 4. 分布式事务解决方案（可靠消息最终一致性）
 首先，分布式事务在不同业务场景下，解决方案是不一样的，时效性要求较高的场景下，例如订单支付成功后，更改订单状态，给用户账户加款，给积分账户加积分，三个操作在三个不同的服务下，这个时候可以用TCC方式解决事务问题；在时效性要求较为不严格下，例如订单支付成功后，需要异步录入会计凭证（不严格要求时效性），这个时候可以用可靠消息最终一致性解决。
@@ -197,18 +167,10 @@ RequestData类中封装了对请求参数获取的常用方法，例如getString
  * 测试RequestData
  */
 @RequestMapping("/test")
-public Object test(RequestData requestData) {
-
+public void test(RequestData requestData) {
     String name = requestData.getString("name");
-    System.out.println(name);
-
     Integer count = requestData.getInteger("count");
-    System.out.println(count);
-
     MyOrder order = requestData.parse(MyOrder.class);
-    System.out.println(order);
-
-    return ResponseData.success(order);
 }
 ```
 
@@ -234,17 +196,16 @@ Roses采用logback来记录日志，并且每个模块都有统一的规范的�
 ```
 <springProfile name="local">
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>===%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n</pattern>
-            <charset>utf-8</charset>
-        </encoder>
+        ...
     </appender>
 
+    <!--默认所有的包以info级别输出-->
     <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="com.stylefeng.roses" level="debug" additivity="false">
+    <!--各个服务的包在本地执行的时候，打开debug模式-->
+    <logger name="com.stylefeng" level="debug" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 </springProfile>
@@ -253,6 +214,10 @@ Roses采用logback来记录日志，并且每个模块都有统一的规范的�
 第二种profile是在`spring.profiles.active`不是local时激活，也就是，不管在正式环境或者测试环境的linux服务器中，都不会在控制台打印logback记录的日志，都会把日志输出到文件中，在这种profile下，记录的日志文件分为两类，第一类日志文件是只记录ERROR级别的日志，可以定期查看这个文件的错误日志，排查服务问题，第二类则是记录所有级别的日志。在两类日志记录器中，日志的切割都是以日期和文件大小（默认2M）切分。
 ```
 <springProfile name="!local">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        ...
+    </appender>
 
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         ...
@@ -263,6 +228,7 @@ Roses采用logback来记录日志，并且每个模块都有统一的规范的�
     </appender>
 
     <root level="info">
+        <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_ERROR"/>
         <appender-ref ref="FILE_ALL"/>
     </root>
