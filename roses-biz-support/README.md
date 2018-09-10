@@ -34,3 +34,5 @@
 另外，每个业务模块包含了数据库初始化器DbInitializer
 ，当你引入不管是哪个业务模块，程序启动都会自动初始化表结构（如果数据库中没有这些表的话），并且框架还会校验数据库对应的实体是否和数据库表结构保持一致，如果不一致，则程序启动的时候会报错。数据库初始化器一般在`com.stylefeng
 .roses.biz.xxx.core.db`包中。
+
+DbInitializer的原理请看com.stylefeng.roses.core.db.DbInitializer和com.stylefeng.roses.core.db.listener.InitTableListener这两个类。
