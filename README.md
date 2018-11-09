@@ -5,6 +5,9 @@
 Roses基于`Spring Boot 2`和`Spring Cloud Finchley
 .RELEASE`，致力做更简洁的**分布式**和**服务化**解决方案，Roses拥有高效率的开发体验，提供可靠消息最终一致性分布式事务解决方案，提供基于调用链的服务治理，提供可靠的服务异常定位方案（Log + Trace）等等，**一个分布式框架不仅需要构建高效稳定的底层开发框架，更需要解决分布式带来的种种挑战**
 
+## 云服务器全网最低 Roses专属优惠
+1核2G 99/年，298/3年，2核4G 500/1年，1227/3年，2核8G 5M带宽 2000/3年，仅限阿里云新用户，想买的老用户可以注册一个哦，点击链接购买[https://m.aliyun.com/act/team1111/#/share?params=N.lqp2rk5ITB.p4kqz45e](https://m.aliyun.com/act/team1111/#/share?params=N.lqp2rk5ITB.p4kqz45e) 
+
 ### Roses 2.0更新内容
 
 拆分了子项目，在多个git仓库中单独维护。新加了很多功能，详情见各个子项目和下边的业务介绍。
