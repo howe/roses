@@ -1,12 +1,37 @@
-# Roses v2.0
+<p align="center">
+    <img src="https://images.gitee.com/uploads/images/2019/0112/222304_562302ff_551203.png" width="300">
+    <br>      
+    <br>      
+    <p align="center">
+        Roses基于`Spring Boot 2`和`Spring Cloud Finchley.SR2，致力做整套分布式和服务化解决方案，Roses拥有高效率的开发体验，提供可靠消息最终一致性分布式事务解决方案，提供基于调用链的服务治理，提供可靠的服务异常定位方案（Log + Trace）等等，一个分布式框架不仅需要构建高效稳定的底层开发框架，更需要解决分布式带来的种种挑战。
+        <br>      
+        <br>      
+        <span>
+            <span>
+                Roses官方交流群：254550081(满)   684163663(满)   207434260
+            </span>
+        </span>
+        <br>
+        <br>
+        <a href="http://spring.io/projects/spring-boot">
+            <img src="https://img.shields.io/badge/spring--boot-2.1.1-green.svg" alt="spring-boot">
+        </a>
+        <a href="http://spring.io/projects/spring-cloud">
+            <img src="https://img.shields.io/badge/spring%20cloud-Finchley.SR2-green.svg" alt="spring-cloud">
+        </a>
+        <a href="http://mp.baomidou.com">
+            <img src="https://img.shields.io/badge/mybatis--plus-3.0-blue.svg" alt="mybatis-plus">
+        </a>  
+        <a href="http://ibeetl.com/">
+            <img src="https://img.shields.io/badge/beetl-2.9.3-yellow.svg" alt="beetl">
+        </a> 
+        <a href="https://shiro.apache.org/">
+            <img src="https://img.shields.io/badge/shiro-1.4.0-blue.svg" alt="shiro">
+        </a>      
+    </p>
+</p>
 
----
-
-Roses基于`Spring Boot 2`和`Spring Cloud Finchley
-.RELEASE`，致力做更简洁的**分布式**和**服务化**解决方案，Roses拥有高效率的开发体验，提供可靠消息最终一致性分布式事务解决方案，提供基于调用链的服务治理，提供可靠的服务异常定位方案（Log + Trace）等等，**一个分布式框架不仅需要构建高效稳定的底层开发框架，更需要解决分布式带来的种种挑战**
-
-## 《Guns技术文档》+《Guns视频教程》免费送活动
-Guns联合阿里云，推出年终促销活动，买阿里云服务器，送文档和视频教程，包更新，详情点击[http://stylefeng.cn/](http://stylefeng.cn/)
+-----------------------------------------------------------------------------------------------
 
 ### Roses 2.0更新内容
 
