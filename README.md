@@ -29,7 +29,7 @@
 
 ### 最新更新说明
 
-Roses目前的版本为Roses 2.0，原有项目代码拆分为多个子项目存放在Roses项目组里，框架和业务分开维护，更快捷的开发新业务。
+Roses目前的版本为Roses 2.0，**原有项目代码**拆分为多个子项目存放在**Roses项目组里**，框架和业务分开维护，更快捷的开发新业务。
 
 **Roses项目组**地址：[https://gitee.com/stylefeng-Roses](https://gitee.com/stylefeng-Roses)
 
