@@ -22,12 +22,6 @@
         <a href="http://mp.baomidou.com">
             <img src="https://img.shields.io/badge/mybatis--plus-3.0-blue.svg" alt="mybatis-plus">
         </a>  
-        <a href="http://ibeetl.com/">
-            <img src="https://img.shields.io/badge/beetl-2.9.3-yellow.svg" alt="beetl">
-        </a> 
-        <a href="https://shiro.apache.org/">
-            <img src="https://img.shields.io/badge/shiro-1.4.0-blue.svg" alt="shiro">
-        </a>      
     </p>
 </p>
 
