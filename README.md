@@ -27,6 +27,12 @@
 
 -----------------------------------------------------------------------------------------------
 
+### Roses企业级微服务视频教程
+Roses企业级微服务视频教程，详情点击[https://www.stylefeng.cn/rosesVideo](https://www.stylefeng.cn/rosesVideo)
+
+### Guns VIP计划
+Guns VIP计划，详情点击[https://www.stylefeng.cn/gunsVIP](https://www.stylefeng.cn/gunsVIP)
+
 ### 最新更新说明
 
 Roses目前的版本为Roses 2.0，**原有项目代码**拆分为多个子项目存放在**Roses项目组里**，框架和业务分开维护，更快捷的开发新业务。
