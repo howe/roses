@@ -28,10 +28,10 @@
 -----------------------------------------------------------------------------------------------
 
 ### Roses企业级微服务视频教程
-Roses企业级微服务视频教程，详情点击[https://www.stylefeng.cn/rosesVideo](https://www.stylefeng.cn/rosesVideo)
+Roses企业级微服务视频教程，详情点击[https://www.stylefeng.cn/video/roses](https://www.stylefeng.cn/video/roses)
 
 ### Guns VIP计划
-Guns VIP计划，详情点击[https://www.stylefeng.cn/gunsVIP](https://www.stylefeng.cn/gunsVIP)
+Guns VIP计划，详情点击[https://www.stylefeng.cn/](https://www.stylefeng.cn/)
 
 ### 最新更新说明
 
