@@ -113,7 +113,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
                 SysFileStorage storage = sysFileStorageService.getById(fileId);
                 fileBytes = storage.getFileBytes();
             } else {
-                fileBytes = fileOperatorApi.getFileBytes(FileConfigExpander.getDefaultBucket(), sysFileInfo.getFileObjectName());
+                fileBytes = fileOperatorApi.getFileBytes(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName());
             }
         } catch (Exception e) {
             log.error("获取文件流异常，具体信息为：{}", e.getMessage());
