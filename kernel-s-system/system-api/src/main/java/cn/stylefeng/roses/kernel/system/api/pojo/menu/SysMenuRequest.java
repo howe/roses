@@ -163,6 +163,12 @@ public class SysMenuRequest extends BaseRequest {
     private Integer antdvFrontType;
 
     /**
+     * 用于非菜单显示页面的重定向url设置
+     */
+    @ChineseDescription("用于非菜单显示页面的重定向url设置")
+    private String antdvActiveUrl;
+
+    /**
      * 获取主页左侧菜单列表（适配Antd Vue的版本）
      */
     public @interface getAppMenusAntdVue {
