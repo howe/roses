@@ -476,7 +476,12 @@ public class AuthServiceImpl implements AuthServiceApi {
             if (loginErrorCount == null) {
                 loginErrorCount = 0;
             }
-            loginErrorCountCacheApi.put(loginRequest.getAccount(), loginErrorCount + 1);
+
+            // 演示环境，不记录error次数
+            if (!DemoConfigExpander.getDemoEnvFlag()) {
+                loginErrorCountCacheApi.put(loginRequest.getAccount(), loginErrorCount + 1);
+            }
+
             throw new AuthException(AuthExceptionEnum.USERNAME_PASSWORD_ERROR);
         }
     }
