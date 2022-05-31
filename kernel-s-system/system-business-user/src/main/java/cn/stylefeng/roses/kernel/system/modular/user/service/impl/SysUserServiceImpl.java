@@ -30,6 +30,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.auth.api.SessionManagerApi;
+import cn.stylefeng.roses.kernel.auth.api.constants.LoginCacheConstants;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
 import cn.stylefeng.roses.kernel.auth.api.enums.DataScopeTypeEnum;
 import cn.stylefeng.roses.kernel.auth.api.exception.enums.AuthExceptionEnum;
@@ -148,6 +149,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Resource
     private ExpandApi expandApi;
+
+    @Resource(name = "loginErrorCountCacheApi")
+    private CacheOperatorApi<Integer> loginErrorCountCacheApi;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -460,6 +464,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
 
         Page<SysUserDTO> userPage = this.baseMapper.findUserPage(PageFactory.defaultPage(), sysUserRequest);
+
+        // 获取所有被禁用的用户，如果有被禁用的用户，则返回被锁状态
+        for (SysUserDTO record : userPage.getRecords()) {
+            if (loginErrorCountCacheApi.contains(record.getAccount())) {
+                Integer errorCount = loginErrorCountCacheApi.get(record.getAccount());
+                if (errorCount >= LoginCacheConstants.MAX_ERROR_LOGIN_COUNT) {
+                    record.setLoginErrorCountFlag(true);
+                }
+            }
+        }
 
         return PageResultFactory.createPageResult(userPage);
     }

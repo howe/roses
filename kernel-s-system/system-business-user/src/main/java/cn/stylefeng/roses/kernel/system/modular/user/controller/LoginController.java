@@ -183,7 +183,7 @@ public class LoginController {
      * @date 2022/1/22 16:40
      */
     @PostResource(name = "取消帐号冻结", path = "/cancelFreeze")
-    public ResponseData<?> cancelFreeze(@RequestBody LoginRequest loginRequest) {
+    public ResponseData<?> cancelFreeze(@RequestBody @Validated(LoginRequest.cancelFreeze.class) LoginRequest loginRequest) {
         authServiceApi.cancelFreeze(loginRequest);
         return new SuccessResponseData<>();
     }

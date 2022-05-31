@@ -149,4 +149,10 @@ public class SysUserDTO {
     @ChineseDescription("是否是超级管理员，超级管理员可以拥有所有权限（Y-是，N-否）")
     private String superAdminFlag;
 
+    /**
+     * 是否密码重试次数过多，当密码重试次数超过5次这个状态就会激活
+     */
+    @ChineseDescription("是否密码重试次数过多")
+    private Boolean loginErrorCountFlag = false;
+
 }

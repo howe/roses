@@ -45,6 +45,7 @@ public class LoginRequest extends BaseRequest {
      * 账号
      */
     @NotBlank(message = "账号不能为空")
+    @NotBlank(message = "账号不能为空", groups = cancelFreeze.class)
     @ChineseDescription("账号")
     private String account;
 
@@ -84,5 +85,11 @@ public class LoginRequest extends BaseRequest {
      */
     @ChineseDescription("租户编码")
     private String tenantCode;
+
+    /**
+     * 取消账号冻结
+     */
+    public @interface cancelFreeze {
+    }
 
 }
