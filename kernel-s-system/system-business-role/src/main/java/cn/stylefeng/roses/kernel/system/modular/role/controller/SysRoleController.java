@@ -228,4 +228,15 @@ public class SysRoleController {
         return new SuccessResponseData<>(sysRoleService.getRoleDataScope(sysRoleRequest));
     }
 
+    /**
+     * 获取角色下拉列表
+     *
+     * @author fengshuonan
+     * @date 2022/6/8 14:57
+     */
+    @GetResource(name = "获取角色下拉列表", path = "/sysRole/getRoleSelectList")
+    public ResponseData<List<SysRoleDTO>> getRoleSelectList(SysRoleRequest sysRoleRequest) {
+        return new SuccessResponseData<>(sysRoleService.getRoleSelectList(sysRoleRequest));
+    }
+
 }

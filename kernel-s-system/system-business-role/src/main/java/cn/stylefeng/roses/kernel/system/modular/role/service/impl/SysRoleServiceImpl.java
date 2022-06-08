@@ -565,6 +565,22 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return sysRoleMenuButtons.parallelStream().map(item -> BeanUtil.copyProperties(item, SysRoleMenuButtonDTO.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<SysRoleDTO> getRoleSelectList(SysRoleRequest sysRoleRequest) {
+
+        LambdaQueryWrapper<SysRole> wrapper = this.createWrapper(sysRoleRequest);
+        List<SysRole> list = this.list(wrapper);
+
+        ArrayList<SysRoleDTO> sysRoleDTOS = new ArrayList<>();
+        for (SysRole sysRole : list) {
+            SysRoleDTO sysRoleDTO = new SysRoleDTO();
+            BeanUtil.copyProperties(sysRole, sysRoleDTO);
+            sysRoleDTOS.add(sysRoleDTO);
+        }
+
+        return sysRoleDTOS;
+    }
+
     /**
      * 获取系统角色
      *
