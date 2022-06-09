@@ -199,4 +199,18 @@ public class HrOrganizationController {
         return new SuccessResponseData<>(zTreeNodes);
     }
 
+    /**
+     * 获取所有组织机构树（树形）
+     * <p>
+     * 一般用在组织机构选择界面
+     *
+     * @author fengshuonan
+     * @date 2021/1/9 18:37
+     */
+    @GetResource(name = "获取所有组织机构树（树形）", path = "/hrOrganization/getOrgTreeList")
+    public ResponseData<List<OrganizationTreeNode>> getOrgTreeList(HrOrganizationRequest hrOrganizationRequest) {
+        List<OrganizationTreeNode> list = hrOrganizationService.getOrgTreeList(hrOrganizationRequest);
+        return new SuccessResponseData<>(list);
+    }
+
 }

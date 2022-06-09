@@ -369,6 +369,25 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
         return hrOrganizationDTO;
     }
 
+    @Override
+    public List<OrganizationTreeNode> getOrgTreeList(HrOrganizationRequest hrOrganizationRequest) {
+
+        List<OrganizationTreeNode> treeNodeList = CollectionUtil.newArrayList();
+
+        // 获取所有组织机构
+        LambdaQueryWrapper<HrOrganization> wrapper = createWrapper(hrOrganizationRequest);
+        List<HrOrganization> hrOrganizationList = this.list(wrapper);
+
+        // 组装节点
+        for (HrOrganization hrOrganization : hrOrganizationList) {
+            OrganizationTreeNode treeNode = OrganizationFactory.parseOrganizationTreeNode(hrOrganization);
+            treeNodeList.add(treeNode);
+        }
+
+        // 节点组装成树
+        return new DefaultTreeBuildFactory<OrganizationTreeNode>().doTreeBuild(treeNodeList);
+    }
+
     /**
      * 创建组织架构的通用条件查询wrapper
      *

@@ -28,6 +28,7 @@ import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuButtonDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleResourceDTO;
+import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 
 import java.util.List;
 import java.util.Set;
@@ -118,4 +119,11 @@ public interface RoleServiceApi {
      */
     List<SysRoleMenuButtonDTO> getRoleMenuButtonList(List<Long> roleIdList);
 
+    /**
+     * 获取所有角色列表
+     *
+     * @author fengshuonan
+     * @date 2022/6/8 14:58
+     */
+    List<SysRoleDTO> getRoleSelectList(SysRoleRequest sysRoleRequest);
 }

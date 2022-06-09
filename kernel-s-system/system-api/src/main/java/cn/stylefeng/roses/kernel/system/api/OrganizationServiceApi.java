@@ -25,6 +25,8 @@
 package cn.stylefeng.roses.kernel.system.api;
 
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrOrganizationDTO;
+import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrOrganizationRequest;
+import cn.stylefeng.roses.kernel.system.api.pojo.organization.OrganizationTreeNode;
 
 import java.util.List;
 
@@ -52,4 +54,12 @@ public interface OrganizationServiceApi {
      * @date 2022/3/8 23:32
      */
     HrOrganizationDTO getOrgDetail(Long orgId);
+
+    /**
+     * 获取组织机构下拉选择树
+     *
+     * @author fengshuonan
+     * @date 2022/6/8 14:40
+     */
+    List<OrganizationTreeNode> getOrgTreeList(HrOrganizationRequest hrOrganizationRequest);
 }
