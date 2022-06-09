@@ -1,4 +1,4 @@
-package cn.stylefeng.roses.kernel.system.modular.statistic.pojo;
+package cn.stylefeng.roses.kernel.system.modular.home.pojo;
 
 import lombok.Data;
 
