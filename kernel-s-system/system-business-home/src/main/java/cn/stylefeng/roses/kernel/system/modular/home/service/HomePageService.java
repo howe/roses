@@ -3,8 +3,8 @@ package cn.stylefeng.roses.kernel.system.modular.home.service;
 import cn.stylefeng.roses.kernel.log.api.pojo.record.LogRecordDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.home.HomeCompanyInfo;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.request.OnlineUserRequest;
+import cn.stylefeng.roses.kernel.system.modular.home.pojo.OnlineUserStat;
 import cn.stylefeng.roses.kernel.system.modular.menu.entity.SysMenu;
-import cn.stylefeng.roses.kernel.system.modular.statistic.pojo.OnlineUserStat;
 
 import java.util.List;
 

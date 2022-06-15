@@ -7,9 +7,9 @@ import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.system.api.pojo.home.HomeCompanyInfo;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.request.OnlineUserRequest;
+import cn.stylefeng.roses.kernel.system.modular.home.pojo.OnlineUserStat;
 import cn.stylefeng.roses.kernel.system.modular.home.service.HomePageService;
 import cn.stylefeng.roses.kernel.system.modular.menu.entity.SysMenu;
-import cn.stylefeng.roses.kernel.system.modular.statistic.pojo.OnlineUserStat;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
