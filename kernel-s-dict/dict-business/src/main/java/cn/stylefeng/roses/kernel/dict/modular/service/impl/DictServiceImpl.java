@@ -27,6 +27,7 @@ package cn.stylefeng.roses.kernel.dict.modular.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
@@ -73,6 +74,12 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
     @Resource
     private DictTypeService dictTypeService;
 
+
+    @Resource
+    private CacheOperatorApi<String> defaultStringMemoryCacheOperator;
+
+    private static String CACHE_PREFIX = "dict:";
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void add(DictRequest dictRequest) {
@@ -94,6 +101,9 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
         SysDict sysDict = this.querySysDict(dictRequest);
         sysDict.setDelFlag(YesOrNotEnum.Y.getCode());
         this.updateById(sysDict);
+
+        // 清除缓存中的字典值
+        defaultStringMemoryCacheOperator.remove(CACHE_PREFIX + sysDict.getDictTypeCode() + "|" + sysDict.getDictCode());
     }
 
     @Override
@@ -112,6 +122,8 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
         sysDict.setDictNamePinyin(pinYinApi.parseEveryPinyinFirstLetter(sysDict.getDictName()));
 
         this.updateById(sysDict);
+        // 清除缓存中的字典值
+        defaultStringMemoryCacheOperator.remove(CACHE_PREFIX + sysDict.getDictTypeCode() + "|" + sysDict.getDictCode());
     }
 
     @Override
@@ -157,6 +169,10 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
 
     @Override
     public String getDictName(String dictTypeCode, String dictCode) {
+        String dictName = defaultStringMemoryCacheOperator.get(CACHE_PREFIX + dictTypeCode + "|" + dictCode);
+        if(StrUtil.isNotEmpty(dictName)){
+            return dictName;
+        }
         LambdaQueryWrapper<SysDict> sysDictLambdaQueryWrapper = new LambdaQueryWrapper<>();
         sysDictLambdaQueryWrapper.eq(SysDict::getDictTypeCode, dictTypeCode);
         sysDictLambdaQueryWrapper.eq(SysDict::getDictCode, dictCode);
@@ -175,7 +191,8 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
             return StrUtil.EMPTY;
         }
 
-        String dictName = list.get(0).getDictName();
+        dictName = list.get(0).getDictName();
+        defaultStringMemoryCacheOperator.put(CACHE_PREFIX + dictTypeCode + "|" + dictCode, dictName);
         if (dictName != null) {
             return dictName;
         } else {
