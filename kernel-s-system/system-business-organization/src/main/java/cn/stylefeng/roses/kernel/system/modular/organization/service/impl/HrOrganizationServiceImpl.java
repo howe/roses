@@ -33,6 +33,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
 import cn.stylefeng.roses.kernel.auth.api.enums.DataScopeTypeEnum;
+import cn.stylefeng.roses.kernel.db.api.DbOperatorApi;
 import cn.stylefeng.roses.kernel.db.api.context.DbOperatorContext;
 import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
@@ -93,6 +94,9 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
 
     @Resource
     private ExpandApi expandApi;
+
+    @Resource
+    private DbOperatorApi dbOperatorApi;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -385,6 +389,26 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
         }
 
         // 节点组装成树
+        return new DefaultTreeBuildFactory<OrganizationTreeNode>().doTreeBuild(treeNodeList);
+    }
+
+    @Override
+    public List<OrganizationTreeNode> getDeptOrgTree(Long orgId) {
+
+        // 获取该公司下所有的子部门id集合
+        Set<Long> deptIds = dbOperatorApi.findSubListByParentId("hr_organization", "org_pids", "org_id", orgId);
+        deptIds.add(orgId);
+
+        LambdaQueryWrapper<HrOrganization> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(HrOrganization::getOrgId, deptIds);
+        List<HrOrganization> hrOrganizationList = this.list(wrapper);
+
+        // 组装部门的树形节点
+        List<OrganizationTreeNode> treeNodeList = CollectionUtil.newArrayList();
+        for (HrOrganization hrOrganization : hrOrganizationList) {
+            OrganizationTreeNode treeNode = OrganizationFactory.parseOrganizationTreeNode(hrOrganization);
+            treeNodeList.add(treeNode);
+        }
         return new DefaultTreeBuildFactory<OrganizationTreeNode>().doTreeBuild(treeNodeList);
     }
 

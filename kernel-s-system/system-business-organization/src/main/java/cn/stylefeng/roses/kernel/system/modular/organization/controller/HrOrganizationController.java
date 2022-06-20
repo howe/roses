@@ -213,4 +213,16 @@ public class HrOrganizationController {
         return new SuccessResponseData<>(list);
     }
 
+    /**
+     * 获取某个公司下部门的机构树
+     *
+     * @author fengshuonan
+     * @date 2021/1/9 18:37
+     */
+    @GetResource(name = "获取某个公司下部门的机构树", path = "/hrOrganization/getDeptOrgTree")
+    public ResponseData<List<OrganizationTreeNode>> getDeptOrgTree(@Validated(HrOrganizationRequest.detail.class) HrOrganizationRequest hrOrganizationRequest) {
+        List<OrganizationTreeNode> list = hrOrganizationService.getDeptOrgTree(hrOrganizationRequest.getOrgId());
+        return new SuccessResponseData<>(list);
+    }
+
 }

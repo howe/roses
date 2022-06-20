@@ -62,4 +62,13 @@ public interface OrganizationServiceApi {
      * @date 2022/6/8 14:40
      */
     List<OrganizationTreeNode> getOrgTreeList(HrOrganizationRequest hrOrganizationRequest);
+
+    /**
+     * 获取某个公司下，所有部门树的集合
+     *
+     * @author fengshuonan
+     * @date 2022/6/16 18:26
+     */
+    List<OrganizationTreeNode> getDeptOrgTree(Long orgId);
+
 }
