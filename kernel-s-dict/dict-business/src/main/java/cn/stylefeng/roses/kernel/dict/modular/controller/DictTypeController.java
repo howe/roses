@@ -62,7 +62,7 @@ public class DictTypeController {
      * @author fengshuonan
      * @date 2018/7/25 下午12:36
      */
-    @PostResource(name = "添加字典类型", path = "/dictType/add", requiredPermission = false)
+    @PostResource(name = "添加字典类型", path = "/dictType/add")
     @BusinessLog
     public ResponseData<?> add(@RequestBody @Validated(DictTypeRequest.add.class) DictTypeRequest dictTypeRequest) {
         this.dictTypeService.add(dictTypeRequest);
@@ -75,7 +75,7 @@ public class DictTypeController {
      * @author fengshuonan
      * @date 2018/7/25 下午12:36
      */
-    @PostResource(name = "删除字典类型", path = "/dictType/delete", requiredPermission = false)
+    @PostResource(name = "删除字典类型", path = "/dictType/delete")
     @BusinessLog
     public ResponseData<?> delete(@RequestBody @Validated(DictTypeRequest.delete.class) DictTypeRequest dictTypeRequest) {
         this.dictTypeService.del(dictTypeRequest);
@@ -88,7 +88,7 @@ public class DictTypeController {
      * @author fengshuonan
      * @date 2018/7/25 下午12:36
      */
-    @PostResource(name = "修改字典类型", path = "/dictType/edit", requiredPermission = false)
+    @PostResource(name = "修改字典类型", path = "/dictType/edit")
     @BusinessLog
     public ResponseData<?> edit(@RequestBody @Validated(DictTypeRequest.edit.class) DictTypeRequest dictTypeRequest) {
         this.dictTypeService.edit(dictTypeRequest);
@@ -101,7 +101,7 @@ public class DictTypeController {
      * @author fengshuonan
      * @date 2018/7/25 下午12:36
      */
-    @PostResource(name = "修改字典类型状态", path = "/dictType/updateStatus", requiredPermission = false)
+    @PostResource(name = "修改字典类型状态", path = "/dictType/updateStatus")
     @BusinessLog
     public ResponseData<?> updateStatus(@RequestBody @Validated(BaseRequest.updateStatus.class) DictTypeRequest dictTypeRequest) {
         this.dictTypeService.editStatus(dictTypeRequest);
