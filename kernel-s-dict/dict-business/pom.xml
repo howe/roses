@@ -69,11 +69,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!--缓存模块-->
         <dependency>
             <groupId>cn.stylefeng.roses</groupId>
             <artifactId>cache-api</artifactId>
-            <version>7.2.1</version>
-            <scope>compile</scope>
+            <version>${roses.version}</version>
         </dependency>
 
     </dependencies>
