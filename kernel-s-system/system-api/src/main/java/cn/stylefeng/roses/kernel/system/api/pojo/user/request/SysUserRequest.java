@@ -200,6 +200,18 @@ public class SysUserRequest extends BaseRequest {
     private ExpandDataInfo expandDataInfo;
 
     /**
+     * 角色id
+     */
+    @ChineseDescription("角色id")
+    private Long roleId;
+
+    /**
+     * 查询条件：账号或姓名
+     */
+    @ChineseDescription("查询条件：账号或姓名")
+    private String condition;
+
+    /**
      * 参数校验分组：修改密码
      */
     public @interface updatePwd {

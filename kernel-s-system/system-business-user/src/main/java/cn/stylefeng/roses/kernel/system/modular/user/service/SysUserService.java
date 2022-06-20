@@ -272,4 +272,13 @@ public interface SysUserService extends IService<SysUser>, UserServiceApi {
      * @date 2022/1/27 14:29
      **/
     Integer devopsApiCheck(SysUserRequest sysUserRequest);
+
+    /**
+     * 根据部门，角色等查询条件，查找用户下拉列表
+     *
+     * @author fengshuonan
+     * @date 2022/6/17 14:49
+     */
+    List<SimpleDict> getUserListByConditions(SysUserRequest sysUserRequest);
+
 }

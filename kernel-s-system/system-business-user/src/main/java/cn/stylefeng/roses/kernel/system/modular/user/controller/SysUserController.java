@@ -301,4 +301,15 @@ public class SysUserController {
     public ResponseData<String> getTokenByUserId(Long userId) {
         return new SuccessResponseData<>(sysUserService.getTokenByUserId(userId));
     }
+
+    /**
+     * 根据条件筛选用户
+     *
+     * @author fengshuonan
+     * @date 2022/6/17 14:46
+     */
+    @GetResource(name = "根据条件筛选用户", path = "/sysUser/getUserListByConditions")
+    public ResponseData<List<SimpleDict>> getUserListByConditions(SysUserRequest sysUserRequest) {
+        return new SuccessResponseData<>(sysUserService.getUserListByConditions(sysUserRequest));
+    }
 }

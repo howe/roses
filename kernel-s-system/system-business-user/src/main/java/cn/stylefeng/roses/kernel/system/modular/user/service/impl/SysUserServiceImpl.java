@@ -71,6 +71,7 @@ import cn.stylefeng.roses.kernel.system.api.pojo.user.request.SysUserRequest;
 import cn.stylefeng.roses.kernel.system.api.util.DataScopeUtil;
 import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUser;
 import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserDataScope;
+import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserOrg;
 import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserRole;
 import cn.stylefeng.roses.kernel.system.modular.user.factory.OnlineUserCreateFactory;
 import cn.stylefeng.roses.kernel.system.modular.user.factory.SysUserCreateFactory;
@@ -695,6 +696,66 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return DevopsCheckStatusEnum.REQUESTER_NOT_OPEN_SWITCH.getCode();
         }
         return DevopsCheckStatusEnum.SUCCESSFUL.getCode();
+    }
+
+    @Override
+    public List<SimpleDict> getUserListByConditions(SysUserRequest sysUserRequest) {
+
+        Long orgId = sysUserRequest.getOrgId();
+        Long roleId = sysUserRequest.getRoleId();
+        Integer statusFlag = sysUserRequest.getStatusFlag();
+        String condition = sysUserRequest.getCondition();
+
+        // 查询对应组织机构下的用户
+        List<Long> orgUserIds = new ArrayList<>();
+        if (ObjectUtil.isNotEmpty(orgId)) {
+            LambdaQueryWrapper<SysUserOrg> sysUserOrgLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            sysUserOrgLambdaQueryWrapper.eq(SysUserOrg::getOrgId, orgId);
+            List<SysUserOrg> list = this.sysUserOrgService.list(sysUserOrgLambdaQueryWrapper);
+            orgUserIds = list.stream().map(SysUserOrg::getUserId).collect(Collectors.toList());
+            if (ObjectUtil.isEmpty(orgUserIds)) {
+                return new ArrayList<>();
+            }
+        }
+
+        // 查询角色对应的用户id
+        List<Long> roleUserIds = new ArrayList<>();
+        if (ObjectUtil.isNotEmpty(roleId)) {
+            LambdaQueryWrapper<SysUserRole> roleLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            roleLambdaQueryWrapper.eq(SysUserRole::getRoleId, roleId);
+            List<SysUserRole> list = this.sysUserRoleService.list(roleLambdaQueryWrapper);
+            roleUserIds = list.stream().map(SysUserRole::getUserId).collect(Collectors.toList());
+            if (ObjectUtil.isEmpty(roleUserIds)) {
+                return new ArrayList<>();
+            }
+        }
+
+        LambdaQueryWrapper<SysUser> sysUserLambdaQueryWrapper = new LambdaQueryWrapper<>();
+
+        // 查询未删除的
+        sysUserLambdaQueryWrapper.eq(SysUser::getDelFlag, YesOrNotEnum.N.getCode());
+
+        // 查询机构下的
+        sysUserLambdaQueryWrapper.in(ObjectUtil.isNotEmpty(orgUserIds), SysUser::getUserId, orgUserIds);
+
+        // 查询所属角色的
+        sysUserLambdaQueryWrapper.in(ObjectUtil.isNotEmpty(roleUserIds), SysUser::getUserId, roleUserIds);
+
+        // 查询是否在职
+        sysUserLambdaQueryWrapper.eq(ObjectUtil.isNotEmpty(statusFlag), SysUser::getStatusFlag, statusFlag);
+
+        // 按条件查询的
+        sysUserLambdaQueryWrapper.nested(ObjectUtil.isNotEmpty(condition), i -> i.like(SysUser::getRealName, condition).or(j -> j.like(SysUser::getAccount, condition)));
+
+        List<SysUser> list = this.list(sysUserLambdaQueryWrapper);
+        ArrayList<SimpleDict> results = new ArrayList<>();
+        for (SysUser sysUser : list) {
+            SimpleDict simpleDict = new SimpleDict();
+            simpleDict.setId(sysUser.getUserId());
+            simpleDict.setName(sysUser.getRealName());
+            results.add(simpleDict);
+        }
+        return results;
     }
 
     @Override
