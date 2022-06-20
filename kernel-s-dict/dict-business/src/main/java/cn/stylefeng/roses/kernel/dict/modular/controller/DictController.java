@@ -63,7 +63,7 @@ public class DictController {
      * @author fengshuonan
      * @date 2020/10/29 16:35
      */
-    @PostResource(name = "添加字典", path = "/dict/add", requiredPermission = false)
+    @PostResource(name = "添加字典", path = "/dict/add")
     @BusinessLog
     public ResponseData<?> add(@RequestBody @Validated(DictRequest.add.class) DictRequest dictRequest) {
         this.dictService.add(dictRequest);
@@ -76,7 +76,7 @@ public class DictController {
      * @author fengshuonan
      * @date 2020/10/29 16:35
      */
-    @PostResource(name = "删除字典", path = "/dict/delete", requiredPermission = false)
+    @PostResource(name = "删除字典", path = "/dict/delete")
     @BusinessLog
     public ResponseData<?> delete(@RequestBody @Validated(DictRequest.delete.class) DictRequest dictRequest) {
         this.dictService.del(dictRequest);
@@ -89,7 +89,7 @@ public class DictController {
      * @author fengshuonan
      * @date 2020/10/29 16:35
      */
-    @PostResource(name = "修改字典", path = "/dict/edit", requiredPermission = false)
+    @PostResource(name = "修改字典", path = "/dict/edit")
     @BusinessLog
     public ResponseData<?> edit(@RequestBody @Validated(DictRequest.edit.class) DictRequest dictRequest) {
         this.dictService.edit(dictRequest);
