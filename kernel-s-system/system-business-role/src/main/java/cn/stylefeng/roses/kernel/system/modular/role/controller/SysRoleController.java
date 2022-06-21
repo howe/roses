@@ -183,6 +183,18 @@ public class SysRoleController {
     }
 
     /**
+     * 角色绑定或取消绑定菜单和按钮
+     *
+     * @author fengshuonan
+     * @date 2021/8/11 9:58
+     */
+    @PostResource(name = "角色绑定或取消绑定菜单和按钮", path = "/sysRole/grantMenusAndButtons")
+    public ResponseData<?> grantMenusAndButtons(@RequestBody @Validated(SysRoleRequest.grantMenusAndButtons.class) SysRoleRequest sysRoleRequest) {
+        sysRoleService.grantMenusAndButtons(sysRoleRequest);
+        return new SuccessResponseData<>();
+    }
+
+    /**
      * 设置角色绑定的数据范围类型和数据范围
      *
      * @author fengshuonan

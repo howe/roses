@@ -151,4 +151,11 @@ public interface SysRoleService extends IService<SysRole>, RoleServiceApi {
      */
     List<Long> getRoleDataScope(SysRoleRequest sysRoleRequest);
 
+    /**
+     * 授权菜单和按钮集合
+     *
+     * @author fengshuonan
+     * @date 2022/6/21 9:55
+     */
+    void grantMenusAndButtons(SysRoleRequest sysRoleRequest);
 }

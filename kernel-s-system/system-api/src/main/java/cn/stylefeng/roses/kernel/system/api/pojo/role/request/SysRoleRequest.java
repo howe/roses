@@ -31,6 +31,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.math.BigDecimal;
@@ -50,7 +51,7 @@ public class SysRoleRequest extends BaseRequest {
      * 主键
      */
     @NotNull(message = "roleId不能为空", groups = {edit.class, delete.class, detail.class, updateStatus.class, grantResource.class,
-            grantResourceV2.class, grantDataScope.class, grantMenuButton.class, grantMenu.class, grantButton.class})
+            grantResourceV2.class, grantDataScope.class, grantMenuButton.class, grantMenu.class, grantButton.class, grantMenusAndButtons.class})
     @ChineseDescription("主键")
     private Long roleId;
 
@@ -142,7 +143,7 @@ public class SysRoleRequest extends BaseRequest {
     /**
      * 授权菜单
      */
-    @NotNull(message = "授权菜单Id不能为空", groups = {grantMenuButton.class})
+    @NotEmpty(message = "授权菜单Id不能为空", groups = {grantMenuButton.class, grantMenusAndButtons.class})
     @ChineseDescription("授权菜单")
     private List<Long> grantMenuIdList;
 
@@ -178,6 +179,13 @@ public class SysRoleRequest extends BaseRequest {
      */
     @ChineseDescription("模块下选中的按钮id")
     private List<Long> selectedButtonIds;
+
+    /**
+     * 绑定标识，true-新增绑定菜单，false-取消绑定菜单
+     */
+    @ChineseDescription("绑定标识，true-新增绑定菜单，false-取消绑定菜单")
+    @NotNull(message = "绑定标识不能为空", groups = grantMenusAndButtons.class)
+    private Boolean selectBindFlag;
 
     /**
      * 参数校验分组：授权菜单和按钮
@@ -218,6 +226,13 @@ public class SysRoleRequest extends BaseRequest {
      * 参数校验分组：授权数据
      */
     public @interface grantDataScope {
+
+    }
+
+    /**
+     * 参数校验分组：授权菜单和按钮集合
+     */
+    public @interface grantMenusAndButtons {
 
     }
 

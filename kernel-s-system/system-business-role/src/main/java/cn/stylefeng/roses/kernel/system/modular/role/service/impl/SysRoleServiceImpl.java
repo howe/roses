@@ -416,6 +416,40 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    public void grantMenusAndButtons(SysRoleRequest sysRoleRequest) {
+        // 获取新增绑定还是取消绑定菜单
+        Boolean selectBindFlag = sysRoleRequest.getSelectBindFlag();
+
+        // 获取角色和绑定菜单
+        Long roleId = sysRoleRequest.getRoleId();
+        List<Long> grantMenuIdList = sysRoleRequest.getGrantMenuIdList();
+
+        // 如果是新增绑定菜单
+        if (selectBindFlag) {
+            // 批量保存绑定的菜单集合
+            List<SysRoleMenu> sysRoleMenus = new ArrayList<>();
+            for (Long menuId : grantMenuIdList) {
+                SysRoleMenu item = new SysRoleMenu();
+                item.setRoleId(roleId);
+                item.setMenuId(menuId);
+                sysRoleMenus.add(item);
+            }
+            this.roleMenuService.saveBatch(sysRoleMenus);
+        } else {
+            // 如果是解除绑定菜单
+            LambdaUpdateWrapper<SysRoleMenu> wrapper = new LambdaUpdateWrapper<>();
+            wrapper.eq(SysRoleMenu::getRoleId, roleId);
+            wrapper.in(SysRoleMenu::getMenuId, grantMenuIdList);
+            this.roleMenuService.remove(wrapper);
+        }
+
+        // 授权按钮
+        if (ObjectUtil.isNotEmpty(sysRoleRequest.getModularButtonIds())) {
+            this.grantButton(sysRoleRequest);
+        }
+    }
+
+    @Override
     public List<SysRoleDTO> getRolesByIds(List<Long> roleIds) {
         ArrayList<SysRoleDTO> sysRoleResponses = new ArrayList<>();
         for (Long roleId : roleIds) {
