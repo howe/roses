@@ -70,7 +70,6 @@ import cn.stylefeng.roses.kernel.scanner.api.holder.InitScanFlagHolder;
 import cn.stylefeng.roses.kernel.security.api.DragCaptchaApi;
 import cn.stylefeng.roses.kernel.security.api.ImageCaptchaApi;
 import cn.stylefeng.roses.kernel.security.api.expander.SecurityConfigExpander;
-import cn.stylefeng.roses.kernel.system.api.ResourceServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
 import cn.stylefeng.roses.kernel.system.api.enums.UserStatusEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.UserLoginInfoDTO;
@@ -95,11 +94,6 @@ import static cn.stylefeng.roses.kernel.auth.api.exception.enums.AuthExceptionEn
 @Service
 public class AuthServiceImpl implements AuthServiceApi {
 
-    /**
-     * 用于操作缓存时候加锁
-     */
-    private static final Object SESSION_OPERATE_LOCK = new Object();
-
     @Resource
     private UserServiceApi userServiceApi;
 
@@ -123,9 +117,6 @@ public class AuthServiceImpl implements AuthServiceApi {
 
     @Resource
     private SsoProperties ssoProperties;
-
-    @Resource
-    private ResourceServiceApi resourceServiceApi;
 
     @Resource(name = "loginErrorCountCacheApi")
     private CacheOperatorApi<Integer> loginErrorCountCacheApi;
@@ -367,7 +358,7 @@ public class AuthServiceImpl implements AuthServiceApi {
         // 如果包含租户编码，则放到loginUser中
         loginUser.setTenantCode(loginRequest.getTenantCode());
 
-        synchronized (SESSION_OPERATE_LOCK) {
+        synchronized (loginUser.getAccount().intern()) {
 
             // 9.1 获取ws-url 保存到用户信息中
             loginUser.setWsUrl(WebSocketConfigExpander.getWebSocketWsUrl());
