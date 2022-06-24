@@ -212,6 +212,20 @@ public class AntdMenusFactory {
                 }
             }
 
+            long checkedButtonsNumber = menuButtonList.stream().filter(MenuAndButtonTreeResponse::getChecked).count();
+
+            // 统计选中的数量
+            if (checkedButtonsNumber == menuButtonList.size()) {
+                menuAndButtonTreeResponse.setChecked(true);
+                menuAndButtonTreeResponse.setIndeterminate(false);
+            } else if (checkedButtonsNumber == 0) {
+                menuAndButtonTreeResponse.setChecked(false);
+                menuAndButtonTreeResponse.setIndeterminate(false);
+            } else {
+                menuAndButtonTreeResponse.setChecked(false);
+                menuAndButtonTreeResponse.setIndeterminate(true);
+            }
+
             menuAndButtonTreeResponse.setButtons(menuButtonList);
         }
     }
