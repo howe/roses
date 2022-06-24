@@ -58,11 +58,11 @@ public class IndeterminateFactory {
             int childrenSize = children.size();
 
             // 统计选中的数量
-            if (selectedCount == childrenSize) {
-                menuAndButtonTreeRespons.setChecked(true);
-                menuAndButtonTreeRespons.setIndeterminate(false);
-            } else if (selectedCount == 0) {
+            if (selectedCount == 0) {
                 menuAndButtonTreeRespons.setChecked(false);
+                menuAndButtonTreeRespons.setIndeterminate(false);
+            } else if (selectedCount == childrenSize) {
+                menuAndButtonTreeRespons.setChecked(true);
                 menuAndButtonTreeRespons.setIndeterminate(false);
             } else {
                 menuAndButtonTreeRespons.setChecked(false);

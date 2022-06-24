@@ -212,14 +212,20 @@ public class AntdMenusFactory {
                 }
             }
 
+            // 遍历一遍后，当前菜单没按钮，则直接略过
+            if (ObjectUtil.isEmpty(menuButtonList)) {
+                menuAndButtonTreeResponse.setButtons(menuButtonList);
+                continue;
+            }
+
             long checkedButtonsNumber = menuButtonList.stream().filter(MenuAndButtonTreeResponse::getChecked).count();
 
             // 统计选中的数量
-            if (checkedButtonsNumber == menuButtonList.size()) {
-                menuAndButtonTreeResponse.setChecked(true);
-                menuAndButtonTreeResponse.setIndeterminate(false);
-            } else if (checkedButtonsNumber == 0) {
+            if (checkedButtonsNumber == 0) {
                 menuAndButtonTreeResponse.setChecked(false);
+                menuAndButtonTreeResponse.setIndeterminate(false);
+            } else if (checkedButtonsNumber == menuButtonList.size()) {
+                menuAndButtonTreeResponse.setChecked(true);
                 menuAndButtonTreeResponse.setIndeterminate(false);
             } else {
                 menuAndButtonTreeResponse.setChecked(false);

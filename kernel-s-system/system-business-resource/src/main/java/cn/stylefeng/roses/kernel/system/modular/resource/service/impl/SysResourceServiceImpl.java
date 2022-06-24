@@ -197,11 +197,11 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
             }
 
             // 统计选中的数量
-            if (checkedNumber == entry.getValue().size()) {
-                item.setChecked(true);
-                item.setIndeterminate(false);
-            } else if (checkedNumber == 0) {
+            if (checkedNumber == 0) {
                 item.setChecked(false);
+                item.setIndeterminate(false);
+            } else if (checkedNumber == entry.getValue().size()) {
+                item.setChecked(true);
                 item.setIndeterminate(false);
             } else {
                 item.setChecked(false);
