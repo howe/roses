@@ -95,4 +95,14 @@ public class ResponseRenderUtil {
         response.setContentType("application/octet-stream; charset=utf-8");
     }
 
+    /**
+     * 设置图片的渲染文件头
+     *
+     * @author fengshuonan
+     * @date 2021/7/1 15:01
+     */
+    public static void setRenderImageHeader(HttpServletResponse response) {
+        response.setContentType("image/png");
+    }
+
 }
