@@ -33,6 +33,7 @@ import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
+import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRole;
@@ -189,9 +190,8 @@ public class SysRoleController {
      * @date 2021/8/11 9:58
      */
     @PostResource(name = "角色绑定或取消绑定菜单和按钮", path = "/sysRole/grantMenusAndButtons")
-    public ResponseData<?> grantMenusAndButtons(@RequestBody @Validated(SysRoleRequest.grantMenusAndButtons.class) SysRoleRequest sysRoleRequest) {
-        sysRoleService.grantMenusAndButtons(sysRoleRequest);
-        return new SuccessResponseData<>();
+    public ResponseData<List<MenuAndButtonTreeResponse>> grantMenusAndButtons(@RequestBody @Validated(SysRoleRequest.grantMenusAndButtons.class) SysRoleRequest sysRoleRequest) {
+        return new SuccessResponseData<>(sysRoleService.grantMenusAndButtonsAndGetResult(sysRoleRequest));
     }
 
     /**

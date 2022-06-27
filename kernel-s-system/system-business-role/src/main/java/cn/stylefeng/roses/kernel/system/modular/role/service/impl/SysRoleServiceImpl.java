@@ -46,6 +46,7 @@ import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
 import cn.stylefeng.roses.kernel.system.api.constants.SystemConstants;
 import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
 import cn.stylefeng.roses.kernel.system.api.exception.enums.role.SysRoleExceptionEnum;
+import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuButtonDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuDTO;
@@ -426,6 +427,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
         // 如果是新增绑定菜单
         if (selectBindFlag) {
+            // 获取所有菜单的父级节点，把选中状态的菜单的所有父级节点都选择上
+            Set<Long> allParentMenuId = menuServiceApi.getMenuAllParentMenuId(new HashSet<>(grantMenuIdList));
+            grantMenuIdList.addAll(allParentMenuId);
+
             // 批量保存绑定的菜单集合
             List<SysRoleMenu> sysRoleMenus = new ArrayList<>();
             for (Long menuId : grantMenuIdList) {
@@ -447,6 +452,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         if (ObjectUtil.isNotEmpty(sysRoleRequest.getModularButtonIds())) {
             this.grantButton(sysRoleRequest);
         }
+    }
+
+    @Override
+    public List<MenuAndButtonTreeResponse> grantMenusAndButtonsAndGetResult(SysRoleRequest sysRoleRequest) {
+        this.grantMenusAndButtons(sysRoleRequest);
+        return menuServiceApi.getRoleMenuAndButtons(sysRoleRequest);
     }
 
     @Override

@@ -31,6 +31,7 @@ import cn.stylefeng.roses.kernel.rule.tree.ztree.ZTreeNode;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
+import cn.stylefeng.roses.kernel.system.api.MenuServiceApi;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.SysMenuRequest;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.antd.AntdMenuSelectTreeNode;
@@ -58,6 +59,9 @@ public class SysMenuController {
 
     @Resource
     private SysMenuService sysMenuService;
+
+    @Resource
+    private MenuServiceApi menuServiceApi;
 
     /**
      * 添加系统菜单
@@ -196,7 +200,7 @@ public class SysMenuController {
      */
     @GetResource(name = "新版角色分配菜单和按钮界面使用的接口（v2）", path = "/sysMenu/menuAndButtonTreeChildrenV2")
     public ResponseData<List<MenuAndButtonTreeResponse>> menuAndButtonTreeChildrenV2(SysRoleRequest sysRoleRequest) {
-        List<MenuAndButtonTreeResponse> treeResponseList = sysMenuService.getRoleMenuAndButtons(sysRoleRequest);
+        List<MenuAndButtonTreeResponse> treeResponseList = menuServiceApi.getRoleMenuAndButtons(sysRoleRequest);
         return new SuccessResponseData<>(treeResponseList);
     }
 

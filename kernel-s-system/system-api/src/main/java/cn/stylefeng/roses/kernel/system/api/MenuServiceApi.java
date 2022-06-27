@@ -25,6 +25,8 @@
 package cn.stylefeng.roses.kernel.system.api;
 
 import cn.stylefeng.roses.kernel.system.api.pojo.login.v3.IndexMenuInfo;
+import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
+import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 
 import java.util.List;
 import java.util.Set;
@@ -89,5 +91,14 @@ public interface MenuServiceApi {
      * @date 2022/4/8 15:59
      */
     List<IndexMenuInfo> buildAuthorities(Integer menuFrontType);
+
+
+    /**
+     * 获取角色绑定菜单和按钮权限的树
+     *
+     * @author fengshuonan
+     * @date 2021/8/10 22:23
+     */
+    List<MenuAndButtonTreeResponse> getRoleMenuAndButtons(SysRoleRequest sysRoleRequest);
 
 }

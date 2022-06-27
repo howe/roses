@@ -27,6 +27,7 @@ package cn.stylefeng.roses.kernel.system.modular.role.service;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.system.api.RoleServiceApi;
+import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRole;
@@ -158,4 +159,12 @@ public interface SysRoleService extends IService<SysRole>, RoleServiceApi {
      * @date 2022/6/21 9:55
      */
     void grantMenusAndButtons(SysRoleRequest sysRoleRequest);
+
+    /**
+     * 授权菜单和按钮集合，并获取结果
+     *
+     * @author fengshuonan
+     * @date 2022/6/27 17:08
+     */
+    List<MenuAndButtonTreeResponse> grantMenusAndButtonsAndGetResult(SysRoleRequest sysRoleRequest);
 }
