@@ -70,12 +70,6 @@ public class MenuAndButtonTreeResponse implements AbstractTreeNode<MenuAndButton
     private Boolean checked;
 
     /**
-     * 是否是半开状态（一部分选中）
-     */
-    @ChineseDescription("是否是半开状态（一部分选中）")
-    private Boolean indeterminate;
-
-    /**
      * 当前节点的按钮集合
      */
     @ChineseDescription("当前节点的按钮集合")

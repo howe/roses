@@ -59,7 +59,10 @@ import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.modular.menu.entity.SysMenu;
 import cn.stylefeng.roses.kernel.system.modular.menu.entity.SysMenuButton;
 import cn.stylefeng.roses.kernel.system.modular.menu.entity.SysMenuResource;
-import cn.stylefeng.roses.kernel.system.modular.menu.factory.*;
+import cn.stylefeng.roses.kernel.system.modular.menu.factory.AntdMenusFactory;
+import cn.stylefeng.roses.kernel.system.modular.menu.factory.Antdv3MenusFactory;
+import cn.stylefeng.roses.kernel.system.modular.menu.factory.LayuiMenusFactory;
+import cn.stylefeng.roses.kernel.system.modular.menu.factory.MenuTypeFactory;
 import cn.stylefeng.roses.kernel.system.modular.menu.mapper.SysMenuMapper;
 import cn.stylefeng.roses.kernel.system.modular.menu.service.SysMenuButtonService;
 import cn.stylefeng.roses.kernel.system.modular.menu.service.SysMenuResourceService;
@@ -471,9 +474,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         AntdMenusFactory.fillButtons(menuAndButtonTreeResponses, buttonList, roleMenuButtonList);
 
         // 菜单列表转化为一棵树
-        List<MenuAndButtonTreeResponse> menuAndButtonTreeResponses1 = new DefaultTreeBuildFactory<MenuAndButtonTreeResponse>().doTreeBuild(menuAndButtonTreeResponses);
-        IndeterminateFactory.fillIndeterminate(menuAndButtonTreeResponses1);
-        return menuAndButtonTreeResponses1;
+        return new DefaultTreeBuildFactory<MenuAndButtonTreeResponse>().doTreeBuild(menuAndButtonTreeResponses);
     }
 
     @Override
