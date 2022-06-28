@@ -1,1 +1,0 @@
-package cn.stylefeng.roses.kernel.group.modular.pojo;
