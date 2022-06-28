@@ -42,4 +42,14 @@ public interface GroupConstants {
      */
     String GROUP_EXCEPTION_STEP_CODE = "99";
 
+    /**
+     * 添加分组
+     */
+    String GROUP_ADD_NAME = "添加分组";
+
+    /**
+     * 未分组
+     */
+    String GROUP_DELETE_NAME = "未分组";
+
 }

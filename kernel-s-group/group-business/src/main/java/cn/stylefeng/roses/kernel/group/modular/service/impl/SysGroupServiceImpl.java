@@ -2,6 +2,7 @@ package cn.stylefeng.roses.kernel.group.modular.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
+import cn.stylefeng.roses.kernel.group.api.constants.GroupConstants;
 import cn.stylefeng.roses.kernel.group.modular.entity.SysGroup;
 import cn.stylefeng.roses.kernel.group.modular.mapper.SysGroupMapper;
 import cn.stylefeng.roses.kernel.group.modular.pojo.SysGroupRequest;
@@ -26,43 +27,24 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
 
     @Override
     public List<SysGroup> findGroupList(SysGroupRequest sysGroupRequest) {
-        // 增加两个固定的选中和取消选项
-        SysGroup addGroup = new SysGroup();
-        addGroup.setGroupBizCode("PROJECT");
-        addGroup.setGroupName("所有分组");
-
-        SysGroup noneGroup = new SysGroup();
-        noneGroup.setGroupBizCode("PROJECT");
-        noneGroup.setGroupName("未分组");
-
         String groupBizCode = sysGroupRequest.getGroupBizCode();
         Long userId = LoginContext.me().getLoginUser().getUserId();
         List<SysGroup> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId);
 
-        userGroupList.add(0, noneGroup);
-        userGroupList.add(0, addGroup);
+        // 增加两个固定的选中和取消选项
+        addCommonGroup(groupBizCode, userGroupList);
 
         return userGroupList;
     }
 
     @Override
     public List<SysGroup> addSelect(SysGroupRequest sysGroupRequest) {
-        // 增加两个固定的选中和取消选项
-        SysGroup addGroup = new SysGroup();
-        addGroup.setGroupBizCode("PROJECT");
-        addGroup.setGroupName("添加分组");
-
-        // 未分组
-        SysGroup noneGroup = new SysGroup();
-        noneGroup.setGroupBizCode("PROJECT");
-        noneGroup.setGroupName("未分组");
-
         String groupBizCode = sysGroupRequest.getGroupBizCode();
         Long userId = LoginContext.me().getLoginUser().getUserId();
         List<SysGroup> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId);
 
-        userGroupList.add(0, noneGroup);
-        userGroupList.add(0, addGroup);
+        // 增加两个固定的选中和取消选项
+        addCommonGroup(groupBizCode, userGroupList);
 
         return userGroupList;
     }
@@ -81,7 +63,7 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
         this.remove(updateWrapper);
 
         // 如果分组名称是未分组，则删除分组
-        if (!sysGroupRequest.getGroupName().equals("未分组")) {
+        if (!GroupConstants.GROUP_DELETE_NAME.equals(sysGroupRequest.getGroupName())) {
             for (Long bizId : businessIdList) {
                 SysGroup sysGroup = new SysGroup();
                 sysGroup.setGroupName(sysGroupRequest.getGroupName());
@@ -124,6 +106,28 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
         } else {
             return list.stream().map(SysGroup::getBusinessId).collect(Collectors.toList());
         }
+    }
+
+    /**
+     * 返回结果增加通用的两个分组名称
+     *
+     * @author fengshuonan
+     * @date 2022/6/28 10:50
+     */
+    private void addCommonGroup(String groupBizCode, List<SysGroup> result) {
+
+        // 添加分组
+        SysGroup addGroup = new SysGroup();
+        addGroup.setGroupBizCode(groupBizCode);
+        addGroup.setGroupName(GroupConstants.GROUP_ADD_NAME);
+
+        // 未分组
+        SysGroup noneGroup = new SysGroup();
+        noneGroup.setGroupBizCode(groupBizCode);
+        noneGroup.setGroupName(GroupConstants.GROUP_DELETE_NAME);
+
+        result.add(0, noneGroup);
+        result.add(0, addGroup);
     }
 
 }
