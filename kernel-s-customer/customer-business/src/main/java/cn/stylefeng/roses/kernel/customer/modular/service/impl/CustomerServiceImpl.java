@@ -129,12 +129,14 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
             this.save(regCustomer);
 
             // 发送邮箱验证码
-            try {
-                SendMailParam regEmailParam = CustomerFactory.createRegEmailParam(regCustomer.getEmail(), regCustomer.getVerifyCode());
-                mailSenderApi.sendMailHtml(regEmailParam);
-            } catch (Exception exception) {
-                log.error("注册时，发送邮件失败！", exception);
-                throw new CustomerException(CustomerExceptionEnum.EMAIL_SEND_ERROR);
+            if (CustomerConfigExpander.getSendEmailFlag()) {
+                try {
+                    SendMailParam regEmailParam = CustomerFactory.createRegEmailParam(regCustomer.getEmail(), regCustomer.getVerifyCode());
+                    mailSenderApi.sendMailHtml(regEmailParam);
+                } catch (Exception exception) {
+                    log.error("注册时，发送邮件失败！", exception);
+                    throw new CustomerException(CustomerExceptionEnum.EMAIL_SEND_ERROR);
+                }
             }
         }
     }
@@ -251,8 +253,10 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         this.updateById(customer);
 
         // 发送邮箱验证码
-        SendMailParam resetPwdEmail = CustomerFactory.createResetPwdEmail(customerRequest.getEmail(), randomCode);
-        mailSenderApi.sendMailHtml(resetPwdEmail);
+        if (CustomerConfigExpander.getSendEmailFlag()) {
+            SendMailParam resetPwdEmail = CustomerFactory.createResetPwdEmail(customerRequest.getEmail(), randomCode);
+            mailSenderApi.sendMailHtml(resetPwdEmail);
+        }
     }
 
     @Override

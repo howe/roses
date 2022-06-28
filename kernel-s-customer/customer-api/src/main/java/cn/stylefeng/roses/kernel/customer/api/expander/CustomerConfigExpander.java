@@ -91,4 +91,16 @@ public class CustomerConfigExpander {
         return ConfigContext.me().getSysConfigValueWithDefault("CUSTOMER_OPEN_OLD_PASSWORD_VALIDATE", Boolean.class, Boolean.FALSE);
     }
 
+    /**
+     * 获取是否开启了发送邮件的开关
+     * <p>
+     * 如果开启了，则发送用户注册、找回密码等业务的邮件，未开启则不发送
+     *
+     * @author fengshuonan
+     * @date 2022/6/28 15:38
+     */
+    public static boolean getSendEmailFlag() {
+        return ConfigContext.me().getSysConfigValueWithDefault("SYS_CUSTOMER_SEND_EMAIL", Boolean.class, true);
+    }
+
 }
