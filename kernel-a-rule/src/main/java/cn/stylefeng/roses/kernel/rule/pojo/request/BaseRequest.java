@@ -24,9 +24,11 @@
  */
 package cn.stylefeng.roses.kernel.rule.pojo.request;
 
+import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,6 +91,20 @@ public class BaseRequest implements Serializable {
      * 当前登录用户的token
      */
     private String token;
+
+    /**
+     * 分组查询条件，例如：所有分组 、 未分组、 我的分组等名称
+     */
+    @ChineseDescription("分组名称，例如：所有分组 、 未分组、 我的分组等名称")
+    private String conditionGroupName;
+    /**
+     * 查询分组时候in标识：固定传true或false，如果是true，则为in，false为为not in
+     */
+    private Boolean conditionGroupInFlag;
+    /**
+     * 业务id集合，当查询未分组或者指定分组时候需要填充此字段，用来查到用户在这个组下有多少个业务id
+     */
+    private List<Long> conditionGroupUserBizIdList;
 
     /**
      * 参数校验分组：分页
