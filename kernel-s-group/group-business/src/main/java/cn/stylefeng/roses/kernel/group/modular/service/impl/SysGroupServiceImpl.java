@@ -2,10 +2,12 @@ package cn.stylefeng.roses.kernel.group.modular.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
+import cn.stylefeng.roses.kernel.group.api.GroupApi;
 import cn.stylefeng.roses.kernel.group.api.constants.GroupConstants;
+import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupDTO;
+import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupRequest;
 import cn.stylefeng.roses.kernel.group.modular.entity.SysGroup;
 import cn.stylefeng.roses.kernel.group.modular.mapper.SysGroupMapper;
-import cn.stylefeng.roses.kernel.group.modular.pojo.SysGroupRequest;
 import cn.stylefeng.roses.kernel.group.modular.service.SysGroupService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -23,13 +25,13 @@ import java.util.stream.Collectors;
  * @date 2022/05/11 12:54
  */
 @Service
-public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> implements SysGroupService {
+public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> implements SysGroupService, GroupApi {
 
     @Override
-    public List<SysGroup> findGroupList(SysGroupRequest sysGroupRequest) {
+    public List<SysGroupDTO> findGroupList(SysGroupRequest sysGroupRequest) {
         String groupBizCode = sysGroupRequest.getGroupBizCode();
         Long userId = LoginContext.me().getLoginUser().getUserId();
-        List<SysGroup> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId);
+        List<SysGroupDTO> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId);
 
         // 增加两个固定的选中和取消选项
         addAllGroup(groupBizCode, userGroupList);
@@ -38,10 +40,10 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
     }
 
     @Override
-    public List<SysGroup> addSelect(SysGroupRequest sysGroupRequest) {
+    public List<SysGroupDTO> addSelect(SysGroupRequest sysGroupRequest) {
         String groupBizCode = sysGroupRequest.getGroupBizCode();
         Long userId = LoginContext.me().getLoginUser().getUserId();
-        List<SysGroup> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId);
+        List<SysGroupDTO> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId);
 
         // 增加两个固定的选中和取消选项
         addCommonGroup(groupBizCode, userGroupList);
@@ -114,15 +116,15 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
      * @author fengshuonan
      * @date 2022/6/28 10:50
      */
-    private void addCommonGroup(String groupBizCode, List<SysGroup> result) {
+    private void addCommonGroup(String groupBizCode, List<SysGroupDTO> result) {
 
         // 添加分组
-        SysGroup addGroup = new SysGroup();
+        SysGroupDTO addGroup = new SysGroupDTO();
         addGroup.setGroupBizCode(groupBizCode);
         addGroup.setGroupName(GroupConstants.GROUP_ADD_NAME);
 
         // 未分组
-        SysGroup noneGroup = new SysGroup();
+        SysGroupDTO noneGroup = new SysGroupDTO();
         noneGroup.setGroupBizCode(groupBizCode);
         noneGroup.setGroupName(GroupConstants.GROUP_DELETE_NAME);
 
@@ -136,15 +138,15 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
      * @author fengshuonan
      * @date 2022/6/28 10:50
      */
-    private void addAllGroup(String groupBizCode, List<SysGroup> result) {
+    private void addAllGroup(String groupBizCode, List<SysGroupDTO> result) {
 
         // 添加分组
-        SysGroup addGroup = new SysGroup();
+        SysGroupDTO addGroup = new SysGroupDTO();
         addGroup.setGroupBizCode(groupBizCode);
         addGroup.setGroupName(GroupConstants.ALL_GROUP_NAME);
 
         // 未分组
-        SysGroup noneGroup = new SysGroup();
+        SysGroupDTO noneGroup = new SysGroupDTO();
         noneGroup.setGroupBizCode(groupBizCode);
         noneGroup.setGroupName(GroupConstants.GROUP_DELETE_NAME);
 

@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.group.modular.mapper;
 
+import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupDTO;
 import cn.stylefeng.roses.kernel.group.modular.entity.SysGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,6 +21,6 @@ public interface SysGroupMapper extends BaseMapper<SysGroup> {
      * @author fengshuonan
      * @date 2022/5/11 16:49
      */
-    List<SysGroup> getUserGroupList(@Param("groupBizCode") String groupBizCode, @Param("userId") Long userId);
+    List<SysGroupDTO> getUserGroupList(@Param("groupBizCode") String groupBizCode, @Param("userId") Long userId);
 
 }

@@ -24,6 +24,11 @@
  */
 package cn.stylefeng.roses.kernel.group.api;
 
+import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupDTO;
+import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupRequest;
+
+import java.util.List;
+
 /**
  * 业务分组Api
  *
@@ -32,5 +37,20 @@ package cn.stylefeng.roses.kernel.group.api;
  */
 public interface GroupApi {
 
+    /**
+     * 获取某个业务，某个人，某个分类下的业务数据id
+     *
+     * @author fengshuonan
+     * @date 2022/5/11 17:00
+     */
+    List<Long> findUserGroupDataList(SysGroupRequest sysGroupRequest);
+
+    /**
+     * 获取用户某个业务下的分组列表
+     *
+     * @author fengshuonan
+     * @date 2022/5/11 17:00
+     */
+    List<SysGroupDTO> findGroupList(SysGroupRequest sysGroupRequest);
 
 }
