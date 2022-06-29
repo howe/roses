@@ -48,6 +48,11 @@ public interface GroupConstants {
     String GROUP_ADD_NAME = "添加分组";
 
     /**
+     * 所有分组
+     */
+    String ALL_GROUP_NAME = "所有分组";
+
+    /**
      * 未分组
      */
     String GROUP_DELETE_NAME = "未分组";

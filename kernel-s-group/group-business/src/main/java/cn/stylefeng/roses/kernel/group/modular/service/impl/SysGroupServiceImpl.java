@@ -32,7 +32,7 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
         List<SysGroup> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId);
 
         // 增加两个固定的选中和取消选项
-        addCommonGroup(groupBizCode, userGroupList);
+        addAllGroup(groupBizCode, userGroupList);
 
         return userGroupList;
     }
@@ -129,5 +129,28 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
         result.add(0, noneGroup);
         result.add(0, addGroup);
     }
+
+    /**
+     * 返回所有分组和未分组的查询
+     *
+     * @author fengshuonan
+     * @date 2022/6/28 10:50
+     */
+    private void addAllGroup(String groupBizCode, List<SysGroup> result) {
+
+        // 添加分组
+        SysGroup addGroup = new SysGroup();
+        addGroup.setGroupBizCode(groupBizCode);
+        addGroup.setGroupName(GroupConstants.ALL_GROUP_NAME);
+
+        // 未分组
+        SysGroup noneGroup = new SysGroup();
+        noneGroup.setGroupBizCode(groupBizCode);
+        noneGroup.setGroupName(GroupConstants.GROUP_DELETE_NAME);
+
+        result.add(0, noneGroup);
+        result.add(0, addGroup);
+    }
+
 
 }
