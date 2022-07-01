@@ -53,7 +53,11 @@ public class CustomerFactory {
         customer.setVerifyCode(RandomUtil.randomString(29).toUpperCase());
 
         // 设置是否已经验证，未验证
-        customer.setVerifiedFlag(YesOrNotEnum.N.getCode());
+        if (CustomerConfigExpander.getSendEmailFlag()) {
+            customer.setVerifiedFlag(YesOrNotEnum.N.getCode());
+        } else {
+            customer.setVerifiedFlag(YesOrNotEnum.Y.getCode());
+        }
 
         // 设置默认头像
         customer.setAvatar(FileConstants.DEFAULT_AVATAR_FILE_ID);
