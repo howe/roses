@@ -948,7 +948,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void createAndSaveOAuth2User(OAuth2AuthUserDTO oAuth2AuthUserDTO) {
+    public SysUserDTO createAndSaveOAuth2User(OAuth2AuthUserDTO oAuth2AuthUserDTO) {
 
         // 请求bean转为实体，填充一些基本属性
         SysUser oAuth2User = SysUserCreateFactory.createOAuth2User(oAuth2AuthUserDTO);
@@ -971,6 +971,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         userOrgRequest.setUserId(oAuth2User.getUserId());
         userOrgRequest.setOrgId(OAUTH2_USER_ORG_ID);
         this.sysUserOrgService.add(userOrgRequest);
+
+        return BeanUtil.copyProperties(oAuth2User, SysUserDTO.class);
     }
 
     /**

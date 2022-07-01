@@ -166,6 +166,6 @@ public interface UserServiceApi {
      * @author fengshuonan
      * @date 2022/7/1 19:03
      */
-    void createAndSaveOAuth2User(OAuth2AuthUserDTO oAuth2AuthUserDTO);
+    SysUserDTO createAndSaveOAuth2User(OAuth2AuthUserDTO oAuth2AuthUserDTO);
 
 }
