@@ -77,4 +77,14 @@ public interface SystemConstants {
      */
     String THEME_GUNS_PLATFORM = "GUNS_PLATFORM";
 
+    /**
+     * 默认OAuth2用户组织机构id
+     */
+    Long OAUTH2_USER_ORG_ID = 1339554696976781407L;
+
+    /**
+     * 默认OAuth2用户角色id
+     */
+    Long OAUTH2_USER_ROLE_ID = 1339550467939639305L;
+
 }

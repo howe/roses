@@ -25,6 +25,7 @@
 package cn.stylefeng.roses.kernel.system.api;
 
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
+import cn.stylefeng.roses.kernel.system.api.pojo.user.OAuth2AuthUserDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.OnlineUserDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.UserLoginInfoDTO;
@@ -158,5 +159,13 @@ public interface UserServiceApi {
      * @date 2021/12/29 17:27
      */
     String getUserAvatarUrlByUserId(Long userId);
+
+    /**
+     * 创建并保存OAuth2用户信息
+     *
+     * @author fengshuonan
+     * @date 2022/7/1 19:03
+     */
+    void createAndSaveOAuth2User(OAuth2AuthUserDTO oAuth2AuthUserDTO);
 
 }

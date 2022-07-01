@@ -26,14 +26,16 @@ package cn.stylefeng.roses.kernel.system.modular.user.factory;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.stylefeng.roses.kernel.auth.api.password.PasswordStoredEncryptApi;
 import cn.stylefeng.roses.kernel.rule.enums.SexEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.system.api.enums.UserStatusEnum;
 import cn.stylefeng.roses.kernel.system.api.expander.SystemConfigExpander;
-import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUser;
+import cn.stylefeng.roses.kernel.system.api.pojo.user.OAuth2AuthUserDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.request.SysUserRequest;
+import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUser;
 
 /**
  * 用户信息填充，用于创建和修改用户时，添加一些基础信息
@@ -116,6 +118,37 @@ public class SysUserCreateFactory {
 
         // 手机
         sysUser.setPhone(sysUserRequest.getPhone());
+    }
+
+    /**
+     * 创建第三方应用在本应用的用户
+     *
+     * @author fengshuonan
+     * @Date 2019/6/9 19:11
+     */
+    public static SysUser createOAuth2User(OAuth2AuthUserDTO oAuth2AuthUserDTO) {
+
+        SysUser systemUser = new SysUser();
+
+        // 设置名字
+        systemUser.setRealName(oAuth2AuthUserDTO.getNickname());
+        systemUser.setNickName(oAuth2AuthUserDTO.getNickname());
+
+        // 设置账号
+        systemUser.setAccount("OAUTH2_" + oAuth2AuthUserDTO.getSource() + "_" + oAuth2AuthUserDTO.getUsername());
+
+        // 设置密码
+        PasswordStoredEncryptApi passwordStoredEncryptApi = SpringUtil.getBean(PasswordStoredEncryptApi.class);
+        systemUser.setPassword(passwordStoredEncryptApi.encrypt(RandomUtil.randomString(20)));
+
+        // 设置性别
+        systemUser.setSex(oAuth2AuthUserDTO.getSexEnum().getCode());
+
+        // 设置邮箱电话
+        systemUser.setEmail(oAuth2AuthUserDTO.getEmail());
+        systemUser.setPhone("未设置");
+
+        return systemUser;
     }
 
 }

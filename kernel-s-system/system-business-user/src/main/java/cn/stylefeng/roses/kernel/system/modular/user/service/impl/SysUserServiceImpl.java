@@ -68,6 +68,8 @@ import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.*;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.request.OnlineUserRequest;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.request.SysUserRequest;
+import cn.stylefeng.roses.kernel.system.api.pojo.user.request.UserOrgRequest;
+import cn.stylefeng.roses.kernel.system.api.pojo.user.request.UserRoleRequest;
 import cn.stylefeng.roses.kernel.system.api.util.DataScopeUtil;
 import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUser;
 import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserDataScope;
@@ -98,6 +100,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static cn.stylefeng.roses.kernel.system.api.constants.SystemConstants.OAUTH2_USER_ORG_ID;
+import static cn.stylefeng.roses.kernel.system.api.constants.SystemConstants.OAUTH2_USER_ROLE_ID;
 
 /**
  * 用户服务实现类
@@ -940,6 +945,32 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
 
         return this.getUserAvatarUrl(sysUser.getAvatar());
+    }
+
+    @Override
+    public void createAndSaveOAuth2User(OAuth2AuthUserDTO oAuth2AuthUserDTO) {
+
+        // 请求bean转为实体，填充一些基本属性
+        SysUser oAuth2User = SysUserCreateFactory.createOAuth2User(oAuth2AuthUserDTO);
+        SysUserCreateFactory.fillAddSysUser(oAuth2User);
+
+        // 设置用户默认头像
+        oAuth2User.setAvatar(FileConstants.DEFAULT_AVATAR_FILE_ID);
+
+        // 保存用户
+        this.save(oAuth2User);
+
+        // 设置OAuth2用户默认绑定的角色，默认绑定的公司信息
+        UserRoleRequest userRoleRequest = new UserRoleRequest();
+        userRoleRequest.setUserId(oAuth2User.getUserId());
+        userRoleRequest.setRoleId(OAUTH2_USER_ROLE_ID);
+        this.sysUserRoleService.add(userRoleRequest);
+
+        // 保存默认公司信息
+        UserOrgRequest userOrgRequest = new UserOrgRequest();
+        userOrgRequest.setUserId(oAuth2User.getUserId());
+        userOrgRequest.setOrgId(OAUTH2_USER_ORG_ID);
+        this.sysUserOrgService.add(userOrgRequest);
     }
 
     /**
