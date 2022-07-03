@@ -53,6 +53,13 @@ public class IndexUserInfoV3 {
     private String username;
 
     /**
+     * 姓名
+     */
+    @ChineseDescription("姓名")
+    private String realName;
+
+
+    /**
      * 昵称
      */
     @ChineseDescription("昵称")
