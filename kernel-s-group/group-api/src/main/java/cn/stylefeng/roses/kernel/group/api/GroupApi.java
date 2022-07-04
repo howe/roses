@@ -38,7 +38,7 @@ import java.util.List;
 public interface GroupApi {
 
     /**
-     * 获取某个业务，某个人，某个分类下的业务数据id
+     * 获取当前用户某个业务，某个分类下的业务数据id
      *
      * @author fengshuonan
      * @date 2022/5/11 17:00
@@ -46,11 +46,13 @@ public interface GroupApi {
     List<Long> findUserGroupDataList(SysGroupRequest sysGroupRequest);
 
     /**
-     * 获取用户某个业务下的分组列表
+     * 获取当前用户某个业务下的分组列表
      *
+     * @param sysGroupRequest 请求参数，一般传递groupBizCode即可
+     * @param getTotal        是否获取用户全部的数据
      * @author fengshuonan
      * @date 2022/5/11 17:00
      */
-    List<SysGroupDTO> findGroupList(SysGroupRequest sysGroupRequest);
+    List<SysGroupDTO> findGroupList(SysGroupRequest sysGroupRequest, boolean getTotal);
 
 }

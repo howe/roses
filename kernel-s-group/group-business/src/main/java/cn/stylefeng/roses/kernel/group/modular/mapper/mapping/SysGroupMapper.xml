@@ -6,8 +6,10 @@
         select group_name, group_id, group_biz_code, business_id, user_id
         from sys_group
         where user_id = #{userId}
-          and group_biz_code = #{groupBizCode}
-        group by group_name
+        and group_biz_code = #{groupBizCode}
+        <if test="getTotal != null and getTotal == false">
+            group by group_name
+        </if>
     </select>
 
 </mapper>

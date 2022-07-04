@@ -21,6 +21,6 @@ public interface SysGroupMapper extends BaseMapper<SysGroup> {
      * @author fengshuonan
      * @date 2022/5/11 16:49
      */
-    List<SysGroupDTO> getUserGroupList(@Param("groupBizCode") String groupBizCode, @Param("userId") Long userId);
+    List<SysGroupDTO> getUserGroupList(@Param("groupBizCode") String groupBizCode, @Param("userId") Long userId, @Param("getTotal") boolean getTotal);
 
 }

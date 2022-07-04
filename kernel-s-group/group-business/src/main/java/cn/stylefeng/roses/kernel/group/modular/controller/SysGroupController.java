@@ -41,7 +41,7 @@ public class SysGroupController {
      */
     @GetResource(name = "获取列表", path = "/sysGroup/list")
     public ResponseData<List<SysGroupDTO>> list(@Validated(BaseRequest.list.class) SysGroupRequest sysGroupRequest) {
-        return new SuccessResponseData<>(groupApi.findGroupList(sysGroupRequest));
+        return new SuccessResponseData<>(groupApi.findGroupList(sysGroupRequest, false));
     }
 
     /**

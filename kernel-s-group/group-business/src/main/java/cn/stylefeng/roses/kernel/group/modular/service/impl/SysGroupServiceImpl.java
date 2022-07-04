@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
 public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> implements SysGroupService, GroupApi {
 
     @Override
-    public List<SysGroupDTO> findGroupList(SysGroupRequest sysGroupRequest) {
+    public List<SysGroupDTO> findGroupList(SysGroupRequest sysGroupRequest, boolean getTotal) {
         String groupBizCode = sysGroupRequest.getGroupBizCode();
         Long userId = LoginContext.me().getLoginUser().getUserId();
-        List<SysGroupDTO> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId);
+        List<SysGroupDTO> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId, getTotal);
 
         // 增加两个固定的选中和取消选项
         addAllGroup(groupBizCode, userGroupList);
@@ -43,7 +43,7 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
     public List<SysGroupDTO> addSelect(SysGroupRequest sysGroupRequest) {
         String groupBizCode = sysGroupRequest.getGroupBizCode();
         Long userId = LoginContext.me().getLoginUser().getUserId();
-        List<SysGroupDTO> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId);
+        List<SysGroupDTO> userGroupList = this.baseMapper.getUserGroupList(groupBizCode, userId, false);
 
         // 增加两个固定的选中和取消选项
         addCommonGroup(groupBizCode, userGroupList);
