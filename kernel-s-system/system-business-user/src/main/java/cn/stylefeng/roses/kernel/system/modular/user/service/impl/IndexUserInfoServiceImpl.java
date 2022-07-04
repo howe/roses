@@ -68,6 +68,9 @@ public class IndexUserInfoServiceImpl implements IndexUserInfoService {
         // 设置用户id
         indexUserInfoV3.setUserId(loginUser.getUserId());
 
+        // 设置用户姓名
+        indexUserInfoV3.setRealName(loginUser.getSimpleUserInfo().getRealName());
+
         // 设置用户账号
         indexUserInfoV3.setUsername(loginUser.getAccount());
 
