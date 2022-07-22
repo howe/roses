@@ -55,4 +55,12 @@ public interface GroupApi {
      */
     List<SysGroupDTO> findGroupList(SysGroupRequest sysGroupRequest, boolean getTotal);
 
+    /**
+     * 清空业务id的分组
+     *
+     * @author fengshuonan
+     * @date 2022/7/22 23:40
+     */
+    void removeGroup(String groupBizCode, Long bizId);
+
 }

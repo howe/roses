@@ -110,6 +110,18 @@ public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> i
         }
     }
 
+    @Override
+    public void removeGroup(String bizCode, Long bizId) {
+        Long userId = LoginContext.me().getLoginUser().getUserId();
+
+        LambdaUpdateWrapper<SysGroup> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(SysGroup::getUserId, userId);
+        wrapper.eq(SysGroup::getGroupBizCode, bizCode);
+        wrapper.eq(SysGroup::getBusinessId, bizId);
+
+        this.remove(wrapper);
+    }
+
     /**
      * 返回结果增加通用的两个分组名称
      *
