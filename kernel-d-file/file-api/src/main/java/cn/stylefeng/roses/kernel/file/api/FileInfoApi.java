@@ -84,4 +84,12 @@ public interface FileInfoApi {
      */
     AntdvFileInfo buildAntdvFileInfo(Long fileId);
 
+    /**
+     * 真实删除文件
+     *
+     * @author fengshuonan
+     * @date 2022/7/22 23:19
+     */
+    void removeFile(Long fileId);
+
 }

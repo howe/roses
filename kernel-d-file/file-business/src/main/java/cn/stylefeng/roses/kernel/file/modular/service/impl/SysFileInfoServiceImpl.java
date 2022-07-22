@@ -213,9 +213,15 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
     public void deleteReally(SysFileInfoRequest sysFileInfoRequest) {
 
         // 查询该Code的所有历史版本
-        LambdaQueryWrapper<SysFileInfo> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(SysFileInfo::getFileCode, sysFileInfoRequest.getFileCode()).or().eq(SysFileInfo::getFileId, sysFileInfoRequest.getFileId());
-        List<SysFileInfo> fileInfos = this.list(lqw);
+        LambdaQueryWrapper<SysFileInfo> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(SysFileInfo::getFileId, sysFileInfoRequest.getFileId());
+
+        if (ObjectUtil.isNotEmpty(sysFileInfoRequest.getFileCode())) {
+            wrapper.or().eq(SysFileInfo::getFileCode, sysFileInfoRequest.getFileCode());
+        }
+        
+        List<SysFileInfo> fileInfos = this.list(wrapper);
 
         // 批量删除
         this.removeByIds(fileInfos.stream().map(SysFileInfo::getFileId).collect(Collectors.toList()));
@@ -483,6 +489,13 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         String fileAuthUrl = this.getFileAuthUrl(fileId);
         antdvFileInfo.setThumbUrl(fileAuthUrl);
         return antdvFileInfo;
+    }
+
+    @Override
+    public void removeFile(Long fileId) {
+        SysFileInfoRequest sysFileInfoRequest = new SysFileInfoRequest();
+        sysFileInfoRequest.setFileId(fileId);
+        this.deleteReally(sysFileInfoRequest);
     }
 
     /**
