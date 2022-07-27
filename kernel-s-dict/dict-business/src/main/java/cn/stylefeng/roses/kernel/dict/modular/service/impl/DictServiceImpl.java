@@ -74,11 +74,10 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
     @Resource
     private DictTypeService dictTypeService;
 
+    @Resource(name = "defaultStringCacheOperator")
+    private CacheOperatorApi<String> defaultStringCacheOperator;
 
-    @Resource
-    private CacheOperatorApi<String> defaultStringMemoryCacheOperator;
-
-    private static String CACHE_PREFIX = "dict:";
+    private static final String CACHE_PREFIX = "dict:";
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -103,7 +102,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
         this.updateById(sysDict);
 
         // 清除缓存中的字典值
-        defaultStringMemoryCacheOperator.remove(CACHE_PREFIX + sysDict.getDictTypeCode() + "|" + sysDict.getDictCode());
+        defaultStringCacheOperator.remove(CACHE_PREFIX + sysDict.getDictTypeCode() + "|" + sysDict.getDictCode());
     }
 
     @Override
@@ -122,8 +121,9 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
         sysDict.setDictNamePinyin(pinYinApi.parseEveryPinyinFirstLetter(sysDict.getDictName()));
 
         this.updateById(sysDict);
+
         // 清除缓存中的字典值
-        defaultStringMemoryCacheOperator.remove(CACHE_PREFIX + sysDict.getDictTypeCode() + "|" + sysDict.getDictCode());
+        defaultStringCacheOperator.remove(CACHE_PREFIX + sysDict.getDictTypeCode() + "|" + sysDict.getDictCode());
     }
 
     @Override
@@ -169,8 +169,8 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
 
     @Override
     public String getDictName(String dictTypeCode, String dictCode) {
-        String dictName = defaultStringMemoryCacheOperator.get(CACHE_PREFIX + dictTypeCode + "|" + dictCode);
-        if(StrUtil.isNotEmpty(dictName)){
+        String dictName = defaultStringCacheOperator.get(CACHE_PREFIX + dictTypeCode + "|" + dictCode);
+        if (StrUtil.isNotEmpty(dictName)) {
             return dictName;
         }
         LambdaQueryWrapper<SysDict> sysDictLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -192,7 +192,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
         }
 
         dictName = list.get(0).getDictName();
-        defaultStringMemoryCacheOperator.put(CACHE_PREFIX + dictTypeCode + "|" + dictCode, dictName);
+        defaultStringCacheOperator.put(CACHE_PREFIX + dictTypeCode + "|" + dictCode, dictName);
         if (dictName != null) {
             return dictName;
         } else {

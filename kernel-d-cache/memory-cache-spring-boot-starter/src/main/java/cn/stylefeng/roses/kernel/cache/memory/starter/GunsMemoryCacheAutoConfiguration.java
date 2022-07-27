@@ -48,7 +48,7 @@ public class GunsMemoryCacheAutoConfiguration {
      * @date 2021/1/31 20:39
      */
     @Bean
-    public DefaultStringMemoryCacheOperator defaultStringMemoryCacheOperator() {
+    public DefaultStringMemoryCacheOperator defaultStringCacheOperator() {
         TimedCache<String, String> stringTimedCache = CacheUtil.newTimedCache(CacheConstants.DEFAULT_CACHE_TIMEOUT);
         return new DefaultStringMemoryCacheOperator(stringTimedCache);
     }

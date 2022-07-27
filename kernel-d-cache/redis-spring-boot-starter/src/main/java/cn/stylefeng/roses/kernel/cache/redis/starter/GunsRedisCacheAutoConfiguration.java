@@ -84,7 +84,7 @@ public class GunsRedisCacheAutoConfiguration {
      * @date 2021/1/31 20:39
      */
     @Bean
-    public DefaultStringRedisCacheOperator defaultStringRedisCacheOperator(RedisTemplate<String, String> stringRedisTemplate) {
+    public DefaultStringRedisCacheOperator defaultStringCacheOperator(RedisTemplate<String, String> stringRedisTemplate) {
         return new DefaultStringRedisCacheOperator(stringRedisTemplate);
     }
 
