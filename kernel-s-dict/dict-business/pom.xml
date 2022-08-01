@@ -70,10 +70,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--缓存模块-->
+        <!--缓存模块，默认依赖内存缓存实现-->
         <dependency>
             <groupId>cn.stylefeng.roses</groupId>
-            <artifactId>cache-api</artifactId>
+            <artifactId>memory-cache-spring-boot-starter</artifactId>
             <version>${roses.version}</version>
         </dependency>
 

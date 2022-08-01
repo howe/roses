@@ -29,6 +29,7 @@ import cn.hutool.cache.impl.TimedCache;
 import cn.stylefeng.roses.kernel.cache.api.constants.CacheConstants;
 import cn.stylefeng.roses.kernel.cache.memory.operator.DefaultMemoryCacheOperator;
 import cn.stylefeng.roses.kernel.cache.memory.operator.DefaultStringMemoryCacheOperator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -48,6 +49,7 @@ public class GunsMemoryCacheAutoConfiguration {
      * @date 2021/1/31 20:39
      */
     @Bean
+    @ConditionalOnMissingBean(name = "defaultStringCacheOperator")
     public DefaultStringMemoryCacheOperator defaultStringCacheOperator() {
         TimedCache<String, String> stringTimedCache = CacheUtil.newTimedCache(CacheConstants.DEFAULT_CACHE_TIMEOUT);
         return new DefaultStringMemoryCacheOperator(stringTimedCache);
@@ -60,6 +62,7 @@ public class GunsMemoryCacheAutoConfiguration {
      * @date 2021/1/31 20:39
      */
     @Bean
+    @ConditionalOnMissingBean(name = "defaultMemoryCacheOperator")
     public DefaultMemoryCacheOperator defaultMemoryCacheOperator() {
         TimedCache<String, Object> objectTimedCache = CacheUtil.newTimedCache(CacheConstants.DEFAULT_CACHE_TIMEOUT);
         return new DefaultMemoryCacheOperator(objectTimedCache);
