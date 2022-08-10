@@ -54,6 +54,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--分组相关业务-->
+        <dependency>
+            <groupId>cn.stylefeng.roses</groupId>
+            <artifactId>group-spring-boot-starter</artifactId>
+            <version>${roses.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

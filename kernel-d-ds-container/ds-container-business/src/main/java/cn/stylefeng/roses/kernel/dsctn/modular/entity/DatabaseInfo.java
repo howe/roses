@@ -119,4 +119,10 @@ public class DatabaseInfo extends BaseEntity {
     @TableField(value = "del_flag", fill = FieldFill.INSERT)
     private String delFlag;
 
+    /**
+     * 分组名称
+     */
+    @TableField(exist = false)
+    private String groupName;
+
 }

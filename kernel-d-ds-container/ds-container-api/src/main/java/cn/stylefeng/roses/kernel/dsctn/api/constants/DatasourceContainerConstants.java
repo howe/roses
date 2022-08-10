@@ -52,4 +52,9 @@ public interface DatasourceContainerConstants {
      */
     int MULTI_DATA_SOURCE_EXCHANGE_AOP = 1;
 
+    /**
+     * 数据源的分组标识
+     */
+    String DATASOURCE_GROUP_CODE = "DATASOURCE";
+
 }

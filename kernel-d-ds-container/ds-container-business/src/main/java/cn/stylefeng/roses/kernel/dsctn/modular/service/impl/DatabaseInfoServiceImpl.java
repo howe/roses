@@ -40,6 +40,10 @@ import cn.stylefeng.roses.kernel.dsctn.modular.entity.DatabaseInfo;
 import cn.stylefeng.roses.kernel.dsctn.modular.factory.DruidPropertiesFactory;
 import cn.stylefeng.roses.kernel.dsctn.modular.mapper.DatabaseInfoMapper;
 import cn.stylefeng.roses.kernel.dsctn.modular.service.DatabaseInfoService;
+import cn.stylefeng.roses.kernel.group.api.GroupApi;
+import cn.stylefeng.roses.kernel.group.api.constants.GroupConstants;
+import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupDTO;
+import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupRequest;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import com.alibaba.druid.pool.DruidDataSource;
@@ -50,12 +54,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import static cn.stylefeng.roses.kernel.dsctn.api.constants.DatasourceContainerConstants.DATASOURCE_GROUP_CODE;
 import static cn.stylefeng.roses.kernel.dsctn.api.constants.DatasourceContainerConstants.MASTER_DATASOURCE_NAME;
 import static cn.stylefeng.roses.kernel.dsctn.api.exception.enums.DatasourceContainerExceptionEnum.*;
 
@@ -67,6 +73,9 @@ import static cn.stylefeng.roses.kernel.dsctn.api.exception.enums.DatasourceCont
  */
 @Service
 public class DatabaseInfoServiceImpl extends ServiceImpl<DatabaseInfoMapper, DatabaseInfo> implements DatabaseInfoService {
+
+    @Resource
+    private GroupApi groupApi;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -154,10 +163,22 @@ public class DatabaseInfoServiceImpl extends ServiceImpl<DatabaseInfoMapper, Dat
         // 查询分页结果
         Page<DatabaseInfo> result = this.page(PageFactory.defaultPage(), queryWrapper);
 
+        // 查询结果中有没有用户挂标签的，有的话就返回中文分组名称
+        SysGroupRequest sysGroupRequest = new SysGroupRequest();
+        sysGroupRequest.setGroupBizCode(DATASOURCE_GROUP_CODE);
+        List<SysGroupDTO> list = groupApi.findGroupList(sysGroupRequest, true);
+
         // 更新密码
         List<DatabaseInfo> records = result.getRecords();
         for (DatabaseInfo record : records) {
             record.setPassword("***");
+
+            // 增加分组名称
+            for (SysGroupDTO sysGroupDTO : list) {
+                if (record.getDbId().equals(sysGroupDTO.getBusinessId())) {
+                    record.setGroupName(sysGroupDTO.getGroupName());
+                }
+            }
         }
 
         return PageResultFactory.createPageResult(result);
@@ -289,6 +310,30 @@ public class DatabaseInfoServiceImpl extends ServiceImpl<DatabaseInfoMapper, Dat
 
         // 拼接状态条件
         queryWrapper.eq(ObjectUtil.isNotEmpty(databaseInfoRequest.getStatusFlag()), DatabaseInfo::getStatusFlag, databaseInfoRequest.getStatusFlag());
+
+        // 拼接分组相关的查询条件
+        String conditionGroupName = databaseInfoRequest.getConditionGroupName();
+        List<Long> userBizIds;
+        if (ObjectUtil.isNotEmpty(conditionGroupName) && !conditionGroupName.equals(GroupConstants.ALL_GROUP_NAME)) {
+
+            // 如果是未分组，则查询当前用户已经分组的所有的业务id，然后not in即可
+            SysGroupRequest sysGroupRequest = new SysGroupRequest();
+            sysGroupRequest.setGroupBizCode(DATASOURCE_GROUP_CODE);
+
+            if (conditionGroupName.equals(GroupConstants.GROUP_DELETE_NAME)) {
+
+                // 本用户所有分过组的项目id集合
+                userBizIds = groupApi.findUserGroupDataList(sysGroupRequest);
+                queryWrapper.nested(ObjectUtil.isNotEmpty(userBizIds), i -> i.notIn(DatabaseInfo::getDbId, userBizIds));
+            } else {
+
+                // 查询本用户在当前分组所有的业务id
+                sysGroupRequest.setGroupName(conditionGroupName);
+                userBizIds = groupApi.findUserGroupDataList(sysGroupRequest);
+                queryWrapper.nested(ObjectUtil.isNotEmpty(userBizIds), i -> i.in(DatabaseInfo::getDbId, userBizIds));
+            }
+        }
+
 
         return queryWrapper;
     }
