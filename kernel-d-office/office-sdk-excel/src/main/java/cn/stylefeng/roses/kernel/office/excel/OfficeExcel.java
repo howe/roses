@@ -78,6 +78,30 @@ public class OfficeExcel implements OfficeExcelApi {
     }
 
     @Override
+    public <T> List<T> easyReadToList(InputStream inputStream, Integer rowNum, Class<T> clazz) {
+        if (inputStream == null) {
+            return new ArrayList<T>();
+        }
+
+        // 创建一个简单的数据监听器
+        SimpleDataListener<T> readListener = new SimpleDataListener<T>();
+
+        // 读取文件
+        try {
+            EasyExcel.read(inputStream, clazz, readListener).sheet().headRowNumber(rowNum).doRead();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+            // 组装提示信息
+            String userTip = OfficeExceptionEnum.OFFICE_ERROR.getUserTip();
+            String finalUserTip = StrUtil.format(userTip, e.getMessage());
+            throw new OfficeException(OfficeExceptionEnum.OFFICE_ERROR.getErrorCode(), finalUserTip);
+        }
+
+        return readListener.getDataList();
+    }
+
+    @Override
     public void easyWriteToFile(ExcelExportParam excelExportParam) {
 
         // 默认值

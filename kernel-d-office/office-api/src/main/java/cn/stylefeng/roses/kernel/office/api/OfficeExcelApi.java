@@ -61,10 +61,21 @@ public interface OfficeExcelApi {
      * @param inputStream 流输入Excel文件的流对象
      * @param clazz       每行数据转换成的对象类
      * @return 对象类List集合
-     *
      * @author luojie
      * @date 2020/11/4 13:54
      */
     <T> List<T> easyReadToList(InputStream inputStream, Class<T> clazz);
+
+    /**
+     * 简单的读取Excel文件并返回实体类List集合-针对多行表头
+     *
+     * @param inputStream 流输入Excel文件的流对象
+     * @param clazz       每行数据转换成的对象类
+     * @param rowNum      表头所占行数
+     * @return 对象类List集合
+     * @author yxx
+     * @date 2022/8/11 10:37
+     */
+    <T> List<T> easyReadToList(InputStream inputStream, Integer rowNum, Class<T> clazz);
 
 }
