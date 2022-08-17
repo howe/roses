@@ -146,7 +146,7 @@ public class OfficeExcel implements OfficeExcelApi {
             response.setContentType("application/vnd.ms-excel");
             response.setCharacterEncoding("utf-8");
             String fileName = URLEncoder.encode(excelExportParam.getFileName(), "UTF-8").replaceAll("\\+", "%20");
-            response.setHeader("Content-disposition", String.format("%s%s", "attachment;filename*=utf-8''", fileName, excelTypeEnum.getValue()));
+            response.setHeader("Content-disposition", String.format("%s%s%s", "attachment;filename*=utf-8''", fileName, excelTypeEnum.getValue()));
 
             EasyExcel.write(response.getOutputStream(), excelExportParam.getClazz()).excelType(excelTypeEnum).sheet(excelExportParam.getSheetName()).doWrite(excelExportParam.getDataList());
 
