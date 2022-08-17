@@ -61,6 +61,10 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
 
             // 设置状态字段 默认1-启用
             setValue(metaObject, STATUS_FLAG, StatusEnum.ENABLE.getCode());
+
+            // 设置乐观锁字段，从0开始
+            setValue(metaObject, VERSION_FLAG, 0L);
+
         } catch (ReflectionException e) {
             log.warn("CustomMetaObjectHandler处理过程中无相关字段，不做处理");
         }

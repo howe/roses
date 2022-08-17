@@ -68,4 +68,9 @@ public interface DbFieldConstants {
      */
     String STATUS_FLAG = "statusFlag";
 
+    /**
+     * 乐观锁版本，从0开始
+     */
+    String VERSION_FLAG = "versionFlag";
+
 }
