@@ -107,6 +107,11 @@ public class BaseRequest implements Serializable {
     private List<Long> conditionGroupUserBizIdList;
 
     /**
+     * 搜索内容，通用查询条件的值
+     */
+    private String searchText;
+
+    /**
      * 参数校验分组：分页
      */
     public @interface page {
