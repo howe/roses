@@ -1,4 +1,3 @@
-
 package cn.stylefeng.roses.kernel.rule.enums;
 
 import lombok.Getter;
@@ -58,6 +57,28 @@ public enum DbTypeEnum {
         this.urlWords = urlWords;
         this.xmlDatabaseId = xmlDatabaseId;
         this.validateQuery = validateQuery;
+    }
+
+    /**
+     * 通过url判断是哪种数据库
+     *
+     * @author fengshuonan
+     * @date 2022/8/23 14:22
+     */
+    public static String getTypeByUrl(String url) {
+        if (url == null) {
+            return MYSQL.getUrlWords();
+        }
+        if (url.contains(DbTypeEnum.ORACLE.getUrlWords())) {
+            return ORACLE.getUrlWords();
+        } else if (url.contains(DbTypeEnum.DM.getUrlWords())) {
+            return DM.getUrlWords();
+        } else if (url.contains(DbTypeEnum.MS_SQL.getUrlWords())) {
+            return MS_SQL.getUrlWords();
+        } else if (url.contains(DbTypeEnum.PG_SQL.getUrlWords())) {
+            return PG_SQL.getUrlWords();
+        }
+        return MYSQL.getUrlWords();
     }
 
 }

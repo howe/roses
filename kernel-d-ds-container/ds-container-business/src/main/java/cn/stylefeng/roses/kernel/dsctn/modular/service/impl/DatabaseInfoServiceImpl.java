@@ -33,6 +33,7 @@ import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
 import cn.stylefeng.roses.kernel.db.api.pojo.druid.DruidProperties;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.dsctn.api.exception.DatasourceContainerException;
+import cn.stylefeng.roses.kernel.dsctn.api.pojo.DataBaseInfoDto;
 import cn.stylefeng.roses.kernel.dsctn.api.pojo.DataSourceDto;
 import cn.stylefeng.roses.kernel.dsctn.api.pojo.request.DatabaseInfoRequest;
 import cn.stylefeng.roses.kernel.dsctn.context.DataSourceContext;
@@ -45,6 +46,7 @@ import cn.stylefeng.roses.kernel.group.api.constants.GroupConstants;
 import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupDTO;
 import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupRequest;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
+import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -60,6 +62,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static cn.stylefeng.roses.kernel.dsctn.api.constants.DatasourceContainerConstants.DATASOURCE_GROUP_CODE;
 import static cn.stylefeng.roses.kernel.dsctn.api.constants.DatasourceContainerConstants.MASTER_DATASOURCE_NAME;
@@ -106,6 +109,21 @@ public class DatabaseInfoServiceImpl extends ServiceImpl<DatabaseInfoMapper, Dat
 
         // 删除容器中的数据源记录
         DataSourceContext.removeDataSource(datasourceCode);
+    }
+
+    @Override
+    public List<DataBaseInfoDto> getDatasourceList() {
+        LambdaQueryWrapper<DatabaseInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(DatabaseInfo::getDbId, DatabaseInfo::getDbName, DatabaseInfo::getRemarks, DatabaseInfo::getJdbcUrl);
+        List<DatabaseInfo> list = this.list(wrapper);
+
+        return list.stream().map(item -> {
+            DataBaseInfoDto dataBaseInfoDto = new DataBaseInfoDto();
+            BeanUtil.copyProperties(item, dataBaseInfoDto);
+            String type = DbTypeEnum.getTypeByUrl(item.getJdbcUrl());
+            dataBaseInfoDto.setDbType(type);
+            return dataBaseInfoDto;
+        }).collect(Collectors.toList());
     }
 
     @Override

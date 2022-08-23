@@ -1,8 +1,11 @@
 package cn.stylefeng.roses.kernel.dsctn.api;
 
 import cn.stylefeng.roses.kernel.dsctn.api.exception.DatasourceContainerException;
+import cn.stylefeng.roses.kernel.dsctn.api.pojo.DataBaseInfoDto;
 import cn.stylefeng.roses.kernel.dsctn.api.pojo.DataSourceDto;
 import cn.stylefeng.roses.kernel.dsctn.api.pojo.request.DatabaseInfoRequest;
+
+import java.util.List;
 
 /**
  * 数据库连接的api
@@ -40,5 +43,13 @@ public interface DataSourceApi {
      * @date 2021/5/27 10:06
      */
     void deleteByDatasourceCode(String datasourceCode);
+
+    /**
+     * 获取所有数据源连接信息
+     *
+     * @author fengshuonan
+     * @date 2022/8/23 14:03
+     */
+    List<DataBaseInfoDto> getDatasourceList();
 
 }
