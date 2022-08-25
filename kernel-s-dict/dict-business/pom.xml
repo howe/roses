@@ -24,6 +24,14 @@
             <version>${roses.version}</version>
         </dependency>
 
+        <!--缓存的依赖-->
+        <!--字典缓存的使用-->
+        <dependency>
+            <groupId>cn.stylefeng.roses</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>${roses.version}</version>
+        </dependency>
+
         <!--资源api模块-->
         <!--用在资源控制器，资源扫描上-->
         <dependency>
@@ -68,13 +76,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!--缓存模块，默认依赖内存缓存实现-->
-        <dependency>
-            <groupId>cn.stylefeng.roses</groupId>
-            <artifactId>memory-cache-spring-boot-starter</artifactId>
-            <version>${roses.version}</version>
         </dependency>
 
     </dependencies>
