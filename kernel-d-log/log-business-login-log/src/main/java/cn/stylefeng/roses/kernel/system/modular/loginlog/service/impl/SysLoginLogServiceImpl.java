@@ -183,11 +183,11 @@ public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLo
 
         Date beginDate = null;
         if (StrUtil.isNotBlank(sysLoginLogRequest.getBeginTime())) {
-            beginDate = DateUtil.parseDate(sysLoginLogRequest.getBeginTime()).toJdkDate();
+            beginDate = DateUtil.parseDateTime(sysLoginLogRequest.getBeginTime() + " 00:00:00").toJdkDate();
         }
         Date endDate = null;
         if (StrUtil.isNotBlank(sysLoginLogRequest.getEndTime())) {
-            endDate = DateUtil.parseDate(sysLoginLogRequest.getEndTime()).toJdkDate();
+            endDate = DateUtil.parseDateTime(sysLoginLogRequest.getEndTime() + " 23:59:59").toJdkDate();
         }
 
         // SQL条件拼接

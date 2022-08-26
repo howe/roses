@@ -135,10 +135,10 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         Date beginDate = null;
         Date endDate = null;
         if (StrUtil.isNotBlank(beginDateTime)) {
-            beginDate = DateUtil.parseDate(beginDateTime + " 00:00:00").toJdkDate();
+            beginDate = DateUtil.parseDateTime(beginDateTime + " 00:00:00").toJdkDate();
         }
         if (StrUtil.isNotBlank(endDateTime)) {
-            endDate = DateUtil.parseDate(endDateTime + " 23:59:59").toJdkDate();
+            endDate = DateUtil.parseDateTime(endDateTime + " 23:59:59").toJdkDate();
         }
 
         // SQL条件拼接
