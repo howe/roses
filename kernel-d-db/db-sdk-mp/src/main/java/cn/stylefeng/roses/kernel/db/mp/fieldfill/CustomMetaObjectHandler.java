@@ -65,6 +65,9 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             // 设置乐观锁字段，从0开始
             setValue(metaObject, VERSION_FLAG, 0L);
 
+            // 设置组织id
+            setValue(metaObject, ORG_ID, this.getUserOrgId());
+
         } catch (ReflectionException e) {
             log.warn("CustomMetaObjectHandler处理过程中无相关字段，不做处理");
         }
@@ -114,6 +117,23 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
         if (ObjectUtil.isEmpty(originalAttr)) {
             setFieldValByName(fieldName, value, metaObject);
         }
+    }
+
+    /**
+     * 获取用户唯一id
+     *
+     * @author yxx
+     * @date 2022/09/01 10:14
+     */
+    private Long getUserOrgId() {
+
+        try {
+            return LoginContext.me().getLoginUser().getOrganizationId();
+        } catch (Exception e) {
+            //如果获取不到就返回-1
+            return -1L;
+        }
+
     }
 
 }
