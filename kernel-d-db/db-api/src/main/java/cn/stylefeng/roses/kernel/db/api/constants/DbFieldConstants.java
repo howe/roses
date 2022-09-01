@@ -73,4 +73,8 @@ public interface DbFieldConstants {
      */
     String VERSION_FLAG = "versionFlag";
 
+    /**
+     * 组织id
+     */
+    String ORG_ID = "orgId";
 }
