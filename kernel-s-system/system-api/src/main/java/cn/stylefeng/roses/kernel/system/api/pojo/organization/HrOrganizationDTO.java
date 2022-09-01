@@ -24,6 +24,8 @@
  */
 package cn.stylefeng.roses.kernel.system.api.pojo.organization;
 
+import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -71,6 +73,11 @@ public class HrOrganizationDTO {
      * 状态：1-启用，2-禁用
      */
     private Integer statusFlag;
+
+    /**
+     * 组织机构类型：1-公司，2-部门
+     */
+    private Integer orgType;
 
     /**
      * 组织机构描述
