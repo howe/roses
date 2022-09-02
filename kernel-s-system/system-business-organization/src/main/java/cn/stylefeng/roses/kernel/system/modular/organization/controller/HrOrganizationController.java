@@ -37,6 +37,8 @@ import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrOrganizationRequ
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.OrganizationTreeNode;
 import cn.stylefeng.roses.kernel.system.modular.organization.entity.HrOrganization;
 import cn.stylefeng.roses.kernel.system.modular.organization.service.HrOrganizationService;
+import cn.stylefeng.roses.kernel.system.modular.organization.wrapper.OrgExpandWrapper;
+import cn.stylefeng.roses.kernel.wrapper.api.annotation.Wrapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -126,6 +128,7 @@ public class HrOrganizationController {
      * @author fengshuonan
      * @date 2020/11/04 11:05
      */
+    @Wrapper(OrgExpandWrapper.class)
     @GetResource(name = "分页查询系统组织机构", path = "/hrOrganization/page")
     public ResponseData<PageResult<HrOrganization>> page(HrOrganizationRequest hrOrganizationRequest) {
         return new SuccessResponseData<>(hrOrganizationService.findPage(hrOrganizationRequest));

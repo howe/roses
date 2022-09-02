@@ -22,71 +22,28 @@
  * 5.在修改包名，模块名称，项目代码等时，请注明软件出处 https://gitee.com/stylefeng/guns
  * 6.若您的项目无法满足以上几点，可申请商业授权
  */
-package cn.stylefeng.roses.kernel.system.api.pojo.organization;
+package cn.stylefeng.roses.kernel.system.modular.organization.wrapper;
 
-import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
-import com.baomidou.mybatisplus.annotation.TableField;
-import lombok.Data;
+import cn.hutool.extra.spring.SpringUtil;
+import cn.stylefeng.roses.kernel.expand.modular.api.ExpandApi;
+import cn.stylefeng.roses.kernel.system.modular.organization.entity.HrOrganization;
+import cn.stylefeng.roses.kernel.wrapper.api.BaseWrapper;
 
-import java.math.BigDecimal;
+
+import java.util.Map;
 
 /**
- * 系统组织机构表
+ * 组织机构的拓展
  *
- * @author fengshuonan
- * @date 2020/11/04 11:05
+ * @author yxx
+ * @date 2022/09/01 18:10
  */
-@Data
-public class HrOrganizationDTO {
+public class OrgExpandWrapper implements BaseWrapper<HrOrganization> {
 
-    /**
-     * 主键
-     */
-    private Long orgId;
-
-    /**
-     * 父id，一级节点父id是0
-     */
-    private Long orgParentId;
-
-    /**
-     * 父ids
-     */
-    private String orgPids;
-
-    /**
-     * 组织名称
-     */
-    private String orgName;
-
-    /**
-     * 组织编码
-     */
-    private String orgCode;
-
-    /**
-     * 排序
-     */
-    private BigDecimal orgSort;
-
-    /**
-     * 状态：1-启用，2-禁用
-     */
-    private Integer statusFlag;
-
-    /**
-     * 组织机构类型：1-公司，2-部门
-     */
-    private Integer orgType;
-
-    /**
-     * 组织机构描述
-     */
-    private String orgRemark;
-
-    /**
-     * 删除标记（Y-已删除，N-未删除）
-     */
-    private String delFlag;
+    @Override
+    public Map<String, Object> doWrap(HrOrganization beWrappedModel) {
+        ExpandApi expandApi = SpringUtil.getBean(ExpandApi.class);
+        return expandApi.getExpandDataInfo("org_expand", beWrappedModel.getOrgId());
+    }
 
 }
