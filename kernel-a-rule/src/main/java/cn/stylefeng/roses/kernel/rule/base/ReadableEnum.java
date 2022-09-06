@@ -36,7 +36,7 @@ package cn.stylefeng.roses.kernel.rule.base;
 public interface ReadableEnum {
 
     /**
-     * 获取枚举中具有标识性的key
+     * 获取枚举中具有标识性的key或者id
      * <p>
      * 例如：状态枚举中的装填值，1 或 2
      *
@@ -53,6 +53,6 @@ public interface ReadableEnum {
      * @author fengshuonan
      * @date 2022/9/6 11:30
      */
-    Object getValue();
+    Object getName();
 
 }
