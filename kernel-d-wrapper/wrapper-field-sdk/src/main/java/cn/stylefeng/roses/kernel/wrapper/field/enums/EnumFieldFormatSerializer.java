@@ -36,11 +36,11 @@ public class EnumFieldFormatSerializer extends JsonSerializer<Object> {
     public void serialize(Object originValue, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) {
 
         // 最终转化的值
-        Object result = originValue;
+        Object formattedValue = originValue;
 
         // 如果原始字段是枚举类型，则直接调用接口的getName()方法完成转化
         if (originValue instanceof ReadableEnum) {
-            result = ((ReadableEnum) originValue).getName();
+            formattedValue = ((ReadableEnum) originValue).getName();
         } else {
 
             // 如果是其他类型，则获取枚举的getKey()的类型是什么
@@ -49,14 +49,17 @@ public class EnumFieldFormatSerializer extends JsonSerializer<Object> {
                 ReadableEnum[] enumConstants = processEnum.getEnumConstants();
                 for (ReadableEnum enumConstant : enumConstants) {
                     if (enumConstant.getKey().equals(originValue)) {
-                        result = enumConstant.getName();
+                        formattedValue = enumConstant.getName();
                     }
                 }
             }
         }
 
         // 进行数据转化写入到渲染的JSON中
-        CommonFormatUtil.writeField(formatTypeEnum, originValue, result, jsonGenerator);
+        if (!originValue.equals(formattedValue)) {
+            CommonFormatUtil.writeField(formatTypeEnum, originValue, formattedValue, jsonGenerator);
+        }
+
     }
 
 }

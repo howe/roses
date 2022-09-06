@@ -54,7 +54,10 @@ public class SimpleFieldFormatSerializer extends JsonSerializer<Object> {
         Object formattedValue = simpleFieldFormatProcess.formatProcess(originValue);
 
         // 将转化的值，根据策略，进行写入到渲染的json中
-        CommonFormatUtil.writeField(formatTypeEnum, originValue, formattedValue, jsonGenerator);
+        if (!originValue.equals(formattedValue)) {
+            CommonFormatUtil.writeField(formatTypeEnum, originValue, formattedValue, jsonGenerator);
+        }
+
     }
 
 }
