@@ -6,7 +6,7 @@ package cn.stylefeng.roses.kernel.rule.base;
  * @author fengshuonan
  * @date 2022/9/6 11:54
  */
-public interface JsonFieldFormatProcess {
+public interface SimpleFieldFormatProcess {
 
     /**
      * 是否可以进行格式化转化

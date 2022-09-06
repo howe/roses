@@ -1,7 +1,7 @@
-package cn.stylefeng.roses.kernel.wrapper.field.jackson;
+package cn.stylefeng.roses.kernel.wrapper.field.simple;
 
 import cn.hutool.core.util.ClassUtil;
-import cn.stylefeng.roses.kernel.rule.base.JsonFieldFormatProcess;
+import cn.stylefeng.roses.kernel.rule.base.SimpleFieldFormatProcess;
 import cn.stylefeng.roses.kernel.rule.enums.FormatTypeEnum;
 import cn.stylefeng.roses.kernel.wrapper.api.constants.WrapperConstants;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
- * 针对@JsonFieldFormat注解的具体序列化过程
+ * 针对@SimpleFieldFormat注解的具体序列化过程
  *
  * @author fengshuonan
  * @date 2022/9/6 14:09
  */
 @Slf4j
-public class CustomJsonSerializer extends JsonSerializer<Object> {
+public class SimpleFieldFormatSerializer extends JsonSerializer<Object> {
 
     /**
      * 序列化类型，覆盖还是wrapper模式
@@ -29,9 +29,9 @@ public class CustomJsonSerializer extends JsonSerializer<Object> {
     /**
      * 具体序列化过程
      */
-    private final Class<? extends JsonFieldFormatProcess> processClass;
+    private final Class<? extends SimpleFieldFormatProcess> processClass;
 
-    public CustomJsonSerializer(FormatTypeEnum formatTypeEnum, Class<? extends JsonFieldFormatProcess> processClass) {
+    public SimpleFieldFormatSerializer(FormatTypeEnum formatTypeEnum, Class<? extends SimpleFieldFormatProcess> processClass) {
         this.formatTypeEnum = formatTypeEnum;
         this.processClass = processClass;
     }
@@ -43,22 +43,22 @@ public class CustomJsonSerializer extends JsonSerializer<Object> {
         String fieldName = jsonGenerator.getOutputContext().getCurrentName();
 
         // 创建具体字段转化的实现类
-        JsonFieldFormatProcess jsonFieldFormatProcess = null;
+        SimpleFieldFormatProcess simpleFieldFormatProcess = null;
         try {
-            jsonFieldFormatProcess = processClass.newInstance();
+            simpleFieldFormatProcess = processClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             log.error("执行json的字段序列化出错", e);
             return;
         }
 
         // 判断当前字段值是否可以转化
-        boolean canFormat = jsonFieldFormatProcess.canFormat(originValue);
+        boolean canFormat = simpleFieldFormatProcess.canFormat(originValue);
         if (!canFormat) {
             return;
         }
 
         // 执行转化，获取转化过的值
-        Object formattedValue = jsonFieldFormatProcess.formatProcess(originValue);
+        Object formattedValue = simpleFieldFormatProcess.formatProcess(originValue);
 
         try {
             // 如果转化模式是替换类型

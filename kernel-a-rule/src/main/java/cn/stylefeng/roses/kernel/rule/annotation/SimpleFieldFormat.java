@@ -24,13 +24,13 @@
  */
 package cn.stylefeng.roses.kernel.rule.annotation;
 
-import cn.stylefeng.roses.kernel.rule.base.JsonFieldFormatProcess;
+import cn.stylefeng.roses.kernel.rule.base.SimpleFieldFormatProcess;
 import cn.stylefeng.roses.kernel.rule.enums.FormatTypeEnum;
 
 import java.lang.annotation.*;
 
 /**
- * json字段的格式化，可以将多种情景的id，转化为具体的具有可读性的名称
+ * json字段的格式化，可以将类似id值，转化为具体的具有可读性的名称，例如：用户id -> 用户姓名
  *
  * @author fengshuonan
  * @date 2022/9/6 11:34
@@ -38,7 +38,7 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface JsonFieldFormat {
+public @interface SimpleFieldFormat {
 
     /**
      * 字段格式化的类型 详情见：{@link FormatTypeEnum}
@@ -50,6 +50,6 @@ public @interface JsonFieldFormat {
     /**
      * 具体处理值转化的过程【必传】
      */
-    Class<? extends JsonFieldFormatProcess> processClass();
+    Class<? extends SimpleFieldFormatProcess> processClass();
 
 }

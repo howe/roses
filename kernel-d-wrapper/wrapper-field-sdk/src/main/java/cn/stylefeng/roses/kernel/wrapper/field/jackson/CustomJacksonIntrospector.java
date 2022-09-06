@@ -1,13 +1,14 @@
 package cn.stylefeng.roses.kernel.wrapper.field.jackson;
 
-import cn.stylefeng.roses.kernel.rule.annotation.JsonFieldFormat;
-import cn.stylefeng.roses.kernel.rule.base.JsonFieldFormatProcess;
+import cn.stylefeng.roses.kernel.rule.annotation.SimpleFieldFormat;
+import cn.stylefeng.roses.kernel.rule.base.SimpleFieldFormatProcess;
 import cn.stylefeng.roses.kernel.rule.enums.FormatTypeEnum;
+import cn.stylefeng.roses.kernel.wrapper.field.simple.SimpleFieldFormatSerializer;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 
 /**
- * Json序列化，注解拦截器，针对自定义注解@JsonFieldFormat进行拓展性序列化
+ * Json序列化，注解拦截器，针对自定义注解进行拓展性序列化
  *
  * @author fengshuonan
  * @date 2022/9/6 13:56
@@ -21,7 +22,7 @@ public class CustomJacksonIntrospector extends JacksonAnnotationIntrospector {
 
     @Override
     public Object findSerializer(Annotated annotated) {
-        JsonFieldFormat formatter = annotated.getAnnotation(JsonFieldFormat.class);
+        SimpleFieldFormat formatter = annotated.getAnnotation(SimpleFieldFormat.class);
 
         if (formatter == null || formatter.processClass() == null) {
             return super.findSerializer(annotated);
@@ -31,10 +32,10 @@ public class CustomJacksonIntrospector extends JacksonAnnotationIntrospector {
         FormatTypeEnum formatTypeEnum = formatter.formatType();
 
         // 获取具体的处理方法
-        Class<? extends JsonFieldFormatProcess> process = formatter.processClass();
+        Class<? extends SimpleFieldFormatProcess> process = formatter.processClass();
 
         // 创建对应的序列化模式
-        return new CustomJsonSerializer(formatTypeEnum, process);
+        return new SimpleFieldFormatSerializer(formatTypeEnum, process);
     }
 
 }
