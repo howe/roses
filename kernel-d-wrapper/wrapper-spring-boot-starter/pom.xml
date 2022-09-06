@@ -24,6 +24,13 @@
             <version>${roses.version}</version>
         </dependency>
 
+        <!--对字段的包装和转化-->
+        <dependency>
+            <groupId>cn.stylefeng.roses</groupId>
+            <artifactId>wrapper-field-sdk</artifactId>
+            <version>${roses.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

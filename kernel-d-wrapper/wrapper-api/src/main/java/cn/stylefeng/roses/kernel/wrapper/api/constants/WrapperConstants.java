@@ -42,4 +42,9 @@ public interface WrapperConstants {
      */
     String WRAPPER_EXCEPTION_STEP_CODE = "24";
 
+    /**
+     * 被包装字段，新建字段的结尾字段名
+     */
+    String FILED_WRAPPER_SUFFIX = "Wrapper";
+
 }

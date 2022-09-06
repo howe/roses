@@ -45,11 +45,11 @@ public @interface JsonFieldFormat {
      * <p>
      * 默认采用包装型，不改变原有的字段
      */
-    FormatTypeEnum formatType() default FormatTypeEnum.WRAPPER;
+    FormatTypeEnum formatType() default FormatTypeEnum.ADD_FIELD;
 
     /**
      * 具体处理值转化的过程
      */
-    Class<? extends JsonFieldFormatProcess> process();
+    Class<? extends JsonFieldFormatProcess> processClass();
 
 }
