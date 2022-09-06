@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.rule.enums;
 
+import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import lombok.Getter;
 
 /**
@@ -33,7 +34,7 @@ import lombok.Getter;
  * @date 2020/4/13 22:59
  */
 @Getter
-public enum YesOrNotEnum {
+public enum YesOrNotEnum implements ReadableEnum {
 
     /**
      * 是
@@ -52,6 +53,16 @@ public enum YesOrNotEnum {
     YesOrNotEnum(String code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    @Override
+    public Object getKey() {
+        return this.code;
+    }
+
+    @Override
+    public Object getName() {
+        return this.message;
     }
 
 }

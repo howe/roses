@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.rule.enums;
 
+import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import lombok.Getter;
 
 /**
@@ -33,7 +34,7 @@ import lombok.Getter;
  * @date 2020/10/14 21:31
  */
 @Getter
-public enum StatusEnum {
+public enum StatusEnum implements ReadableEnum {
 
     /**
      * 启用
@@ -71,4 +72,13 @@ public enum StatusEnum {
         return null;
     }
 
+    @Override
+    public Object getKey() {
+        return this.code;
+    }
+
+    @Override
+    public Object getName() {
+        return this.message;
+    }
 }

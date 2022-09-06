@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.rule.enums;
 
+import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import lombok.Getter;
 
 /**
@@ -33,7 +34,7 @@ import lombok.Getter;
  * @date 2020/10/17 10:01
  */
 @Getter
-public enum SexEnum {
+public enum SexEnum implements ReadableEnum {
 
     /**
      * 男
@@ -88,4 +89,13 @@ public enum SexEnum {
         return "未知";
     }
 
+    @Override
+    public Object getKey() {
+        return this.code;
+    }
+
+    @Override
+    public Object getName() {
+        return this.message;
+    }
 }
