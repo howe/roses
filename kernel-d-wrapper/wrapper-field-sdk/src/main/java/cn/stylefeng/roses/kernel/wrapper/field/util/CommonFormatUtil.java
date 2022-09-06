@@ -30,6 +30,12 @@ public class CommonFormatUtil {
      */
     public static void writeField(FormatTypeEnum formatTypeEnum, Object originValue, Object formattedValue, JsonGenerator jsonGenerator) {
         try {
+            // 如果原始值和转化值一样，则直接返回
+            if (originValue.equals(formattedValue)) {
+                jsonGenerator.writeObject(originValue);
+                return;
+            }
+
             // 如果转化模式是替换类型
             if (formatTypeEnum.equals(FormatTypeEnum.REPLACE)) {
                 jsonGenerator.writeObject(formattedValue);

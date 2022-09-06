@@ -56,9 +56,7 @@ public class EnumFieldFormatSerializer extends JsonSerializer<Object> {
         }
 
         // 进行数据转化写入到渲染的JSON中
-        if (!originValue.equals(formattedValue)) {
-            CommonFormatUtil.writeField(formatTypeEnum, originValue, formattedValue, jsonGenerator);
-        }
+        CommonFormatUtil.writeField(formatTypeEnum, originValue, formattedValue, jsonGenerator);
 
     }
 
