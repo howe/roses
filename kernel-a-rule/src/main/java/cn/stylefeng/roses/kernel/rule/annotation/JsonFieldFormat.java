@@ -30,7 +30,7 @@ import cn.stylefeng.roses.kernel.rule.enums.FormatTypeEnum;
 import java.lang.annotation.*;
 
 /**
- * json字段的格式化，可以将多种情景的id，code，枚举等，转化为具体的具有可读性的名称
+ * json字段的格式化，可以将多种情景的id，转化为具体的具有可读性的名称
  *
  * @author fengshuonan
  * @date 2022/9/6 11:34
@@ -48,7 +48,7 @@ public @interface JsonFieldFormat {
     FormatTypeEnum formatType() default FormatTypeEnum.ADD_FIELD;
 
     /**
-     * 具体处理值转化的过程
+     * 具体处理值转化的过程【必传】
      */
     Class<? extends JsonFieldFormatProcess> processClass();
 

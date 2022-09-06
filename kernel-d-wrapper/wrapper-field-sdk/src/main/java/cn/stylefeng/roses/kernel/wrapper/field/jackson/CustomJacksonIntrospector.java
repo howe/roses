@@ -1,9 +1,8 @@
-package cn.stylefeng.roses.kernel.wrapper.field;
+package cn.stylefeng.roses.kernel.wrapper.field.jackson;
 
 import cn.stylefeng.roses.kernel.rule.annotation.JsonFieldFormat;
 import cn.stylefeng.roses.kernel.rule.base.JsonFieldFormatProcess;
 import cn.stylefeng.roses.kernel.rule.enums.FormatTypeEnum;
-import cn.stylefeng.roses.kernel.wrapper.field.serializer.CustomJsonSerializer;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 

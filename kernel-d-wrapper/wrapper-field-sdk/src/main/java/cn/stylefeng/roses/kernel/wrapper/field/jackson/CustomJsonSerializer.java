@@ -1,4 +1,4 @@
-package cn.stylefeng.roses.kernel.wrapper.field.serializer;
+package cn.stylefeng.roses.kernel.wrapper.field.jackson;
 
 import cn.hutool.core.util.ClassUtil;
 import cn.stylefeng.roses.kernel.rule.base.JsonFieldFormatProcess;
