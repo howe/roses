@@ -31,14 +31,12 @@ import cn.stylefeng.roses.kernel.message.api.enums.MessageReadFlagEnum;
 import cn.stylefeng.roses.kernel.message.api.pojo.request.MessageRequest;
 import cn.stylefeng.roses.kernel.message.api.pojo.request.MessageSendRequest;
 import cn.stylefeng.roses.kernel.message.api.pojo.response.MessageResponse;
-import cn.stylefeng.roses.kernel.message.modular.wrapper.MessageWrapper;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
-import cn.stylefeng.roses.kernel.wrapper.api.annotation.Wrapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -134,7 +132,6 @@ public class SysMessageController {
      * @date 2021/1/8 13:50
      */
     @GetResource(name = "分页查询系统消息列表", path = "/sysMessage/page")
-    @Wrapper(MessageWrapper.class)
     public ResponseData<PageResult<MessageResponse>> page(MessageRequest messageRequest) {
         return new SuccessResponseData<>(messageApi.queryPageCurrentUser(messageRequest));
     }

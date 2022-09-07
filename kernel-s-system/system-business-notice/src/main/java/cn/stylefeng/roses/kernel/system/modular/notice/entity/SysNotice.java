@@ -27,6 +27,8 @@ package cn.stylefeng.roses.kernel.system.modular.notice.entity;
 import cn.stylefeng.roses.kernel.db.api.pojo.entity.BaseEntity;
 import cn.stylefeng.roses.kernel.dict.api.serializer.DictValueSerializer;
 import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
+import cn.stylefeng.roses.kernel.rule.annotation.SimpleFieldFormat;
+import cn.stylefeng.roses.kernel.system.api.format.UserFormatProcess;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -117,6 +119,12 @@ public class SysNotice extends BaseEntity {
     @JsonSerialize(using = DictValueSerializer.class)
     public String getPriorityLevelValue() {
         return "priority_level|" + this.priorityLevel;
+    }
+
+    @Override
+    @SimpleFieldFormat(processClass = UserFormatProcess.class)
+    public Long getCreateUser() {
+        return super.getCreateUser();
     }
 
 }

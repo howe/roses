@@ -28,6 +28,8 @@ import cn.stylefeng.roses.kernel.message.api.enums.MessageBusinessTypeEnum;
 import cn.stylefeng.roses.kernel.message.api.enums.MessagePriorityLevelEnum;
 import cn.stylefeng.roses.kernel.message.api.enums.MessageReadFlagEnum;
 import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
+import cn.stylefeng.roses.kernel.rule.annotation.SimpleFieldFormat;
+import cn.stylefeng.roses.kernel.system.api.format.UserFormatProcess;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -60,6 +62,7 @@ public class MessageResponse implements Serializable {
      * 发送用户id
      */
     @ChineseDescription("发送用户id")
+    @SimpleFieldFormat(processClass = UserFormatProcess.class)
     private Long sendUserId;
 
     /**
@@ -122,25 +125,25 @@ public class MessageResponse implements Serializable {
     @ChineseDescription("阅读状态：0-未读，1-已读")
     private String readFlagValue;
 
-    public String getPriorityLevelValue(){
+    public String getPriorityLevelValue() {
         AtomicReference<String> value = new AtomicReference<>("");
-        Optional.ofNullable(this.priorityLevel).ifPresent(val ->{
+        Optional.ofNullable(this.priorityLevel).ifPresent(val -> {
             value.set(MessagePriorityLevelEnum.getName(this.priorityLevel));
         });
         return value.get();
     }
 
-    public String getReadFlagValue(){
+    public String getReadFlagValue() {
         AtomicReference<String> value = new AtomicReference<>("");
-        Optional.ofNullable(this.readFlag).ifPresent(val ->{
+        Optional.ofNullable(this.readFlag).ifPresent(val -> {
             value.set(MessageReadFlagEnum.getName(this.readFlag));
         });
         return value.get();
     }
 
-    public String getBusinessTypeValue(){
+    public String getBusinessTypeValue() {
         AtomicReference<String> value = new AtomicReference<>("");
-        Optional.ofNullable(this.businessType).ifPresent(val ->{
+        Optional.ofNullable(this.businessType).ifPresent(val -> {
             value.set(MessageBusinessTypeEnum.getName(this.businessType));
         });
         return value.get();
