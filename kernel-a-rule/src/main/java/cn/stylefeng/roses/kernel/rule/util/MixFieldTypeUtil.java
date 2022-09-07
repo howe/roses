@@ -1,7 +1,6 @@
-package cn.stylefeng.roses.kernel.wrapper.api.util;
+package cn.stylefeng.roses.kernel.rule.util;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.stylefeng.roses.kernel.rule.util.ObjectConvertUtil;
 
 import java.util.Collection;
 
@@ -19,10 +18,10 @@ public class MixFieldTypeUtil {
      * @author fengshuonan
      * @date 2022/9/7 10:24
      */
-    public static boolean getLongFlag(Object fieldValue) {
+    public static boolean whetherAssignClass(Object fieldValue, Class<?> clazz) {
 
-        // 直接判断是否是Long
-        if (fieldValue instanceof Long) {
+        // 判断value是否是指定类型
+        if (clazz.isAssignableFrom(fieldValue.getClass())) {
             return true;
         }
 
@@ -30,7 +29,7 @@ public class MixFieldTypeUtil {
         else if (fieldValue instanceof Collection) {
             Collection<?> collectionList = (Collection<?>) fieldValue;
             for (Object item : collectionList) {
-                if (item instanceof Long) {
+                if (clazz.isAssignableFrom(item.getClass())) {
                     return true;
                 }
             }
@@ -40,7 +39,7 @@ public class MixFieldTypeUtil {
         else if (ArrayUtil.isArray(fieldValue)) {
             Object[] objects = ObjectConvertUtil.objToArray(fieldValue);
             for (Object item : objects) {
-                if (item instanceof Long) {
+                if (clazz.isAssignableFrom(item.getClass())) {
                     return true;
                 }
             }
@@ -48,6 +47,5 @@ public class MixFieldTypeUtil {
 
         return false;
     }
-
 
 }
