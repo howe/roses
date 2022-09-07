@@ -26,6 +26,8 @@ package cn.stylefeng.roses.kernel.timer.modular.entity;
 
 import cn.stylefeng.roses.kernel.db.api.pojo.entity.BaseEntity;
 import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
+import cn.stylefeng.roses.kernel.rule.annotation.SimpleFieldFormat;
+import cn.stylefeng.roses.kernel.system.api.format.UserFormatProcess;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -96,5 +98,11 @@ public class SysTimers extends BaseEntity {
     @TableField(value = "del_flag", fill = FieldFill.INSERT)
     @ChineseDescription("是否删除")
     private String delFlag;
+
+    @Override
+    @SimpleFieldFormat(processClass = UserFormatProcess.class)
+    public Long getCreateUser() {
+        return super.getCreateUser();
+    }
 
 }
