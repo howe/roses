@@ -1,8 +1,8 @@
-package cn.stylefeng.roses.kernel.scanner.api.util;
+package cn.stylefeng.roses.kernel.rule.util;
 
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ClassUtil;
-import cn.stylefeng.roses.kernel.scanner.api.enums.FieldTypeEnum;
+import cn.stylefeng.roses.kernel.rule.enums.FieldTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
 import sun.reflect.generics.reflectiveObjects.WildcardTypeImpl;

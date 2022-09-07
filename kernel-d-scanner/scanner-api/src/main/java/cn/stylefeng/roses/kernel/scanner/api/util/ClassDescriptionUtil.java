@@ -2,9 +2,9 @@ package cn.stylefeng.roses.kernel.scanner.api.util;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.stylefeng.roses.kernel.rule.enums.FieldTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.context.MetadataContext;
 import cn.stylefeng.roses.kernel.scanner.api.enums.FieldMetadataTypeEnum;
-import cn.stylefeng.roses.kernel.scanner.api.enums.FieldTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.enums.ParamTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.FieldMetadata;
 

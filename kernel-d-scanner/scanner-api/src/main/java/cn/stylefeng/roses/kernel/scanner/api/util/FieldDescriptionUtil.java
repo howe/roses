@@ -2,9 +2,10 @@ package cn.stylefeng.roses.kernel.scanner.api.util;
 
 import cn.hutool.core.util.IdUtil;
 import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
+import cn.stylefeng.roses.kernel.rule.enums.FieldTypeEnum;
+import cn.stylefeng.roses.kernel.rule.util.ClassTypeUtil;
 import cn.stylefeng.roses.kernel.scanner.api.context.MetadataContext;
 import cn.stylefeng.roses.kernel.scanner.api.enums.FieldMetadataTypeEnum;
-import cn.stylefeng.roses.kernel.scanner.api.enums.FieldTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.enums.ParamTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.factory.ClassDetailMetadataFactory;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.FieldMetadata;

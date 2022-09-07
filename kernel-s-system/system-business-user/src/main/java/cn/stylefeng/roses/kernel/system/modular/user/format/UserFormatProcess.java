@@ -3,10 +3,10 @@ package cn.stylefeng.roses.kernel.system.modular.user.format;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.stylefeng.roses.kernel.rule.base.SimpleFieldFormatProcess;
+import cn.stylefeng.roses.kernel.rule.enums.FieldTypeEnum;
+import cn.stylefeng.roses.kernel.rule.util.ClassTypeUtil;
 import cn.stylefeng.roses.kernel.rule.util.MixFieldTypeUtil;
 import cn.stylefeng.roses.kernel.rule.util.ObjectConvertUtil;
-import cn.stylefeng.roses.kernel.scanner.api.enums.FieldTypeEnum;
-import cn.stylefeng.roses.kernel.scanner.api.util.ClassTypeUtil;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserDTO;
 

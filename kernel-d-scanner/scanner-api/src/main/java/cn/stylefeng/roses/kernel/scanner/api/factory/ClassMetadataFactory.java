@@ -1,9 +1,9 @@
 package cn.stylefeng.roses.kernel.scanner.api.factory;
 
-import cn.stylefeng.roses.kernel.scanner.api.enums.FieldTypeEnum;
+import cn.stylefeng.roses.kernel.rule.enums.FieldTypeEnum;
+import cn.stylefeng.roses.kernel.rule.util.ClassTypeUtil;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.FieldMetadata;
 import cn.stylefeng.roses.kernel.scanner.api.util.ClassDescriptionUtil;
-import cn.stylefeng.roses.kernel.scanner.api.util.ClassTypeUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.ParameterizedType;
