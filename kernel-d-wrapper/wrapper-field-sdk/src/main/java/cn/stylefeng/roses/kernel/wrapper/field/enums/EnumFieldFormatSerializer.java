@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+
 /**
  * 针对@EnumFieldFormat注解的具体序列化过程
  *
@@ -33,7 +35,7 @@ public class EnumFieldFormatSerializer extends JsonSerializer<Object> {
     }
 
     @Override
-    public void serialize(Object originValue, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) {
+    public void serialize(Object originValue, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
 
         // 最终转化的值
         Object formattedValue = originValue;

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+
 /**
  * 针对@SimpleFieldFormat注解的具体序列化过程
  *
@@ -33,20 +35,31 @@ public class SimpleFieldFormatSerializer extends JsonSerializer<Object> {
     }
 
     @Override
-    public void serialize(Object originValue, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) {
+    public void serialize(Object originValue, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        try {
+            this.action(originValue, jsonGenerator, serializerProvider);
+        } catch (Exception e) {
+            log.error("执行json的字段序列化出错", e);
+            // 报错后继续写入原始值，否则会响应的json不是规范的json
+            jsonGenerator.writeObject(originValue);
+        }
+    }
+
+    /**
+     * 真正处理序列化的逻辑
+     *
+     * @author fengshuonan
+     * @date 2022/9/7 11:11
+     */
+    private void action(Object originValue, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws InstantiationException, IllegalAccessException, IOException {
 
         // 创建具体字段转化的实现类
-        SimpleFieldFormatProcess simpleFieldFormatProcess = null;
-        try {
-            simpleFieldFormatProcess = processClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            log.error("执行json的字段序列化出错", e);
-            return;
-        }
+        SimpleFieldFormatProcess simpleFieldFormatProcess = processClass.newInstance();
 
         // 判断当前字段值是否可以转化
         boolean canFormat = simpleFieldFormatProcess.canFormat(originValue);
         if (!canFormat) {
+            jsonGenerator.writeObject(originValue);
             return;
         }
 
