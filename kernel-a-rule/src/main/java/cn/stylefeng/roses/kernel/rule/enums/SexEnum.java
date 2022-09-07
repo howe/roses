@@ -25,6 +25,9 @@
 package cn.stylefeng.roses.kernel.rule.enums;
 
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 /**
@@ -46,6 +49,8 @@ public enum SexEnum implements ReadableEnum {
      */
     F("F", "女");
 
+    @EnumValue
+    @JsonValue
     private final String code;
 
     private final String message;
@@ -61,6 +66,7 @@ public enum SexEnum implements ReadableEnum {
      * @author fengshuonan
      * @date 2020/10/29 18:59
      */
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static SexEnum codeToEnum(String code) {
         if (null != code) {
             for (SexEnum e : SexEnum.values()) {

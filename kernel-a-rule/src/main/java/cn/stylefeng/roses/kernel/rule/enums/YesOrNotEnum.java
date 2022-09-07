@@ -26,6 +26,7 @@ package cn.stylefeng.roses.kernel.rule.enums;
 
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
@@ -56,6 +57,9 @@ public enum YesOrNotEnum implements ReadableEnum {
 
     private final String message;
 
+    /**
+     * 注解@JsonValue是返回给前端时候拿的值，而@JsonCreator是反序列化时候的方式
+     */
     @JsonValue
     private final Boolean boolFlag;
 
@@ -63,6 +67,24 @@ public enum YesOrNotEnum implements ReadableEnum {
         this.code = code;
         this.message = message;
         this.boolFlag = boolFlag;
+    }
+
+    /**
+     * 根据code获取枚举，用在接收前段传参
+     *
+     * @author fengshuonan
+     * @date 2022/9/7 17:58
+     */
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static YesOrNotEnum codeToEnum(Boolean boolFlag) {
+        if (null != boolFlag) {
+            for (YesOrNotEnum item : YesOrNotEnum.values()) {
+                if (item.getBoolFlag().equals(boolFlag)) {
+                    return item;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
