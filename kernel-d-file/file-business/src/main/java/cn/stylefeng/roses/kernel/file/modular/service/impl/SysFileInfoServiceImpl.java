@@ -377,7 +377,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         LambdaQueryWrapper<SysFileInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysFileInfo::getFileObjectName, sysFileInfoRequest.getFileObjectName());
         wrapper.eq(SysFileInfo::getSecretFlag, YesOrNotEnum.Y.getCode());
-        int count = this.count(wrapper);
+        long count = this.count(wrapper);
         if (count > 0) {
             if (!LoginContext.me().hasLogin()) {
                 throw new FileException(FileExceptionEnum.FILE_PERMISSION_DENIED);

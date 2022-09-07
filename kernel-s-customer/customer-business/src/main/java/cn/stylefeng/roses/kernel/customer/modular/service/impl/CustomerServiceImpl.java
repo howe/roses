@@ -553,14 +553,14 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
         LambdaQueryWrapper<Customer> accountWrapper = new LambdaQueryWrapper<>();
         accountWrapper.eq(Customer::getAccount, customerRequest.getAccount());
-        int count = this.count(accountWrapper);
+        long count = this.count(accountWrapper);
         if (count > 0) {
             throw new CustomerException(CustomerExceptionEnum.ACCOUNT_REPEAT);
         }
 
         LambdaQueryWrapper<Customer> emailWrapper = new LambdaQueryWrapper<>();
         emailWrapper.eq(Customer::getEmail, customerRequest.getEmail());
-        int emailCount = this.count(emailWrapper);
+        long emailCount = this.count(emailWrapper);
         if (emailCount > 0) {
             throw new CustomerException(CustomerExceptionEnum.EMAIL_REPEAT);
         }

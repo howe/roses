@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.modular.home.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
@@ -121,7 +122,8 @@ public class HomePageServiceImpl implements HomePageService, HomePageServiceApi 
         HomeCompanyInfo homeCompanyInfo = new HomeCompanyInfo();
 
         // 获取组织机构总数量
-        homeCompanyInfo.setOrganizationNum(hrOrganizationService.count());
+        long count = hrOrganizationService.count();
+        homeCompanyInfo.setOrganizationNum(Convert.toInt(count));
 
         // 获取企业人员总数量
         SysUserRequest sysUserRequest = new SysUserRequest();
@@ -147,8 +149,8 @@ public class HomePageServiceImpl implements HomePageService, HomePageServiceApi 
 
         // 设置当前所属机构和所有子机构的人数
         List<Long> orgIds = organizations.stream().map(HrOrganization::getOrgId).collect(Collectors.toList());
-        int currentOrgPersonNum = sysUserOrgService.count(Wrappers.lambdaQuery(SysUserOrg.class).in(SysUserOrg::getOrgId, orgIds));
-        homeCompanyInfo.setCurrentCompanyPersonNum(currentOrgPersonNum);
+        Long currentOrgPersonNum = sysUserOrgService.count(Wrappers.lambdaQuery(SysUserOrg.class).in(SysUserOrg::getOrgId, orgIds));
+        homeCompanyInfo.setCurrentCompanyPersonNum(Convert.toInt(currentOrgPersonNum));
 
         return homeCompanyInfo;
     }

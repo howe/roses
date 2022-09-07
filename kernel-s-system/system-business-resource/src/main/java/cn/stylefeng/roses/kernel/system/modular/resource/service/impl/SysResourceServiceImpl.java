@@ -25,6 +25,7 @@
 package cn.stylefeng.roses.kernel.system.modular.resource.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.auth.api.LoginUserApi;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
@@ -229,10 +230,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
         // 查询条件
         if (ObjectUtil.isNotEmpty(resourceRequest.getResourceName())) {
-            sysResourceLambdaQueryWrapper
-                    .like(SysResource::getUrl, resourceRequest.getResourceName())
-                    .or()
-                    .like(SysResource::getResourceName, resourceRequest.getResourceName());
+            sysResourceLambdaQueryWrapper.like(SysResource::getUrl, resourceRequest.getResourceName()).or().like(SysResource::getResourceName, resourceRequest.getResourceName());
         }
 
         List<SysResource> allResource = this.list(sysResourceLambdaQueryWrapper);
@@ -380,7 +378,8 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     @Override
     public Integer getResourceCount() {
-        return this.count();
+        long count = this.count();
+        return Convert.toInt(count);
     }
 
     /**

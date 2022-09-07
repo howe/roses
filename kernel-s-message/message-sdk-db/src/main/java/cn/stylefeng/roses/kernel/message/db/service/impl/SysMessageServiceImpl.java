@@ -25,6 +25,7 @@
 package cn.stylefeng.roses.kernel.message.db.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
@@ -96,7 +97,8 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     @Override
     public Integer findCount(MessageRequest messageRequest) {
         LambdaQueryWrapper<SysMessage> wrapper = createWrapper(messageRequest, false);
-        return this.count(wrapper);
+        long count = this.count(wrapper);
+        return Convert.toInt(count);
     }
 
     /**

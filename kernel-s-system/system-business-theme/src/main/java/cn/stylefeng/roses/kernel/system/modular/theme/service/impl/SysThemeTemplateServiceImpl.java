@@ -124,7 +124,7 @@ public class SysThemeTemplateServiceImpl extends ServiceImpl<SysThemeTemplateMap
         // 系统主题模板被使用，不允许禁用
         LambdaQueryWrapper<SysTheme> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysTheme::getTemplateId, sysThemeTemplate.getTemplateId());
-        int sysThemeNum = sysThemeService.count(queryWrapper);
+        long sysThemeNum = sysThemeService.count(queryWrapper);
         if (sysThemeNum > 0) {
             throw new SystemModularException(SysThemeTemplateExceptionEnum.TEMPLATE_IS_USED);
         }

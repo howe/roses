@@ -281,7 +281,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
             sysDictLambdaQueryWrapper.ne(SysDict::getDictId, dictRequest.getDictId());
         }
         sysDictLambdaQueryWrapper.ne(SysDict::getDelFlag, YesOrNotEnum.Y.getCode());
-        int count = this.count(sysDictLambdaQueryWrapper);
+        long count = this.count(sysDictLambdaQueryWrapper);
         if (count > 0) {
             throw new DictException(DictExceptionEnum.DICT_CODE_REPEAT, dictRequest.getDictTypeCode(), dictRequest.getDictCode());
         }
@@ -294,7 +294,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
             dictNameWrapper.ne(SysDict::getDictId, dictRequest.getDictId());
         }
         dictNameWrapper.ne(SysDict::getDelFlag, YesOrNotEnum.Y.getCode());
-        int dictNameCount = this.count(dictNameWrapper);
+        long dictNameCount = this.count(dictNameWrapper);
         if (dictNameCount > 0) {
             throw new DictException(DictExceptionEnum.DICT_NAME_REPEAT, dictRequest.getDictTypeCode(), dictRequest.getDictCode());
         }

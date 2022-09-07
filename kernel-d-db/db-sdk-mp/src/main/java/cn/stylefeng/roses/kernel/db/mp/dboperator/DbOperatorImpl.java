@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.db.mp.dboperator;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.db.api.DbOperatorApi;
 import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
@@ -44,7 +45,8 @@ public class DbOperatorImpl implements DbOperatorApi {
 
     @Override
     public int selectCount(String sql, Object... args) {
-        return SqlRunner.db().selectCount(sql, args);
+        long selectCount = SqlRunner.db().selectCount(sql, args);
+        return Convert.toInt(selectCount);
     }
 
     @Override
