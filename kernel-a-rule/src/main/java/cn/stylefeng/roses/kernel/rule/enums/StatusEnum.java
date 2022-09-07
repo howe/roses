@@ -25,6 +25,7 @@
 package cn.stylefeng.roses.kernel.rule.enums;
 
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.Getter;
 
 /**
@@ -46,6 +47,7 @@ public enum StatusEnum implements ReadableEnum {
      */
     DISABLE(2, "禁用");
 
+    @EnumValue
     private final Integer code;
 
     private final String message;

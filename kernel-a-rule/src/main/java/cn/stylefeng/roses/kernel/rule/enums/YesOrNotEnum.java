@@ -25,6 +25,8 @@
 package cn.stylefeng.roses.kernel.rule.enums;
 
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 /**
@@ -39,20 +41,28 @@ public enum YesOrNotEnum implements ReadableEnum {
     /**
      * 是
      */
-    Y("Y", "是"),
+    Y("Y", "是", true),
 
     /**
      * 否
      */
-    N("N", "否");
+    N("N", "否", false);
 
+    /**
+     * 使用@EnumValue注解，标记mybatis-plus保存到库中使用code值
+     */
+    @EnumValue
     private final String code;
 
     private final String message;
 
-    YesOrNotEnum(String code, String message) {
+    @JsonValue
+    private final Boolean boolFlag;
+
+    YesOrNotEnum(String code, String message, Boolean boolFlag) {
         this.code = code;
         this.message = message;
+        this.boolFlag = boolFlag;
     }
 
     @Override
