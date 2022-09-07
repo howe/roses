@@ -43,6 +43,14 @@
             <version>${roses.version}</version>
         </dependency>
 
+        <!--system api-->
+        <!--用在json响应用户id的转化-->
+        <dependency>
+            <groupId>cn.stylefeng.roses</groupId>
+            <artifactId>system-api</artifactId>
+            <version>${roses.version}</version>
+        </dependency>
+
         <!--web-->
         <!--LogRecordFactory快速创建http类的日志参数会用到-->
         <!--如果不要记录当前请求的http接口信息，就不用本模块，所以optional=true-->

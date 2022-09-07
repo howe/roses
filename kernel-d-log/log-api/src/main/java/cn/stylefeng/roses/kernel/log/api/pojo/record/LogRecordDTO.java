@@ -25,6 +25,8 @@
 package cn.stylefeng.roses.kernel.log.api.pojo.record;
 
 import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
+import cn.stylefeng.roses.kernel.rule.annotation.SimpleFieldFormat;
+import cn.stylefeng.roses.kernel.system.api.format.UserFormatProcess;
 import lombok.Data;
 
 import java.util.Date;
@@ -100,6 +102,7 @@ public class LogRecordDTO {
      * 如果是http请求，并且用户已经登录，可以带这项
      */
     @ChineseDescription("客户端请求的用户id")
+    @SimpleFieldFormat(processClass = UserFormatProcess.class)
     private Long userId;
 
     /**
