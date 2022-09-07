@@ -29,6 +29,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
+import cn.stylefeng.roses.kernel.rule.util.ObjectConvertUtil;
 import cn.stylefeng.roses.kernel.wrapper.api.BaseWrapper;
 import cn.stylefeng.roses.kernel.wrapper.api.annotation.Wrapper;
 import cn.stylefeng.roses.kernel.wrapper.api.exception.WrapperException;
@@ -41,7 +42,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -170,7 +170,7 @@ public class WrapperAop {
         else if (ArrayUtil.isArray(beWrapped)) {
 
             // 获取原有的Array
-            Object[] objects = this.objToArray(beWrapped);
+            Object[] objects = ObjectConvertUtil.objToArray(beWrapped);
 
             // 将array中所有records都包装一遍
             ArrayList<Map<String, Object>> maps = new ArrayList<>();
@@ -217,21 +217,6 @@ public class WrapperAop {
         }
 
         return originMap;
-    }
-
-    /**
-     * Object转为一个array，确保object为数组类型
-     *
-     * @author fengshuonan
-     * @date 2020/7/24 22:06
-     */
-    private Object[] objToArray(Object object) {
-        int length = Array.getLength(object);
-        Object[] result = new Object[length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = Array.get(object, i);
-        }
-        return result;
     }
 
 }
