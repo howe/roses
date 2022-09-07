@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.db.mp.fieldfill;
 
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
 import cn.stylefeng.roses.kernel.rule.enums.StatusEnum;
@@ -33,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.ReflectionException;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 
 import static cn.stylefeng.roses.kernel.db.api.constants.DbFieldConstants.*;
@@ -57,10 +59,10 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             setValue(metaObject, CREATE_TIME, new Date());
 
             // 设置删除标记 默认N-删除
-            setValue(metaObject, DEL_FLAG, YesOrNotEnum.N.getCode());
+            setDelFlagDefaultValue(metaObject);
 
             // 设置状态字段 默认1-启用
-            setValue(metaObject, STATUS_FLAG, StatusEnum.ENABLE.getCode());
+            setStatusDefaultValue(metaObject);
 
             // 设置乐观锁字段，从0开始
             setValue(metaObject, VERSION_FLAG, 0L);
@@ -135,5 +137,56 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
         }
 
     }
+
+    /**
+     * 设置属性，针对逻辑删除字段
+     *
+     * @author fengshuonan
+     * @date 2022/9/7 17:23
+     */
+    private void setDelFlagDefaultValue(MetaObject metaObject) {
+        Object originalAttr = getFieldValByName(DEL_FLAG, metaObject);
+        if (ObjectUtil.isNotEmpty(originalAttr)) {
+            return;
+        }
+        Object originalObject = metaObject.getOriginalObject();
+        try {
+            // 获取delFlag字段的类型，如果是枚举类型，则设置枚举
+            Field declaredField = originalObject.getClass().getDeclaredField(DEL_FLAG);
+            if (ClassUtil.isEnum(declaredField.getType())) {
+                setFieldValByName(DEL_FLAG, YesOrNotEnum.N, metaObject);
+            } else {
+                setFieldValByName(DEL_FLAG, YesOrNotEnum.N.getCode(), metaObject);
+            }
+        } catch (NoSuchFieldException ignored) {
+            // 没有字段，忽略
+        }
+    }
+
+    /**
+     * 设置属性，针对状态字段
+     *
+     * @author fengshuonan
+     * @date 2022/9/7 17:23
+     */
+    private void setStatusDefaultValue(MetaObject metaObject) {
+        Object originalAttr = getFieldValByName(STATUS_FLAG, metaObject);
+        if (ObjectUtil.isNotEmpty(originalAttr)) {
+            return;
+        }
+        Object originalObject = metaObject.getOriginalObject();
+        try {
+            // 获取statusFlag字段的类型，如果是枚举类型，则设置枚举
+            Field declaredField = originalObject.getClass().getDeclaredField(STATUS_FLAG);
+            if (ClassUtil.isEnum(declaredField.getType())) {
+                setFieldValByName(STATUS_FLAG, StatusEnum.ENABLE, metaObject);
+            } else {
+                setFieldValByName(STATUS_FLAG, StatusEnum.ENABLE.getCode(), metaObject);
+            }
+        } catch (NoSuchFieldException ignored) {
+            // 没有字段，忽略
+        }
+    }
+
 
 }
