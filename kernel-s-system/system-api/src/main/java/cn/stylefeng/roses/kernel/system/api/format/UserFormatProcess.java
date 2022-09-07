@@ -1,4 +1,4 @@
-package cn.stylefeng.roses.kernel.system.modular.user.format;
+package cn.stylefeng.roses.kernel.system.api.format;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.extra.spring.SpringUtil;
