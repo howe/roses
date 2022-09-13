@@ -2,20 +2,18 @@ package cn.stylefeng.roses.kernel.system.modular.organization.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
-import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
-import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.exception.base.ServiceException;
+import cn.stylefeng.roses.kernel.system.api.enums.OrgApproverTypeEnum;
 import cn.stylefeng.roses.kernel.system.modular.organization.entity.HrOrgApprover;
 import cn.stylefeng.roses.kernel.system.modular.organization.enums.HrOrgApproverExceptionEnum;
 import cn.stylefeng.roses.kernel.system.modular.organization.mapper.HrOrgApproverMapper;
 import cn.stylefeng.roses.kernel.system.modular.organization.pojo.request.HrOrgApproverRequest;
 import cn.stylefeng.roses.kernel.system.modular.organization.service.HrOrgApproverService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +25,7 @@ import java.util.List;
 @Service
 public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, HrOrgApprover> implements HrOrgApproverService {
 
-	@Override
+    @Override
     public void add(HrOrgApproverRequest hrOrgApproverRequest) {
         HrOrgApprover hrOrgApprover = new HrOrgApprover();
         BeanUtil.copyProperties(hrOrgApproverRequest, hrOrgApprover);
@@ -53,16 +51,22 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
     }
 
     @Override
-    public PageResult<HrOrgApprover> findPage(HrOrgApproverRequest hrOrgApproverRequest) {
-        LambdaQueryWrapper<HrOrgApprover> wrapper = createWrapper(hrOrgApproverRequest);
-        Page<HrOrgApprover> sysRolePage = this.page(PageFactory.defaultPage(), wrapper);
-        return PageResultFactory.createPageResult(sysRolePage);
-    }
+    public List<HrOrgApprover> getBindingList() {
 
-    @Override
-    public List<HrOrgApprover> findList(HrOrgApproverRequest hrOrgApproverRequest) {
-        LambdaQueryWrapper<HrOrgApprover> wrapper = this.createWrapper(hrOrgApproverRequest);
-        return this.list(wrapper);
+        // 获取当前系统一共有哪些组织审批人类型
+        OrgApproverTypeEnum[] values = OrgApproverTypeEnum.values();
+
+        ArrayList<HrOrgApprover> resultList = new ArrayList<>();
+        for (OrgApproverTypeEnum orgApproverTypeEnum : values) {
+            HrOrgApprover hrOrgApprover = new HrOrgApprover();
+            hrOrgApprover.setOrgApproverType(orgApproverTypeEnum.getCode());
+            resultList.add(hrOrgApprover);
+        }
+
+        // 获取当前系统所有的绑定情况 todo
+        List<HrOrgApprover> list = this.list();
+
+        return resultList;
     }
 
     /**
