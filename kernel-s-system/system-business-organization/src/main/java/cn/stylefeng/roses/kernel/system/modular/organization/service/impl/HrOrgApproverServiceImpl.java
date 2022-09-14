@@ -89,8 +89,11 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
 
     @Override
     public void del(HrOrgApproverRequest hrOrgApproverRequest) {
-        HrOrgApprover hrOrgApprover = this.queryHrOrgApprover(hrOrgApproverRequest);
-        this.removeById(hrOrgApprover.getOrgApproverId());
+        LambdaQueryWrapper<HrOrgApprover> hrOrgApproverLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getOrgId, hrOrgApproverRequest.getOrgId());
+        hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getOrgApproverType, hrOrgApproverRequest.getOrgApproverType());
+        hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getUserId, hrOrgApproverRequest.getUserId());
+        this.remove(hrOrgApproverLambdaQueryWrapper);
     }
 
     @Override

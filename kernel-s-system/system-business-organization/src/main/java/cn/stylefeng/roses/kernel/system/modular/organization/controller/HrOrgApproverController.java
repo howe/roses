@@ -52,12 +52,12 @@ public class HrOrgApproverController {
     }
 
     /**
-     * 删除
+     * 删除绑定审批人
      *
      * @author fengshuonan
      * @date 2022/09/13 23:15
      */
-    @PostResource(name = "删除", path = "/hrOrgApprover/delete")
+    @PostResource(name = "删除绑定审批人", path = "/hrOrgApprover/delete")
     public ResponseData<?> delete(@RequestBody @Validated(HrOrgApproverRequest.delete.class) HrOrgApproverRequest hrOrgApproverRequest) {
         hrOrgApproverService.del(hrOrgApproverRequest);
         return new SuccessResponseData<>();
