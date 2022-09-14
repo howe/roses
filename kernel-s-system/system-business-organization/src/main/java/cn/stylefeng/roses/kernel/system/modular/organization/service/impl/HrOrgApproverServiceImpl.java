@@ -35,10 +35,56 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
     private UserServiceApi userServiceApi;
 
     @Override
-    public void add(HrOrgApproverRequest hrOrgApproverRequest) {
-        HrOrgApprover hrOrgApprover = new HrOrgApprover();
-        BeanUtil.copyProperties(hrOrgApproverRequest, hrOrgApprover);
-        this.save(hrOrgApprover);
+    public void bindUserList(HrOrgApproverRequest hrOrgApproverRequest) {
+
+        // 获取组织机构id
+        Long orgId = hrOrgApproverRequest.getOrgId();
+
+        // 获取绑定的审批人类型
+        Integer orgApproverType = hrOrgApproverRequest.getOrgApproverType();
+
+        // 获取需要绑定的用户列表
+        List<Long> needToBindUsers = hrOrgApproverRequest.getUserIdList();
+
+        // 获取改组织下，该种类型已经绑定的人
+        LambdaQueryWrapper<HrOrgApprover> hrOrgApproverLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getOrgId, orgId);
+        hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getOrgApproverType, orgApproverType);
+        List<HrOrgApprover> alreadyBindUsers = this.list(hrOrgApproverLambdaQueryWrapper);
+
+        // 如果已绑定的用户是空的，则直接绑定参数的userList
+        if (ObjectUtil.isEmpty(alreadyBindUsers)) {
+            ArrayList<HrOrgApprover> tempApprovers = new ArrayList<>();
+            for (Long userId : needToBindUsers) {
+                HrOrgApprover hrOrgApprover = new HrOrgApprover();
+                hrOrgApprover.setOrgId(orgId);
+                hrOrgApprover.setOrgApproverType(orgApproverType);
+                hrOrgApprover.setUserId(userId);
+                tempApprovers.add(hrOrgApprover);
+            }
+            this.saveBatch(tempApprovers);
+        }
+
+        // 如果有已经绑定的人，则需要判断请求参数中的人是否已经包含在内，包含在内则不用从新绑定
+        List<Long> alreadyBindUserIdList = alreadyBindUsers.stream().map(HrOrgApprover::getUserId).collect(Collectors.toList());
+        ArrayList<HrOrgApprover> tempApprovers = new ArrayList<>();
+        for (Long needToBindUserId : needToBindUsers) {
+            boolean needToAdd = true;
+            for (Long tempUserId : alreadyBindUserIdList) {
+                if (tempUserId.equals(needToBindUserId)) {
+                    needToAdd = false;
+                    break;
+                }
+            }
+            if (needToAdd) {
+                HrOrgApprover hrOrgApprover = new HrOrgApprover();
+                hrOrgApprover.setOrgApproverId(orgId);
+                hrOrgApprover.setOrgApproverType(orgApproverType);
+                hrOrgApprover.setUserId(needToBindUserId);
+                tempApprovers.add(hrOrgApprover);
+            }
+            this.saveBatch(tempApprovers);
+        }
     }
 
     @Override

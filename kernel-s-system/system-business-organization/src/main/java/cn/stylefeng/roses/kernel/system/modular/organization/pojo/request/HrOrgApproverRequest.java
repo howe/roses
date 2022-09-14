@@ -5,7 +5,9 @@ import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 组织机构审批人封装类
@@ -34,7 +36,7 @@ public class HrOrgApproverRequest extends BaseRequest {
      * 组织机构id
      */
     @ChineseDescription("组织机构id")
-    @NotNull(message = "组织机构id不能为空", groups = list.class)
+    @NotNull(message = "组织机构id不能为空", groups = {list.class, add.class})
     private Long orgId;
 
     /**
@@ -42,5 +44,12 @@ public class HrOrgApproverRequest extends BaseRequest {
      */
     @ChineseDescription("用户id")
     private Long userId;
+
+    /**
+     * 用户id集合，一般用在绑定多个用户
+     */
+    @ChineseDescription("用户id集合")
+    @NotEmpty(message = "用户id集合不能为空", groups = {add.class})
+    private List<Long> userIdList;
 
 }

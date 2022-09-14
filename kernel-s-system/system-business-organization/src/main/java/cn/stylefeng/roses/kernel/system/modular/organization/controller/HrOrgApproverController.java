@@ -40,14 +40,14 @@ public class HrOrgApproverController {
     }
 
     /**
-     * 添加
+     * 更新组织机构绑定审批人
      *
      * @author fengshuonan
      * @date 2022/09/13 23:15
      */
-    @PostResource(name = "添加", path = "/hrOrgApprover/add")
-    public ResponseData<HrOrgApprover> add(@RequestBody @Validated(HrOrgApproverRequest.add.class) HrOrgApproverRequest hrOrgApproverRequest) {
-        hrOrgApproverService.add(hrOrgApproverRequest);
+    @PostResource(name = "更新组织机构绑定审批人", path = "/hrOrgApprover/bindUserList")
+    public ResponseData<HrOrgApprover> bindUserList(@RequestBody @Validated(HrOrgApproverRequest.add.class) HrOrgApproverRequest hrOrgApproverRequest) {
+        hrOrgApproverService.bindUserList(hrOrgApproverRequest);
         return new SuccessResponseData<>();
     }
 

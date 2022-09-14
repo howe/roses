@@ -21,7 +21,7 @@ public interface HrOrgApproverService extends IService<HrOrgApprover> {
      * @author fengshuonan
      * @date 2022/09/13 23:15
      */
-    void add(HrOrgApproverRequest hrOrgApproverRequest);
+    void bindUserList(HrOrgApproverRequest hrOrgApproverRequest);
 
     /**
      * 删除
