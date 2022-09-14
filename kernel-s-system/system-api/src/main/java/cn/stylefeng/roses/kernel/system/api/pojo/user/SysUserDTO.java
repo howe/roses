@@ -155,4 +155,10 @@ public class SysUserDTO {
     @ChineseDescription("是否密码重试次数过多")
     private Boolean loginErrorCountFlag = false;
 
+    /**
+     * 头像地址
+     */
+    @ChineseDescription("头像地址")
+    private String avatarUrl;
+
 }

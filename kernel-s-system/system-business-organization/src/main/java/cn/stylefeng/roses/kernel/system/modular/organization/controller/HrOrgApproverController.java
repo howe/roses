@@ -35,8 +35,8 @@ public class HrOrgApproverController {
      * @date 2022/09/13 23:15
      */
     @GetResource(name = "获取组织机构审批人绑定列表", path = "/hrOrgApprover/getBindingList")
-    public ResponseData<List<HrOrgApprover>> getBindingList() {
-        return new SuccessResponseData<>(hrOrgApproverService.getBindingList());
+    public ResponseData<List<HrOrgApprover>> getBindingList(@Validated(HrOrgApproverRequest.list.class) HrOrgApproverRequest hrOrgApproverRequest) {
+        return new SuccessResponseData<>(hrOrgApproverService.getBindingList(hrOrgApproverRequest));
     }
 
     /**

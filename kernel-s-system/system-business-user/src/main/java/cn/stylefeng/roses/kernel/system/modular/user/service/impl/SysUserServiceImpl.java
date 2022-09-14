@@ -895,6 +895,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = this.getById(userId);
         if (ObjectUtil.isNotEmpty(sysUser)) {
             SysUserDTO result = BeanUtil.copyProperties(sysUser, SysUserDTO.class);
+
+            // 获取用户的头像地址
+            String fileAuthUrl = fileInfoApi.getFileAuthUrl(sysUser.getAvatar());
+            if (fileAuthUrl != null) {
+                result.setAvatarUrl(fileAuthUrl);
+            }
+
             sysUserCacheOperatorApi.put(String.valueOf(userId), result);
             return result;
         }
