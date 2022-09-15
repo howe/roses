@@ -69,7 +69,7 @@ public interface ScannerConstants {
     /**
      * DevOps平台资源汇报接口token超时时间
      */
-    Long DEVOPS_REPORT_TIMEOUT_SECONDS = 5L;
+    Long DEVOPS_REPORT_TIMEOUT_SECONDS = 600L;
 
     /**
      * DevOps平台资源汇报接口连接超时时间
