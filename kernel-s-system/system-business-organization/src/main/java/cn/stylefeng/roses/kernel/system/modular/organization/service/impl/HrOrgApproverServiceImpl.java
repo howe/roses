@@ -114,14 +114,7 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
         // 获取当前系统一共有哪些组织审批人类型
         OrgApproverTypeEnum[] values = OrgApproverTypeEnum.values();
 
-        // 获取指定机构的绑定情况
-        LambdaQueryWrapper<HrOrgApprover> hrOrgApproverLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getOrgId, hrOrgApproverRequest.getOrgId());
-        List<HrOrgApprover> orgTotalBindingList = this.list(hrOrgApproverLambdaQueryWrapper);
-
-        // 将每个类型的用户分组
-        Map<Integer, List<HrOrgApprover>> groupingByUsers = orgTotalBindingList.stream().collect(Collectors.groupingBy(HrOrgApprover::getOrgApproverType));
-
+        // 先初始化空的绑定情况列表
         ArrayList<HrOrgApprover> resultList = new ArrayList<>();
         for (OrgApproverTypeEnum orgApproverTypeEnum : values) {
             HrOrgApprover hrOrgApprover = new HrOrgApprover();
@@ -129,12 +122,26 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
             // 设置类型
             hrOrgApprover.setOrgApproverType(orgApproverTypeEnum.getCode());
 
-            // 获取改类型下有没有人
-            List<HrOrgApprover> userList = groupingByUsers.get(orgApproverTypeEnum.getCode());
-            List<BindUserItem> bindUserItems = this.convertUserItem(userList);
-
-            hrOrgApprover.setBindUserItemList(bindUserItems);
             resultList.add(hrOrgApprover);
+        }
+
+        // 获取指定机构的绑定情况
+        LambdaQueryWrapper<HrOrgApprover> hrOrgApproverLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getOrgId, hrOrgApproverRequest.getOrgId());
+        List<HrOrgApprover> orgTotalBindingList = this.list(hrOrgApproverLambdaQueryWrapper);
+        if (ObjectUtil.isEmpty(orgTotalBindingList)) {
+            return resultList;
+        }
+
+        // 将每个类型的用户分组
+        Map<Integer, List<HrOrgApprover>> groupingByUsers = orgTotalBindingList.stream().collect(Collectors.groupingBy(HrOrgApprover::getOrgApproverType));
+
+        // 再次遍历审批类型，将用户绑定到每个审批类分组中
+        for (HrOrgApprover hrOrgApprover : resultList) {
+            // 获取改类型下有没有人
+            List<HrOrgApprover> userList = groupingByUsers.get(hrOrgApprover.getOrgApproverType());
+            List<BindUserItem> bindUserItems = this.convertUserItem(userList);
+            hrOrgApprover.setBindUserItemList(bindUserItems);
         }
 
         return resultList;
