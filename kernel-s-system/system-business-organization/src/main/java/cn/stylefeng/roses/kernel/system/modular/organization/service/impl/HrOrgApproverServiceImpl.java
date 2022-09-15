@@ -63,6 +63,7 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
                 tempApprovers.add(hrOrgApprover);
             }
             this.saveBatch(tempApprovers);
+            return;
         }
 
         // 如果有已经绑定的人，则需要判断请求参数中的人是否已经包含在内，包含在内则不用从新绑定
