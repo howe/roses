@@ -78,7 +78,7 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
             }
             if (needToAdd) {
                 HrOrgApprover hrOrgApprover = new HrOrgApprover();
-                hrOrgApprover.setOrgApproverId(orgId);
+                hrOrgApprover.setOrgId(orgId);
                 hrOrgApprover.setOrgApproverType(orgApproverType);
                 hrOrgApprover.setUserId(needToBindUserId);
                 tempApprovers.add(hrOrgApprover);
