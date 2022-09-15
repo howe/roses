@@ -141,8 +141,10 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
         for (HrOrgApprover hrOrgApprover : resultList) {
             // 获取改类型下有没有人
             List<HrOrgApprover> userList = groupingByUsers.get(hrOrgApprover.getOrgApproverType());
-            List<BindUserItem> bindUserItems = this.convertUserItem(userList);
-            hrOrgApprover.setBindUserItemList(bindUserItems);
+            if (ObjectUtil.isNotEmpty(userList)) {
+                List<BindUserItem> bindUserItems = this.convertUserItem(userList);
+                hrOrgApprover.setBindUserItemList(bindUserItems);
+            }
         }
 
         return resultList;
