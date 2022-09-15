@@ -45,6 +45,7 @@ public interface HrOrgApproverService extends IService<HrOrgApprover> {
      * 查询详情
      *
      * @param hrOrgApproverRequest 请求参数
+     * @return 查询到的组织机构负责人情况
      * @author fengshuonan
      * @date 2022/09/13 23:15
      */
@@ -53,6 +54,7 @@ public interface HrOrgApproverService extends IService<HrOrgApprover> {
     /**
      * 获取组织机构审批员绑定信息
      *
+     * @param hrOrgApproverRequest 请求参数
      * @return List<HrOrgApprover>   返回结果
      * @author fengshuonan
      * @date 2022/09/13 23:15
