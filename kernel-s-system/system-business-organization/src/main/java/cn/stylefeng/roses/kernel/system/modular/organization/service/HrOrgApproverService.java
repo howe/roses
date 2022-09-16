@@ -33,15 +33,6 @@ public interface HrOrgApproverService extends IService<HrOrgApprover> {
     void del(HrOrgApproverRequest hrOrgApproverRequest);
 
     /**
-     * 编辑
-     *
-     * @param hrOrgApproverRequest 请求参数
-     * @author fengshuonan
-     * @date 2022/09/13 23:15
-     */
-    void edit(HrOrgApproverRequest hrOrgApproverRequest);
-
-    /**
      * 查询详情
      *
      * @param hrOrgApproverRequest 请求参数

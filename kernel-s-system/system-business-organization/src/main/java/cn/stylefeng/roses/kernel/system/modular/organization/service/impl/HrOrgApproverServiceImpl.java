@@ -1,6 +1,5 @@
 package cn.stylefeng.roses.kernel.system.modular.organization.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.rule.exception.base.ServiceException;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
@@ -95,13 +94,6 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
         hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getOrgApproverType, hrOrgApproverRequest.getOrgApproverType());
         hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getUserId, hrOrgApproverRequest.getUserId());
         this.remove(hrOrgApproverLambdaQueryWrapper);
-    }
-
-    @Override
-    public void edit(HrOrgApproverRequest hrOrgApproverRequest) {
-        HrOrgApprover hrOrgApprover = this.queryHrOrgApprover(hrOrgApproverRequest);
-        BeanUtil.copyProperties(hrOrgApproverRequest, hrOrgApprover);
-        this.updateById(hrOrgApprover);
     }
 
     @Override
