@@ -26,6 +26,9 @@ package cn.stylefeng.roses.kernel.system.modular.role.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
+import cn.stylefeng.roses.kernel.db.api.pojo.druid.DruidProperties;
+import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
+import cn.stylefeng.roses.kernel.rule.util.DatabaseTypeUtil;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRoleResource;
 import cn.stylefeng.roses.kernel.system.modular.role.mapper.SysRoleResourceMapper;
@@ -52,6 +55,9 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
 
     @Resource(name = "roleResourceCacheApi")
     private CacheOperatorApi<List<String>> roleResourceCacheApi;
+
+    @Resource
+    private DruidProperties druidProperties;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -141,6 +147,16 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
         // 清除角色绑定的资源缓存
         roleResourceCacheApi.remove(String.valueOf(roleId));
 
+    }
+
+    @Override
+    public void quickSaveAll(List<SysRoleResource> sysRoleResourceList) {
+        DbTypeEnum currentDbType = DatabaseTypeUtil.getDbType(druidProperties.getUrl());
+        if (DbTypeEnum.MYSQL.equals(currentDbType)) {
+            this.getBaseMapper().insertBatchSomeColumn(sysRoleResourceList);
+        } else {
+            this.saveBatch(sysRoleResourceList, sysRoleResourceList.size());
+        }
     }
 
 }

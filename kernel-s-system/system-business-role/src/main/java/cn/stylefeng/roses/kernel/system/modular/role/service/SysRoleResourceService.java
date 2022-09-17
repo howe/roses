@@ -73,4 +73,12 @@ public interface SysRoleResourceService extends IService<SysRoleResource> {
      */
     void deleteRoleResourceListByRoleId(Long roleId);
 
+    /**
+     * 保存所有的角色资源
+     *
+     * @author fengshuonan
+     * @date 2022/9/17 14:33
+     */
+    void quickSaveAll(List<SysRoleResource> sysRoleResourceList);
+
 }

@@ -89,7 +89,7 @@ public class InitAdminService {
             sysRoleResource.setRoleId(superAdminRole.getRoleId());
             sysRoleResources.add(sysRoleResource);
         }
-        sysRoleResourceService.saveBatch(sysRoleResources, sysRoleResources.size());
+        sysRoleResourceService.quickSaveAll(sysRoleResources);
     }
 
 }
