@@ -31,16 +31,15 @@ import cn.stylefeng.roses.kernel.auth.api.LoginUserApi;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.basic.SimpleRoleInfo;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
+import cn.stylefeng.roses.kernel.db.api.context.DbOperatorContext;
 import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
-import cn.stylefeng.roses.kernel.db.api.pojo.druid.DruidProperties;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.constants.TreeConstants;
 import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.rule.tree.factory.DefaultTreeBuildFactory;
-import cn.stylefeng.roses.kernel.rule.util.DatabaseTypeUtil;
 import cn.stylefeng.roses.kernel.scanner.api.ResourceReportApi;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ReportResourceParam;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ResourceDefinition;
@@ -89,9 +88,6 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     @Resource(name = "resourceCache")
     private CacheOperatorApi<ResourceDefinition> resourceCache;
-
-    @Resource
-    private DruidProperties druidProperties;
 
     @Override
     public PageResult<SysResource> findPage(ResourceRequest resourceRequest) {
@@ -306,7 +302,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         }
 
         // 将资源存入库中
-        DbTypeEnum currentDbType = DatabaseTypeUtil.getDbType(druidProperties.getUrl());
+        DbTypeEnum currentDbType = DbOperatorContext.me().getCurrentDbType();
         if (DbTypeEnum.MYSQL.equals(currentDbType)) {
             this.getBaseMapper().insertBatchSomeColumn(allResources);
         } else {
