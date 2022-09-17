@@ -26,6 +26,7 @@ package cn.stylefeng.roses.kernel.db.starter;
 
 import cn.stylefeng.roses.kernel.db.mp.dbid.CustomDatabaseIdProvider;
 import cn.stylefeng.roses.kernel.db.mp.fieldfill.CustomMetaObjectHandler;
+import cn.stylefeng.roses.kernel.db.mp.injector.CustomInsertBatchSqlInjector;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
@@ -106,6 +107,17 @@ public class GunsMyBatisPlusAutoConfiguration {
     @Bean
     public CustomDatabaseIdProvider customDatabaseIdProvider() {
         return new CustomDatabaseIdProvider();
+    }
+
+    /**
+     * 自定义sqlInjector
+     *
+     * @author fengshuonan
+     * @date 2022/9/17 14:28
+     */
+    @Bean
+    public CustomInsertBatchSqlInjector customInsertBatchSqlInjector() {
+        return new CustomInsertBatchSqlInjector();
     }
 
 }
