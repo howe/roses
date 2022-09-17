@@ -29,6 +29,7 @@ import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.SysResourcePersistencePojo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@NoArgsConstructor
 public class DevOpsReportResourceParam extends BaseRequest {
 
     /**
