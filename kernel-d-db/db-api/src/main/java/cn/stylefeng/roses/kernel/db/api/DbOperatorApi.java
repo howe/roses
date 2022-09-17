@@ -24,6 +24,8 @@
  */
 package cn.stylefeng.roses.kernel.db.api;
 
+import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
+
 import java.util.Set;
 
 /**
@@ -33,6 +35,14 @@ import java.util.Set;
  * @date 2020/11/4 14:43
  */
 public interface DbOperatorApi {
+
+    /**
+     * 获取当前数据库连接的数据库类型
+     *
+     * @author fengshuonan
+     * @date 2022/9/17 15:27
+     */
+    DbTypeEnum getCurrentDbType();
 
     /**
      * 返回SelectCount SQL执行的结果

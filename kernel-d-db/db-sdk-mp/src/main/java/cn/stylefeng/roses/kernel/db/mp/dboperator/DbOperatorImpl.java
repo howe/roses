@@ -27,9 +27,13 @@ package cn.stylefeng.roses.kernel.db.mp.dboperator;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.db.api.DbOperatorApi;
+import cn.stylefeng.roses.kernel.db.api.pojo.druid.DruidProperties;
+import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
+import cn.stylefeng.roses.kernel.rule.util.DatabaseTypeUtil;
 import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,6 +46,14 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DbOperatorImpl implements DbOperatorApi {
+
+    @Resource
+    private DruidProperties druidProperties;
+
+    @Override
+    public DbTypeEnum getCurrentDbType() {
+        return DatabaseTypeUtil.getDbType(druidProperties.getUrl());
+    }
 
     @Override
     public int selectCount(String sql, Object... args) {
