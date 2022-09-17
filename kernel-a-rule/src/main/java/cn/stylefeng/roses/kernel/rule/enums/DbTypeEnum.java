@@ -16,27 +16,27 @@ public enum DbTypeEnum {
     /**
      * mysql
      */
-    MYSQL("mysql", "mysql", "select 1"),
+    MYSQL("jdbc:mysql", "mysql", "select 1"),
 
     /**
      * pgsql
      */
-    PG_SQL("postgresql", "pgsql", "select version()"),
+    PG_SQL("jdbc:postgresql", "pgsql", "select version()"),
 
     /**
      * oracle
      */
-    ORACLE("oracle", "oracle", "select 1 from dual"),
+    ORACLE("jdbc:oracle", "oracle", "select 1 from dual"),
 
     /**
      * 达梦（使用oracle的mapping.xml）
      */
-    DM("dm", "oracle", "select 1 from dual"),
+    DM("jdbc:dm", "oracle", "select 1 from dual"),
 
     /**
      * mssql
      */
-    MS_SQL("sqlserver", "mssql", "select 1");
+    MS_SQL("jdbc:jtds:sqlserver", "mssql", "select 1");
 
     /**
      * spring.datasource.url中包含的关键字
