@@ -33,11 +33,14 @@ import cn.stylefeng.roses.kernel.auth.api.pojo.login.basic.SimpleRoleInfo;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
+import cn.stylefeng.roses.kernel.db.api.pojo.druid.DruidProperties;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.constants.TreeConstants;
+import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.rule.tree.factory.DefaultTreeBuildFactory;
+import cn.stylefeng.roses.kernel.rule.util.DatabaseTypeUtil;
 import cn.stylefeng.roses.kernel.scanner.api.ResourceReportApi;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ReportResourceParam;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ResourceDefinition;
@@ -86,6 +89,9 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     @Resource(name = "resourceCache")
     private CacheOperatorApi<ResourceDefinition> resourceCache;
+
+    @Resource
+    private DruidProperties druidProperties;
 
     @Override
     public PageResult<SysResource> findPage(ResourceRequest resourceRequest) {
@@ -284,10 +290,10 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
             return new ArrayList<>();
         }
 
-        //根据project删除该项目下的所有资源
+        // 根据project删除该项目下的所有资源
         this.deleteResourceByProjectCode(projectCode);
 
-        //获取当前应用的所有资源
+        // 获取当前应用的所有资源
         ArrayList<SysResource> allResources = new ArrayList<>();
         ArrayList<ResourceDefinition> resourceDefinitionArrayList = new ArrayList<>();
         for (Map.Entry<String, Map<String, ResourceDefinition>> appModularResources : resourceDefinitions.entrySet()) {
@@ -299,10 +305,15 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
             }
         }
 
-        //将资源存入库中
-        this.saveBatch(allResources, allResources.size());
+        // 将资源存入库中
+        DbTypeEnum currentDbType = DatabaseTypeUtil.getDbType(druidProperties.getUrl());
+        if (DbTypeEnum.MYSQL.equals(currentDbType)) {
+            this.getBaseMapper().insertBatchSomeColumn(allResources);
+        } else {
+            this.saveBatch(allResources, allResources.size());
+        }
 
-        //将资源存入缓存一份
+        // 将资源存入缓存一份
         Map<String, ResourceDefinition> resourceDefinitionMap = ResourceFactory.orderedResourceDefinition(resourceDefinitionArrayList);
         for (Map.Entry<String, ResourceDefinition> entry : resourceDefinitionMap.entrySet()) {
             resourceCache.put(entry.getKey(), entry.getValue());
