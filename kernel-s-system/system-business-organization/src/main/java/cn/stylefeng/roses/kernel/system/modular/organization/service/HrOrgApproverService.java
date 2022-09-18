@@ -52,4 +52,28 @@ public interface HrOrgApproverService extends IService<HrOrgApprover> {
      */
     List<HrOrgApprover> getBindingList(HrOrgApproverRequest hrOrgApproverRequest);
 
+    /**
+     * 获取指定用户的部门负责人
+     *
+     * @param userId          指定用户的部门负责人
+     * @param orgApproverType 部门负责人类型
+     * @param parentLevel     从0开始，0为获取指定用户同部门的领导，1为上一级部门的领导，以此类推
+     * @return 用户的部门负责人id集合
+     * @author fengshuonan
+     * @date 2022/9/18 14:52
+     */
+    List<Long> getUserOrgApprover(Long userId, Integer orgApproverType, Integer parentLevel);
+
+    /**
+     * 获取指定部门的部门负责人
+     *
+     * @param deptId          指定部门id
+     * @param orgApproverType 部门负责人类型
+     * @param parentLevel     从0开始，0为获取指定同部门的领导，1为上一级部门的领导，以此类推
+     * @return 负责人id集合
+     * @author fengshuonan
+     * @date 2022/9/18 14:52
+     */
+    List<Long> getDeptOrgApprover(Long deptId, Integer orgApproverType, Integer parentLevel);
+
 }

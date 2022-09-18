@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.modular.organization.controller;
 
+import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -61,6 +62,19 @@ public class HrOrgApproverController {
     public ResponseData<?> delete(@RequestBody @Validated(HrOrgApproverRequest.delete.class) HrOrgApproverRequest hrOrgApproverRequest) {
         hrOrgApproverService.del(hrOrgApproverRequest);
         return new SuccessResponseData<>();
+    }
+
+    /**
+     * 获取当前用户，指定部门负责人
+     *
+     * @author fengshuonan
+     * @date 2022/9/18 14:46
+     */
+    @GetResource(name = "获取当前用户，指定部门负责人", path = "/hrOrgApprover/getAssignOrgApprover")
+    public ResponseData<List<Long>> getAssignOrgApprover(@Validated(HrOrgApproverRequest.getAssignOrgApprover.class) HrOrgApproverRequest hrOrgApproverRequest) {
+        Long userId = LoginContext.me().getLoginUser().getUserId();
+        List<Long> result = hrOrgApproverService.getUserOrgApprover(userId, hrOrgApproverRequest.getOrgApproverType(), hrOrgApproverRequest.getParentLevel());
+        return new SuccessResponseData<>(result);
     }
 
 }

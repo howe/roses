@@ -53,4 +53,17 @@ public class HrOrgApproverRequest extends BaseRequest {
     @NotEmpty(message = "用户id集合不能为空", groups = {add.class})
     private List<Long> userIdList;
 
+
+    /**
+     * 上级负责人的级别，从0开始，0为同部门领导，1为上一级领导，以此类推
+     */
+    @ChineseDescription("上级负责人的级别，从0开始，0为同部门领导，1为上一级领导，以此类推")
+    private Integer parentLevel;
+
+    /**
+     * 参数校验分组：获取指定部门的负责人
+     */
+    public @interface getAssignOrgApprover {
+    }
+
 }

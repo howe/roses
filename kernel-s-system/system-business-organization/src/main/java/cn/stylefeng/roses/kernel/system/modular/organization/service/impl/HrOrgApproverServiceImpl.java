@@ -2,10 +2,13 @@ package cn.stylefeng.roses.kernel.system.modular.organization.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.rule.exception.base.ServiceException;
+import cn.stylefeng.roses.kernel.system.api.OrganizationServiceApi;
+import cn.stylefeng.roses.kernel.system.api.UserOrgServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
 import cn.stylefeng.roses.kernel.system.api.enums.OrgApproverTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.BindUserItem;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserDTO;
+import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserOrgDTO;
 import cn.stylefeng.roses.kernel.system.modular.organization.entity.HrOrgApprover;
 import cn.stylefeng.roses.kernel.system.modular.organization.enums.HrOrgApproverExceptionEnum;
 import cn.stylefeng.roses.kernel.system.modular.organization.mapper.HrOrgApproverMapper;
@@ -32,6 +35,13 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
 
     @Resource
     private UserServiceApi userServiceApi;
+
+    @Resource
+    private OrganizationServiceApi organizationServiceApi;
+
+    @Resource
+    private UserOrgServiceApi userOrgServiceApi;
+
 
     @Override
     public void bindUserList(HrOrgApproverRequest hrOrgApproverRequest) {
@@ -140,6 +150,42 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
         }
 
         return resultList;
+    }
+
+    @Override
+    public List<Long> getUserOrgApprover(Long userId, Integer orgApproverType, Integer parentLevel) {
+
+        // 获取用户的所属机构id
+        SysUserOrgDTO sysUserOrgDTO = userOrgServiceApi.getUserOrgByUserId(userId);
+        Long orgId = sysUserOrgDTO.getOrgId();
+
+        // 用户没有机构，则返回空
+        if (ObjectUtil.isEmpty(orgId)) {
+            return new ArrayList<>();
+        }
+
+        // 获取指定部门的负责人id信息
+        return getDeptOrgApprover(orgId, orgApproverType, parentLevel);
+    }
+
+    @Override
+    public List<Long> getDeptOrgApprover(Long deptId, Integer orgApproverType, Integer parentLevel) {
+
+        // 根据参数的级别，获取组织机构的父级机构
+        Long parentLevelOrgId = this.organizationServiceApi.getParentLevelOrgId(deptId, parentLevel);
+
+        // 如果没有上级组织机构，则直接返回为空
+        if (ObjectUtil.isEmpty(parentLevelOrgId)) {
+            return new ArrayList<>();
+        }
+
+        // 获取该组织机构的指定类型的负责人
+        LambdaQueryWrapper<HrOrgApprover> hrOrgApproverLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getOrgId, parentLevelOrgId);
+        hrOrgApproverLambdaQueryWrapper.eq(HrOrgApprover::getOrgApproverType, orgApproverType);
+        List<HrOrgApprover> userList = this.list(hrOrgApproverLambdaQueryWrapper);
+
+        return userList.stream().map(HrOrgApprover::getUserId).collect(Collectors.toList());
     }
 
     /**
