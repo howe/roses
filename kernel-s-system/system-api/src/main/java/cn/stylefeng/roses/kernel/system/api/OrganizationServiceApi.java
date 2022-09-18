@@ -71,4 +71,15 @@ public interface OrganizationServiceApi {
      */
     List<OrganizationTreeNode> getDeptOrgTree(Long orgId);
 
+    /**
+     * 获取指定组织机构的上级组织机构是什么
+     *
+     * @param orgId          指定机构id
+     * @param parentLevelNum 上级机构的层级数，从0开始
+     * @return 上级机构的id
+     * @author fengshuonan
+     * @date 2022/9/18 15:02
+     */
+    Long getParentLevelOrgId(Long orgId, Integer parentLevelNum);
+
 }

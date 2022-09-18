@@ -29,6 +29,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
@@ -410,6 +411,48 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
             treeNodeList.add(treeNode);
         }
         return new DefaultTreeBuildFactory<OrganizationTreeNode>().doTreeBuild(treeNodeList);
+    }
+
+    @Override
+    public Long getParentLevelOrgId(Long orgId, Integer parentLevelNum) {
+
+        if (ObjectUtil.isEmpty(orgId) || ObjectUtil.isEmpty(parentLevelNum)) {
+            return null;
+        }
+
+        // 如果上级层数为0，则直接返回参数的orgId，代表同级别组织机构
+        if (parentLevelNum == 0) {
+            return orgId;
+        }
+
+        // 获取当前部门的所有父级id
+        HrOrganization hrOrganization = this.getById(orgId);
+        if (hrOrganization == null || StrUtil.isEmpty(hrOrganization.getOrgPids())) {
+            return null;
+        }
+        String orgParentIdListStr = hrOrganization.getOrgPids();
+        String[] orgParentIdList = orgParentIdListStr.split(",");
+        String[] orgParentIdListReverse = ArrayUtil.reverse(orgParentIdList);
+
+        // 根据请求参数，需要从orgParentIdListReverse获取的下表
+        int needGetArrayIndex = parentLevelNum - 1;
+
+        // orgParentIdListReverse最大能提供的下表，这里为什么是-2，因为所有组织机构，最顶级的父级id是[-1]，[-1]是不存在
+        int maxCanGetIndex = orgParentIdListReverse.length - 2;
+
+        // 如果没有最顶级的上级，则他本身就是最顶级上级
+        if (maxCanGetIndex < 0) {
+            return orgId;
+        }
+
+        // 根据参数传参，进行获取上级的操作
+        String orgIdString;
+        if (needGetArrayIndex <= (maxCanGetIndex)) {
+            orgIdString = orgParentIdListReverse[needGetArrayIndex];
+        } else {
+            orgIdString = orgParentIdListReverse[maxCanGetIndex];
+        }
+        return Long.valueOf(orgIdString);
     }
 
     /**
