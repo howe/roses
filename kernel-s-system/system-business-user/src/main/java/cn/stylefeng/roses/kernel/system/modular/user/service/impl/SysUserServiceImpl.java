@@ -452,9 +452,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUserRequest.setUserScopeIds(null);
         }
         // 如果是按部门数据划分
-        else if (dataScopeTypeEnums.contains(DataScopeTypeEnum.DEPT)
-                || dataScopeTypeEnums.contains(DataScopeTypeEnum.DEPT_WITH_CHILD)
-                || dataScopeTypeEnums.contains(DataScopeTypeEnum.DEFINE)) {
+        else if (dataScopeTypeEnums.contains(DataScopeTypeEnum.DEPT) || dataScopeTypeEnums.contains(DataScopeTypeEnum.DEPT_WITH_CHILD) || dataScopeTypeEnums.contains(DataScopeTypeEnum.DEFINE)) {
             sysUserRequest.setScopeOrgIds(dataScopeOrganizationIds);
             sysUserRequest.setUserScopeIds(null);
         }
@@ -750,7 +748,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUserLambdaQueryWrapper.eq(ObjectUtil.isNotEmpty(statusFlag), SysUser::getStatusFlag, statusFlag);
 
         // 按条件查询的
-        sysUserLambdaQueryWrapper.nested(ObjectUtil.isNotEmpty(condition), i -> i.like(SysUser::getRealName, condition).or(j -> j.like(SysUser::getAccount, condition)));
+        sysUserLambdaQueryWrapper.nested(ObjectUtil.isNotEmpty(condition), i -> i.like(SysUser::getRealName, condition)
+                .or(j -> j.like(SysUser::getAccount, condition)));
 
         List<SysUser> list = this.list(sysUserLambdaQueryWrapper);
         ArrayList<SimpleDict> results = new ArrayList<>();
@@ -1032,6 +1031,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         queryWrapper.eq(ObjectUtil.isNotEmpty(sysUserRequest.getUserId()), SysUser::getUserId, sysUserRequest.getUserId());
         queryWrapper.like(ObjectUtil.isNotEmpty(sysUserRequest.getAccount()), SysUser::getAccount, sysUserRequest.getAccount());
         queryWrapper.like(ObjectUtil.isNotEmpty(sysUserRequest.getRealName()), SysUser::getRealName, sysUserRequest.getRealName());
+
+        // 根据text查询
+        if (ObjectUtil.isNotEmpty(sysUserRequest.getSearchText())) {
+            queryWrapper.like(SysUser::getAccount, sysUserRequest.getSearchText()).or().like(SysUser::getRealName, sysUserRequest.getSearchText()).or()
+                    .like(SysUser::getNickName, sysUserRequest.getSearchText());
+        }
 
         return queryWrapper;
     }
