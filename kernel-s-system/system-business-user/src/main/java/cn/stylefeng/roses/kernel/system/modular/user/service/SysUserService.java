@@ -221,7 +221,7 @@ public interface SysUserService extends IService<SysUser>, UserServiceApi {
     List<UserSelectTreeNode> getUserTreeNodeList(Long orgId, List<UserSelectTreeNode> treeNodeList);
 
     /**
-     * 用户下拉列表选择
+     * 查询所有用户下拉列表（不含管理员）
      *
      * @param sysUserRequest 查询参数
      * @return 用户列表集合
@@ -229,6 +229,16 @@ public interface SysUserService extends IService<SysUser>, UserServiceApi {
      * @date 2020/11/6 13:47
      */
     List<SimpleDict> selector(SysUserRequest sysUserRequest);
+
+    /**
+     * 查询所有用户下拉列表（含管理员）
+     *
+     * @param sysUserRequest 查询参数
+     * @return 用户列表集合
+     * @author fengshuonan
+     * @date 2022/9/19 20:51
+     */
+    List<SimpleDict> selectorWithAdmin(SysUserRequest sysUserRequest);
 
     /**
      * 批量删除用户

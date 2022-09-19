@@ -593,26 +593,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public List<SimpleDict> selector(SysUserRequest sysUserRequest) {
+        return this.selectUserList(sysUserRequest, false);
+    }
 
-        LambdaQueryWrapper<SysUser> wrapper = createWrapper(sysUserRequest);
-
-        // 排除超级管理员
-        wrapper.ne(SysUser::getSuperAdminFlag, YesOrNotEnum.Y.getCode());
-
-        // 只查询id和name
-        wrapper.select(SysUser::getRealName, SysUser::getUserId, SysUser::getAccount);
-        List<SysUser> list = this.list(wrapper);
-
-        ArrayList<SimpleDict> results = new ArrayList<>();
-        for (SysUser sysUser : list) {
-            SimpleDict simpleDict = new SimpleDict();
-            simpleDict.setId(sysUser.getUserId());
-            simpleDict.setName(sysUser.getRealName());
-            simpleDict.setCode(sysUser.getAccount());
-            results.add(simpleDict);
-        }
-
-        return results;
+    @Override
+    public List<SimpleDict> selectorWithAdmin(SysUserRequest sysUserRequest) {
+        return this.selectUserList(sysUserRequest, true);
     }
 
     @Override
@@ -1039,6 +1025,39 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
 
         return queryWrapper;
+    }
+
+    /**
+     * 查询用户下拉列表
+     *
+     * @param sysUserRequest 请求查询条件
+     * @param withAdminFlag  是否携带admin用户，true-携带
+     * @author fengshuonan
+     * @date 2022/9/19 20:55
+     */
+    private List<SimpleDict> selectUserList(SysUserRequest sysUserRequest, boolean withAdminFlag) {
+
+        LambdaQueryWrapper<SysUser> wrapper = createWrapper(sysUserRequest);
+
+        // 排除超级管理员
+        if (!withAdminFlag) {
+            wrapper.ne(SysUser::getSuperAdminFlag, YesOrNotEnum.Y.getCode());
+        }
+
+        // 只查询id和name
+        wrapper.select(SysUser::getRealName, SysUser::getUserId, SysUser::getAccount);
+        List<SysUser> list = this.list(wrapper);
+
+        ArrayList<SimpleDict> results = new ArrayList<>();
+        for (SysUser sysUser : list) {
+            SimpleDict simpleDict = new SimpleDict();
+            simpleDict.setId(sysUser.getUserId());
+            simpleDict.setName(sysUser.getRealName());
+            simpleDict.setCode(sysUser.getAccount());
+            results.add(simpleDict);
+        }
+
+        return results;
     }
 
 }

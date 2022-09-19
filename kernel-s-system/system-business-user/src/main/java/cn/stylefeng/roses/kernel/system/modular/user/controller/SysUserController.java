@@ -258,6 +258,8 @@ public class SysUserController {
 
     /**
      * 用户下拉列表，可以根据姓名搜索
+     * <p>
+     * 本接口不查询超级管理员
      *
      * @param sysUserRequest 请求参数：name 姓名(可选)
      * @return 返回除超级管理员外的用户列表
@@ -267,6 +269,21 @@ public class SysUserController {
     @GetResource(name = "系统用户_选择器", path = "/sysUser/selector")
     public ResponseData<List<SimpleDict>> selector(SysUserRequest sysUserRequest) {
         return new SuccessResponseData<>(sysUserService.selector(sysUserRequest));
+    }
+
+    /**
+     * 用户下拉列表，可以根据姓名搜索
+     * <p>
+     * 本接口可查询到超级管理员，包含所有用户
+     *
+     * @param sysUserRequest 请求参数：name 姓名(可选)
+     * @return 返回除超级管理员外的用户列表
+     * @author luojie
+     * @date 2020/11/6 09:49
+     */
+    @GetResource(name = "系统用户_选择器", path = "/sysUser/selectorAll")
+    public ResponseData<List<SimpleDict>> selectorAll(SysUserRequest sysUserRequest) {
+        return new SuccessResponseData<>(sysUserService.selectorWithAdmin(sysUserRequest));
     }
 
     /**
