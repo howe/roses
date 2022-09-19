@@ -56,6 +56,7 @@ import cn.stylefeng.roses.kernel.file.modular.mapper.SysFileInfoMapper;
 import cn.stylefeng.roses.kernel.file.modular.service.SysFileInfoService;
 import cn.stylefeng.roses.kernel.file.modular.service.SysFileStorageService;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
+import cn.stylefeng.roses.kernel.rule.util.StrFilterUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -151,7 +152,8 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         // 拼接文件可直接访问的url
         String fileAuthUrl;
         if (YesOrNotEnum.Y.getCode().equals(sysFileInfoRequest.getSecretFlag())) {
-            fileAuthUrl = fileOperatorApi.getFileAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(), FileConfigExpander.getDefaultFileTimeoutSeconds() * 1000);
+            fileAuthUrl = fileOperatorApi.getFileAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(),
+                    FileConfigExpander.getDefaultFileTimeoutSeconds() * 1000);
         } else {
             fileAuthUrl = fileOperatorApi.getFileUnAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName());
         }
@@ -220,7 +222,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         if (ObjectUtil.isNotEmpty(sysFileInfoRequest.getFileCode())) {
             wrapper.or().eq(SysFileInfo::getFileCode, sysFileInfoRequest.getFileCode());
         }
-        
+
         List<SysFileInfo> fileInfos = this.list(wrapper);
 
         // 批量删除
@@ -243,7 +245,8 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         List<SysFileInfoListResponse> list = this.baseMapper.fileInfoList(page, sysFileInfoRequest);
 
         // 排除defaultAvatar.png这个图片,这个是默认头像
-        List<SysFileInfoListResponse> newList = list.stream().filter(i -> !i.getFileOriginName().equals(FileConstants.DEFAULT_AVATAR_FILE_OBJ_NAME)).collect(Collectors.toList());
+        List<SysFileInfoListResponse> newList = list.stream().filter(i -> !i.getFileOriginName().equals(FileConstants.DEFAULT_AVATAR_FILE_OBJ_NAME))
+                .collect(Collectors.toList());
 
         // 拼接图片url地址
         for (SysFileInfoListResponse sysFileInfoListResponse : newList) {
@@ -373,6 +376,10 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
     @Override
     public void previewByBucketAndObjName(SysFileInfoRequest sysFileInfoRequest, HttpServletResponse response) {
 
+        if (StrUtil.isNotBlank(sysFileInfoRequest.getFileObjectName())) {
+            sysFileInfoRequest.setFileObjectName(StrFilterUtil.filterFileName(sysFileInfoRequest.getFileObjectName()));
+        }
+
         // 判断文件是否需要鉴权，需要鉴权的需要带token访问
         LambdaQueryWrapper<SysFileInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysFileInfo::getFileObjectName, sysFileInfoRequest.getFileObjectName());
@@ -452,7 +459,8 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
             return this.sysFileStorageService.getFileAuthUrl(String.valueOf(fileId));
         } else {
             // 返回第三方存储文件url
-            return fileOperatorApi.getFileAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(), FileConfigExpander.getDefaultFileTimeoutSeconds());
+            return fileOperatorApi.getFileAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(),
+                    FileConfigExpander.getDefaultFileTimeoutSeconds());
         }
     }
 
