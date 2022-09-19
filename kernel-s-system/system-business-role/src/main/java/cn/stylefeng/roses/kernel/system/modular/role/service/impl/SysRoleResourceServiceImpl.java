@@ -24,9 +24,11 @@
  */
 package cn.stylefeng.roses.kernel.system.modular.role.service.impl;
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 import cn.stylefeng.roses.kernel.db.api.context.DbOperatorContext;
+import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRoleResource;
@@ -149,7 +151,11 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
     public void quickSaveAll(List<SysRoleResource> sysRoleResourceList) {
         DbTypeEnum currentDbType = DbOperatorContext.me().getCurrentDbType();
         if (DbTypeEnum.MYSQL.equals(currentDbType)) {
-            this.getBaseMapper().insertBatchSomeColumn(sysRoleResourceList);
+            // 分批插入数据
+            List<List<SysRoleResource>> split = ListUtil.split(sysRoleResourceList, RuleConstants.DEFAULT_BATCH_INSERT_SIZE);
+            for (List<SysRoleResource> sysRoleResources : split) {
+                this.getBaseMapper().insertBatchSomeColumn(sysRoleResources);
+            }
         } else {
             this.saveBatch(sysRoleResourceList, sysRoleResourceList.size());
         }

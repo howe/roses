@@ -69,25 +69,30 @@ public class ResourceReportListener extends ApplicationReadyListener implements 
         // 如果项目还没进行资源扫描
         if (!InitScanFlagHolder.getFlag()) {
 
+            long beginSaveLocal = System.currentTimeMillis();
+
             // 获取当前系统的所有资源
             ResourceCollectorApi resourceCollectorApi = applicationContext.getBean(ResourceCollectorApi.class);
             Map<String, Map<String, ResourceDefinition>> modularResources = resourceCollectorApi.getModularResources();
 
             // 持久化资源，发送资源到资源服务或本项目
             ResourceReportApi resourceService = applicationContext.getBean(ResourceReportApi.class);
-            List<SysResourcePersistencePojo> persistencePojos = resourceService.reportResourcesAndGetResult(new ReportResourceParam(scannerProperties.getAppCode(), modularResources));
+            List<SysResourcePersistencePojo> persistencePojos =
+                    resourceService.reportResourcesAndGetResult(new ReportResourceParam(scannerProperties.getAppCode(), modularResources));
+
+            long saveLocalFinish = System.currentTimeMillis();
+            log.info("存储本地接口资源完成，耗时：{}ms", (saveLocalFinish - beginSaveLocal));
 
             // 向DevOps一体化平台汇报资源
             DevOpsReportProperties devOpsReportProperties = applicationContext.getBean(DevOpsReportProperties.class);
             // 如果配置了相关属性则进行DevOps资源汇报
-            if (ObjectUtil.isAllNotEmpty(devOpsReportProperties,
-                    devOpsReportProperties.getServerHost(),
-                    devOpsReportProperties.getProjectInteractionSecretKey(),
-                    devOpsReportProperties.getProjectUniqueCode(),
+            if (ObjectUtil.isAllNotEmpty(devOpsReportProperties, devOpsReportProperties.getServerHost(),
+                    devOpsReportProperties.getProjectInteractionSecretKey(), devOpsReportProperties.getProjectUniqueCode(),
                     devOpsReportProperties.getServerHost())) {
                 DevOpsReportApi devOpsReportApi = applicationContext.getBean(DevOpsReportApi.class);
                 try {
                     devOpsReportApi.reportResources(devOpsReportProperties, persistencePojos);
+                    log.info("向DevOps平台汇报资源信息完成，耗时：{}ms", (System.currentTimeMillis() - saveLocalFinish));
                 } catch (Exception e) {
                     log.error("向DevOps平台汇报异常出现网络错误，如无法联通DevOps平台可关闭相关配置。", e);
                 }

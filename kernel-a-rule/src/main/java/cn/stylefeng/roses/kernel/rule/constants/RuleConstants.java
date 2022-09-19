@@ -97,4 +97,9 @@ public interface RuleConstants {
      */
     String SYSTEM_CONFIG_INIT_FLAG_NAME = "SYS_CONFIG_INIT_FLAG";
 
+    /**
+     * 默认分批插入mysql数据的大小
+     */
+    int DEFAULT_BATCH_INSERT_SIZE = 100;
+
 }

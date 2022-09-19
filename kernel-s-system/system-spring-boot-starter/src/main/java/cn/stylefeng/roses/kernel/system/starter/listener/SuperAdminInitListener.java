@@ -49,7 +49,9 @@ public class SuperAdminInitListener extends ApplicationReadyListener implements 
 
     @Override
     public void eventCallback(ApplicationReadyEvent event) {
+        long startTime = System.currentTimeMillis();
         initAdminService.initSuperAdmin();
+        log.info("初始化超级管理员权限完成，耗时：{}ms", (System.currentTimeMillis() - startTime));
     }
 
     @Override
