@@ -58,7 +58,7 @@ public class HrOrgApproverRequest extends BaseRequest {
      * 上级负责人的级别，从0开始，0为同部门领导，1为上一级领导，以此类推
      */
     @ChineseDescription("上级负责人的级别，从0开始，0为同部门领导，1为上一级领导，以此类推")
-    @NotNull(message = "组织审批类型不能为空", groups = {getAssignOrgApprover.class})
+    @NotNull(message = "上级负责人的级别不能为空，从0开始", groups = {getAssignOrgApprover.class})
     private Integer parentLevel;
 
     /**
