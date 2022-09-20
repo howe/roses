@@ -67,18 +67,16 @@ public enum DbTypeEnum {
      */
     public static String getTypeByUrl(String url) {
         if (url == null) {
-            return MYSQL.getUrlWords();
+            return MYSQL.name();
         }
-        if (url.contains(DbTypeEnum.ORACLE.getUrlWords())) {
-            return ORACLE.getUrlWords();
-        } else if (url.contains(DbTypeEnum.DM.getUrlWords())) {
-            return DM.getUrlWords();
-        } else if (url.contains(DbTypeEnum.MS_SQL.getUrlWords())) {
-            return MS_SQL.getUrlWords();
-        } else if (url.contains(DbTypeEnum.PG_SQL.getUrlWords())) {
-            return PG_SQL.getUrlWords();
+
+        for (DbTypeEnum value : DbTypeEnum.values()) {
+            if (url.contains(value.getUrlWords())) {
+                return value.name();
+            }
         }
-        return MYSQL.getUrlWords();
+
+        return MYSQL.name();
     }
 
 }
