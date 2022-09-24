@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.stylefeng.roses.kernel.wrapper.starter.GunsWrapperAutoConfiguration
+  cn.stylefeng.roses.kernel.wrapper.starter.GunsWrapperAutoConfiguration,\
+  cn.stylefeng.roses.kernel.wrapper.starter.GunsDateConvertAutoConfiguration
