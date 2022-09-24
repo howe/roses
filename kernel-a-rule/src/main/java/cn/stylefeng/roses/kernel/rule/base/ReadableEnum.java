@@ -40,6 +40,7 @@ public interface ReadableEnum<T> {
      * <p>
      * 例如：状态枚举中的装填值，1 或 2
      *
+     * @return 返回枚举具有标示性的key或id
      * @author fengshuonan
      * @date 2022/9/6 11:29
      */
@@ -50,6 +51,7 @@ public interface ReadableEnum<T> {
      * <p>
      * 例如：状态枚举中的状态名称，"启用" 或 "禁用"
      *
+     * @return 返回枚举具有可读性的value值
      * @author fengshuonan
      * @date 2022/9/6 11:30
      */
