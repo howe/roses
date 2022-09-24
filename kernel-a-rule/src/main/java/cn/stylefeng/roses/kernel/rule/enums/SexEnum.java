@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.rule.enums;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -37,7 +38,7 @@ import lombok.Getter;
  * @date 2020/10/17 10:01
  */
 @Getter
-public enum SexEnum implements ReadableEnum {
+public enum SexEnum implements ReadableEnum<SexEnum> {
 
     /**
      * 男
@@ -103,5 +104,18 @@ public enum SexEnum implements ReadableEnum {
     @Override
     public Object getName() {
         return this.message;
+    }
+
+    @Override
+    public SexEnum parseToEnum(String originValue) {
+        if (ObjectUtil.isEmpty(originValue)) {
+            return null;
+        }
+        for (SexEnum value : SexEnum.values()) {
+            if (value.code.equals(originValue)) {
+                return value;
+            }
+        }
+        return null;
     }
 }

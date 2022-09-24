@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.rule.enums;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -37,7 +38,7 @@ import lombok.Getter;
  * @date 2020/4/13 22:59
  */
 @Getter
-public enum YesOrNotEnum implements ReadableEnum {
+public enum YesOrNotEnum implements ReadableEnum<YesOrNotEnum> {
 
     /**
      * 是
@@ -95,6 +96,19 @@ public enum YesOrNotEnum implements ReadableEnum {
     @Override
     public Object getName() {
         return this.message;
+    }
+
+    @Override
+    public YesOrNotEnum parseToEnum(String originValue) {
+        if (ObjectUtil.isEmpty(originValue)) {
+            return null;
+        }
+        for (YesOrNotEnum value : YesOrNotEnum.values()) {
+            if (value.code.equals(originValue)) {
+                return value;
+            }
+        }
+        return null;
     }
 
 }

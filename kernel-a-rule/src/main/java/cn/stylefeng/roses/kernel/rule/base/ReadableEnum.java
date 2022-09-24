@@ -33,7 +33,7 @@ package cn.stylefeng.roses.kernel.rule.base;
  * @author fengshuonan
  * @date 2022/9/6 11:27
  */
-public interface ReadableEnum {
+public interface ReadableEnum<T> {
 
     /**
      * 获取枚举中具有标识性的key或者id
@@ -54,5 +54,15 @@ public interface ReadableEnum {
      * @date 2022/9/6 11:30
      */
     Object getName();
+
+    /**
+     * 将原始值转化为具体枚举对象
+     *
+     * @param originValue 原始值
+     * @return T 具体枚举
+     * @author fengshuonan
+     * @date 2022/9/24 15:17
+     */
+    T parseToEnum(String originValue);
 
 }

@@ -24,6 +24,8 @@
  */
 package cn.stylefeng.roses.kernel.rule.enums;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -37,7 +39,7 @@ import lombok.Getter;
  * @date 2020/10/14 21:31
  */
 @Getter
-public enum StatusEnum implements ReadableEnum {
+public enum StatusEnum implements ReadableEnum<StatusEnum> {
 
     /**
      * 启用
@@ -86,5 +88,18 @@ public enum StatusEnum implements ReadableEnum {
     @Override
     public Object getName() {
         return this.message;
+    }
+
+    @Override
+    public StatusEnum parseToEnum(String originValue) {
+        if (ObjectUtil.isEmpty(originValue)) {
+            return null;
+        }
+        for (StatusEnum value : StatusEnum.values()) {
+            if (value.code.equals(Convert.toInt(originValue))) {
+                return value;
+            }
+        }
+        return null;
     }
 }

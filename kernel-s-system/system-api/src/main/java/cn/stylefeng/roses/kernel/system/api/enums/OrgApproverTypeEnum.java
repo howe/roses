@@ -24,6 +24,8 @@
  */
 package cn.stylefeng.roses.kernel.system.api.enums;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import lombok.Getter;
 
@@ -34,7 +36,7 @@ import lombok.Getter;
  * @date 2022/9/13 23:16
  */
 @Getter
-public enum OrgApproverTypeEnum implements ReadableEnum {
+public enum OrgApproverTypeEnum implements ReadableEnum<OrgApproverTypeEnum> {
 
     /**
      * 负责人
@@ -103,5 +105,18 @@ public enum OrgApproverTypeEnum implements ReadableEnum {
     @Override
     public Object getName() {
         return this.name;
+    }
+
+    @Override
+    public OrgApproverTypeEnum parseToEnum(String originValue) {
+        if (ObjectUtil.isEmpty(originValue)) {
+            return null;
+        }
+        for (OrgApproverTypeEnum value : OrgApproverTypeEnum.values()) {
+            if (value.code.equals(Convert.toInt(originValue))) {
+                return value;
+            }
+        }
+        return null;
     }
 }
