@@ -5,6 +5,7 @@ import cn.stylefeng.roses.kernel.rule.annotation.SimpleFieldFormat;
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import cn.stylefeng.roses.kernel.rule.base.SimpleFieldFormatProcess;
 import cn.stylefeng.roses.kernel.rule.enums.FormatTypeEnum;
+import cn.stylefeng.roses.kernel.wrapper.field.enums.EnumFieldFormatDeserializer;
 import cn.stylefeng.roses.kernel.wrapper.field.enums.EnumFieldFormatSerializer;
 import cn.stylefeng.roses.kernel.wrapper.field.simple.SimpleFieldFormatSerializer;
 import com.fasterxml.jackson.databind.introspect.Annotated;
@@ -46,7 +47,7 @@ public class CustomJacksonIntrospector extends JacksonAnnotationIntrospector {
             FormatTypeEnum formatTypeEnum = enumFieldFormat.formatType();
 
             // 获取具体的处理枚举
-            Class<? extends ReadableEnum> process = enumFieldFormat.processEnum();
+            Class<? extends ReadableEnum<?>> process = enumFieldFormat.processEnum();
 
             // 创建对应的序列化模式
             return new EnumFieldFormatSerializer(formatTypeEnum, process);
@@ -55,4 +56,21 @@ public class CustomJacksonIntrospector extends JacksonAnnotationIntrospector {
         return super.findSerializer(annotated);
     }
 
+    @Override
+    public Object findDeserializer(Annotated annotated) {
+
+        // 枚举的反序列化
+        EnumFieldFormat enumFieldFormat = annotated.getAnnotation(EnumFieldFormat.class);
+
+        if (enumFieldFormat != null && enumFieldFormat.processEnum() != null) {
+
+            // 获取具体的处理枚举
+            Class<? extends ReadableEnum<?>> process = enumFieldFormat.processEnum();
+
+            // 创建对应的序列化模式
+            return new EnumFieldFormatDeserializer(process);
+        }
+
+        return super.findDeserializer(annotated);
+    }
 }

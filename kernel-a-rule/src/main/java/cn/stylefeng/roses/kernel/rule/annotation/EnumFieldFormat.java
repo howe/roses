@@ -50,6 +50,6 @@ public @interface EnumFieldFormat {
     /**
      * 具体处理值转化过程的枚举【必传】
      */
-    Class<? extends ReadableEnum> processEnum();
+    Class<? extends ReadableEnum<?>> processEnum();
 
 }
