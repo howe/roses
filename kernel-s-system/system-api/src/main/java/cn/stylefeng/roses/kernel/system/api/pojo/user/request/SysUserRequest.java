@@ -177,7 +177,7 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 用户id集合(用在批量删除)
      */
-    @NotEmpty(message = "用户id集合不能为空", groups = batchDelete.class)
+    @NotEmpty(message = "用户id集合不能为空", groups = {batchDelete.class, getUserList.class})
     @ChineseDescription("用户id集合(用在批量删除)")
     private List<Long> userIds;
 
@@ -269,6 +269,12 @@ public class SysUserRequest extends BaseRequest {
      * 参数校验分组：注册用户
      */
     public @interface reg {
+    }
+
+    /**
+     * 参数校验分组：获取用户列表，通过用户id集合
+     */
+    public @interface getUserList {
     }
 
 }

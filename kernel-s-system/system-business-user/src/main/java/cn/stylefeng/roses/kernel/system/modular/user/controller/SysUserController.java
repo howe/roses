@@ -329,4 +329,16 @@ public class SysUserController {
     public ResponseData<List<SimpleDict>> getUserListByConditions(SysUserRequest sysUserRequest) {
         return new SuccessResponseData<>(sysUserService.getUserListByConditions(sysUserRequest));
     }
+
+    /**
+     * 获取用户列表，通过用户id集合
+     *
+     * @author fengshuonan
+     * @date 2022/9/25 10:27
+     */
+    @PostResource(name = "获取用户列表，通过用户id集合", path = "/sysUser/getUsersByUserIds")
+    public ResponseData<List<SysUserDTO>> getUsersByUserIds(@RequestBody @Validated(SysUserRequest.getUserList.class) SysUserRequest sysUserRequest) {
+        return new SuccessResponseData<>(sysUserService.getUserInfoList(sysUserRequest.getUserIds()));
+    }
+
 }

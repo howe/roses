@@ -894,7 +894,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<SysUserDTO> getUserInfoList(Set<Long> userIdSet) {
+    public List<SysUserDTO> getUserInfoList(List<Long> userIdSet) {
 
         if (ObjectUtil.isEmpty(userIdSet)) {
             return new ArrayList<>();

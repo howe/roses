@@ -140,7 +140,7 @@ public interface UserServiceApi {
      * @author fengshuonan
      * @date 2022/9/25 10:14
      */
-    List<SysUserDTO> getUserInfoList(Set<Long> userIdSet);
+    List<SysUserDTO> getUserInfoList(List<Long> userIdSet);
 
     /**
      * 查询全部用户ID(剔除被删除的)
