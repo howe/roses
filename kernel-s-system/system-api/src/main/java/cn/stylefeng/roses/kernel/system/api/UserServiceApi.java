@@ -133,6 +133,16 @@ public interface UserServiceApi {
     SysUserDTO getUserInfoByUserId(Long userId);
 
     /**
+     * 根据用户ID列表获取用户信息集合
+     *
+     * @param userIdSet 用户id集合
+     * @return 返回用户所有信息
+     * @author fengshuonan
+     * @date 2022/9/25 10:14
+     */
+    List<SysUserDTO> getUserInfoList(Set<Long> userIdSet);
+
+    /**
      * 查询全部用户ID(剔除被删除的)
      *
      * @param sysUserRequest 查询参数

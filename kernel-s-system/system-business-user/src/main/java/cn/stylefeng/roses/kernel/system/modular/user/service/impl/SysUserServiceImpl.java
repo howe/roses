@@ -894,6 +894,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public List<SysUserDTO> getUserInfoList(Set<Long> userIdSet) {
+
+        if (ObjectUtil.isEmpty(userIdSet)) {
+            return new ArrayList<>();
+        }
+
+        ArrayList<SysUserDTO> sysUserDTOS = new ArrayList<>();
+        for (Long userId : userIdSet) {
+            SysUserDTO sysUser = this.getUserInfoByUserId(userId);
+            sysUserDTOS.add(sysUser);
+        }
+
+        return sysUserDTOS;
+    }
+
+    @Override
     public List<Long> queryAllUserIdList(SysUserRequest sysUserRequest) {
 
         LambdaQueryWrapper<SysUser> wrapper = createWrapper(sysUserRequest);
