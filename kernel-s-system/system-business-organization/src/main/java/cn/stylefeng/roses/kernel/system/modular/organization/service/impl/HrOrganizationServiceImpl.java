@@ -499,6 +499,16 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
         // 拼接机构id查询条件
         queryWrapper.eq(ObjectUtil.isNotEmpty(orgId), HrOrganization::getOrgId, orgId);
 
+        // 拼接限制查询范围列表
+        List<Long> orgIdLimit = hrOrganizationRequest.getOrgIdLimit();
+        if (ObjectUtil.isNotEmpty(orgIdLimit)) {
+            queryWrapper.nested(qw -> {
+                for (Long itemOrgId : orgIdLimit) {
+                    qw.or().like(HrOrganization::getOrgPids, itemOrgId);
+                }
+            });
+        }
+
         return queryWrapper;
     }
 

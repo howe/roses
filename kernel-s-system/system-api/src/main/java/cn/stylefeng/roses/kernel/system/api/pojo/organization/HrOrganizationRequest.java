@@ -35,6 +35,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 系统组织机构表
@@ -133,6 +134,12 @@ public class HrOrganizationRequest extends BaseRequest {
      */
     @ChineseDescription("动态表单数据")
     private ExpandDataInfo expandDataInfo;
+
+    /**
+     * 限制从哪些组织机构中查询，传组织机构id集合
+     */
+    @ChineseDescription("限制从哪些组织机构中查询")
+    private List<Long> orgIdLimit;
 
     /**
      * 组织机构树zTree形式
