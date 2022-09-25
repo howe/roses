@@ -53,7 +53,12 @@ public class GunsDateConvertAutoConfiguration {
      */
     @Bean
     public Converter<String, LocalDate> localDateConverter() {
-        return source -> LocalDate.parse(source, DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN));
+        return new Converter<String, LocalDate>() {
+            @Override
+            public LocalDate convert(String source) {
+                return LocalDate.parse(source, DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN));
+            }
+        };
     }
 
     /**
@@ -64,7 +69,12 @@ public class GunsDateConvertAutoConfiguration {
      */
     @Bean
     public Converter<String, LocalDateTime> localDateTimeConverter() {
-        return source -> LocalDateTime.parse(source, DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN));
+        return new Converter<String, LocalDateTime>() {
+            @Override
+            public LocalDateTime convert(String source) {
+                return LocalDateTime.parse(source, DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN));
+            }
+        };
     }
 
     /**
@@ -75,7 +85,12 @@ public class GunsDateConvertAutoConfiguration {
      */
     @Bean
     public Converter<String, LocalTime> localTimeConverter() {
-        return source -> LocalTime.parse(source, DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN));
+        return new Converter<String, LocalTime>() {
+            @Override
+            public LocalTime convert(String source) {
+                return LocalTime.parse(source, DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN));
+            }
+        };
     }
 
     /**
@@ -86,7 +101,12 @@ public class GunsDateConvertAutoConfiguration {
      */
     @Bean
     public Converter<String, Date> dateConverter() {
-        return source -> DateUtil.parse(source.trim());
+        return new Converter<String, Date>() {
+            @Override
+            public Date convert(String source) {
+                return DateUtil.parse(source.trim());
+            }
+        };
     }
 
 }
