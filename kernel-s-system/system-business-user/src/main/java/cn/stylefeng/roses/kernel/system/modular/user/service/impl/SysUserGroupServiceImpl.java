@@ -7,15 +7,20 @@ import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.exception.base.ServiceException;
 import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserGroup;
+import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserGroupDetail;
 import cn.stylefeng.roses.kernel.system.modular.user.enums.SysUserGroupExceptionEnum;
+import cn.stylefeng.roses.kernel.system.modular.user.factory.UserGroupFactory;
 import cn.stylefeng.roses.kernel.system.modular.user.mapper.SysUserGroupMapper;
 import cn.stylefeng.roses.kernel.system.modular.user.pojo.request.SysUserGroupRequest;
+import cn.stylefeng.roses.kernel.system.modular.user.service.SysUserGroupDetailService;
 import cn.stylefeng.roses.kernel.system.modular.user.service.SysUserGroupService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -27,11 +32,27 @@ import java.util.List;
 @Service
 public class SysUserGroupServiceImpl extends ServiceImpl<SysUserGroupMapper, SysUserGroup> implements SysUserGroupService {
 
-	@Override
-    public void add(SysUserGroupRequest sysUserGroupRequest) {
+    @Resource
+    private SysUserGroupDetailService sysUserGroupDetailService;
+
+    @Override
+    public SysUserGroup add(SysUserGroupRequest sysUserGroupRequest) {
+
         SysUserGroup sysUserGroup = new SysUserGroup();
-        BeanUtil.copyProperties(sysUserGroupRequest, sysUserGroup);
+        sysUserGroup.setUserGroupId(IdWorker.getId());
+        sysUserGroup.setUserGroupTitle(sysUserGroupRequest.getUserGroupTitle());
+        sysUserGroup.setUserGroupDetailName(sysUserGroupRequest.getUserGroupDetailName());
+
+        // 解析各个请求的list，转化成detail实体
+        List<SysUserGroupDetail> userGroupDetail = UserGroupFactory.createUserGroupDetail(sysUserGroup.getUserGroupId(), sysUserGroupRequest);
+
+        // 保存用户组信息和用户组的详情
         this.save(sysUserGroup);
+        if (ObjectUtil.isNotEmpty(userGroupDetail)) {
+            this.sysUserGroupDetailService.saveBatch(userGroupDetail);
+        }
+
+        return sysUserGroup;
     }
 
     @Override
@@ -49,7 +70,15 @@ public class SysUserGroupServiceImpl extends ServiceImpl<SysUserGroupMapper, Sys
 
     @Override
     public SysUserGroup detail(SysUserGroupRequest sysUserGroupRequest) {
-        return this.querySysUserGroup(sysUserGroupRequest);
+        SysUserGroup sysUserGroup = this.querySysUserGroup(sysUserGroupRequest);
+
+        // 查询用户组的详情
+        LambdaQueryWrapper<SysUserGroupDetail> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUserGroupDetail::getUserGroupId, sysUserGroup.getUserGroupId());
+        List<SysUserGroupDetail> detailList = sysUserGroupDetailService.list(queryWrapper);
+
+        // 将用户组的详情列表，转化为单独的list返回给前端
+        return UserGroupFactory.parseToEntity(sysUserGroup, detailList);
     }
 
     @Override

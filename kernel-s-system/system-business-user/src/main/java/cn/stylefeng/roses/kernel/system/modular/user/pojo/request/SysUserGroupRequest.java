@@ -22,7 +22,7 @@ public class SysUserGroupRequest extends BaseRequest {
     /**
      * 用户组id
      */
-    @NotNull(message = "用户组id不能为空", groups = {edit.class, delete.class})
+    @NotNull(message = "用户组id不能为空", groups = {detail.class})
     @ChineseDescription("用户组id")
     private Long userGroupId;
 

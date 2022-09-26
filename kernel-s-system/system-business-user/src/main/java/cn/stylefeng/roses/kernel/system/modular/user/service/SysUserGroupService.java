@@ -22,7 +22,7 @@ public interface SysUserGroupService extends IService<SysUserGroup> {
      * @author fengshuonan
      * @date 2022/09/26 10:12
      */
-    void add(SysUserGroupRequest sysUserGroupRequest);
+    SysUserGroup add(SysUserGroupRequest sysUserGroupRequest);
 
 	/**
      * 删除
