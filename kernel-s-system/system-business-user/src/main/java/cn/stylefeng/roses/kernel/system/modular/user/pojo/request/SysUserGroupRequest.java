@@ -2,10 +2,12 @@ package cn.stylefeng.roses.kernel.system.modular.user.pojo.request;
 
 import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
+import cn.stylefeng.roses.kernel.system.api.pojo.usergroup.SelectItem;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 用户组封装类
@@ -35,5 +37,41 @@ public class SysUserGroupRequest extends BaseRequest {
      */
     @ChineseDescription("组内选择项的合并")
     private String userGroupDetailName;
+
+    /**
+     * 选中的用户列表
+     */
+    @ChineseDescription("选中的用户列表")
+    private List<SelectItem> selectUserList;
+
+    /**
+     * 选中的组织机构列表
+     */
+    @ChineseDescription("选中的组织机构列表")
+    private List<SelectItem> selectOrgList;
+
+    /**
+     * 选中的角色列表
+     */
+    @ChineseDescription("选中的角色列表")
+    private List<SelectItem> selectRoleList;
+
+    /**
+     * 选中的职位列表
+     */
+    @ChineseDescription("选中的职位列表")
+    private List<SelectItem> selectPositionList;
+
+    /**
+     * 选中的关系列表
+     */
+    @ChineseDescription("选中的关系列表")
+    private List<SelectItem> selectRelationList;
+
+    /**
+     * 选中的部门审批人类型列表
+     */
+    @ChineseDescription("选中的部门审批人类型列表")
+    private List<SelectItem> selectOrgApproverTypeList;
 
 }
