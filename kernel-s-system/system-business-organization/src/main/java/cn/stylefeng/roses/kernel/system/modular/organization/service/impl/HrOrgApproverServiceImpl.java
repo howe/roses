@@ -1,11 +1,14 @@
 package cn.stylefeng.roses.kernel.system.modular.organization.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.roses.kernel.dict.api.DictApi;
 import cn.stylefeng.roses.kernel.rule.exception.base.ServiceException;
+import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.system.api.OrganizationServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserOrgServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
-import cn.stylefeng.roses.kernel.system.api.enums.OrgApproverTypeEnum;
+import cn.stylefeng.roses.kernel.system.api.constants.SystemConstants;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.BindUserItem;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserOrgDTO;
@@ -42,6 +45,8 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
     @Resource
     private UserOrgServiceApi userOrgServiceApi;
 
+    @Resource
+    private DictApi dictApi;
 
     @Override
     public void bindUserList(HrOrgApproverRequest hrOrgApproverRequest) {
@@ -115,15 +120,15 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
     public List<HrOrgApprover> getBindingList(HrOrgApproverRequest hrOrgApproverRequest) {
 
         // 获取当前系统一共有哪些组织审批人类型
-        OrgApproverTypeEnum[] values = OrgApproverTypeEnum.values();
+        List<SimpleDict> approverTypeList = this.getApproverTypeList();
 
         // 先初始化空的绑定情况列表
         ArrayList<HrOrgApprover> resultList = new ArrayList<>();
-        for (OrgApproverTypeEnum orgApproverTypeEnum : values) {
+        for (SimpleDict orgApproverType : approverTypeList) {
             HrOrgApprover hrOrgApprover = new HrOrgApprover();
 
             // 设置类型
-            hrOrgApprover.setOrgApproverType(orgApproverTypeEnum.getCode());
+            hrOrgApprover.setOrgApproverType(Convert.toInt(orgApproverType.getCode()));
 
             resultList.add(hrOrgApprover);
         }
@@ -186,6 +191,11 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
         List<HrOrgApprover> userList = this.list(hrOrgApproverLambdaQueryWrapper);
 
         return userList.stream().map(HrOrgApprover::getUserId).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SimpleDict> getApproverTypeList() {
+        return dictApi.getDictDetailsByDictTypeCode(SystemConstants.APPROVER_TYPE_DICT_TYPE_CODE);
     }
 
     /**

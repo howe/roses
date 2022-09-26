@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.modular.organization.service;
 
+import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.system.modular.organization.entity.HrOrgApprover;
 import cn.stylefeng.roses.kernel.system.modular.organization.pojo.request.HrOrgApproverRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -75,5 +76,14 @@ public interface HrOrgApproverService extends IService<HrOrgApprover> {
      * @date 2022/9/18 14:52
      */
     List<Long> getDeptOrgApprover(Long deptId, Integer orgApproverType, Integer parentLevel);
+
+    /**
+     * 获取所有审批人类型列表
+     *
+     * @return 审批人类型列表
+     * @author fengshuonan
+     * @date 2022/9/26 10:18
+     */
+    List<SimpleDict> getApproverTypeList();
 
 }

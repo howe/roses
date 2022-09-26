@@ -1,6 +1,7 @@
 package cn.stylefeng.roses.kernel.system.modular.organization.controller;
 
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
+import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -75,6 +76,17 @@ public class HrOrgApproverController {
         Long userId = LoginContext.me().getLoginUser().getUserId();
         List<Long> result = hrOrgApproverService.getUserOrgApprover(userId, hrOrgApproverRequest.getOrgApproverType(), hrOrgApproverRequest.getParentLevel());
         return new SuccessResponseData<>(result);
+    }
+
+    /**
+     * 获取组织机构审批人类型列表
+     *
+     * @author fengshuonan
+     * @date 2022/9/26 10:44
+     */
+    @GetResource(name = "获取组织机构审批人类型列表", path = "/hrOrgApprover/getApproverTypeList")
+    public ResponseData<List<SimpleDict>> getApproverTypeList() {
+        return new SuccessResponseData<>(hrOrgApproverService.getApproverTypeList());
     }
 
 }

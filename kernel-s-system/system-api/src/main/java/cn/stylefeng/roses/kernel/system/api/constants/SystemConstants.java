@@ -87,4 +87,9 @@ public interface SystemConstants {
      */
     Long OAUTH2_USER_ROLE_ID = 1339550467939639305L;
 
+    /**
+     * 组织机构审批人类型的菜单
+     */
+    String APPROVER_TYPE_DICT_TYPE_CODE = "org_approver_type";
+
 }
