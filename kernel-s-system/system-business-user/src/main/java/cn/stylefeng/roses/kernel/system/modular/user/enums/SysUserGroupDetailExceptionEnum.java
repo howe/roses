@@ -5,10 +5,10 @@ import cn.stylefeng.roses.kernel.rule.exception.AbstractExceptionEnum;
 import lombok.Getter;
 
 /**
- * 权限分组详情异常相关枚举
+ * 用户组详情异常相关枚举
  *
  * @author fengshuonan
- * @date 2022/09/25 22:11
+ * @date 2022/09/26 10:12
  */
 @Getter
 public enum SysUserGroupDetailExceptionEnum implements AbstractExceptionEnum {

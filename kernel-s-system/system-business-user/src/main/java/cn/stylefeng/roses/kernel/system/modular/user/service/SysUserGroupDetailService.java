@@ -8,10 +8,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
 /**
- * 权限分组详情 服务类
+ * 用户组详情 服务类
  *
  * @author fengshuonan
- * @date 2022/09/25 22:11
+ * @date 2022/09/26 10:12
  */
 public interface SysUserGroupDetailService extends IService<SysUserGroupDetail> {
 
@@ -20,7 +20,7 @@ public interface SysUserGroupDetailService extends IService<SysUserGroupDetail> 
      *
      * @param sysUserGroupDetailRequest 请求参数
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     void add(SysUserGroupDetailRequest sysUserGroupDetailRequest);
 
@@ -29,7 +29,7 @@ public interface SysUserGroupDetailService extends IService<SysUserGroupDetail> 
      *
      * @param sysUserGroupDetailRequest 请求参数
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     void del(SysUserGroupDetailRequest sysUserGroupDetailRequest);
 
@@ -38,7 +38,7 @@ public interface SysUserGroupDetailService extends IService<SysUserGroupDetail> 
      *
      * @param sysUserGroupDetailRequest 请求参数
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     void edit(SysUserGroupDetailRequest sysUserGroupDetailRequest);
 
@@ -47,7 +47,7 @@ public interface SysUserGroupDetailService extends IService<SysUserGroupDetail> 
      *
      * @param sysUserGroupDetailRequest 请求参数
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     SysUserGroupDetail detail(SysUserGroupDetailRequest sysUserGroupDetailRequest);
 
@@ -57,7 +57,7 @@ public interface SysUserGroupDetailService extends IService<SysUserGroupDetail> 
      * @param sysUserGroupDetailRequest        请求参数
      * @return List<SysUserGroupDetail>   返回结果
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     List<SysUserGroupDetail> findList(SysUserGroupDetailRequest sysUserGroupDetailRequest);
 
@@ -67,7 +67,7 @@ public interface SysUserGroupDetailService extends IService<SysUserGroupDetail> 
      * @param sysUserGroupDetailRequest              请求参数
      * @return PageResult<SysUserGroupDetail>   返回结果
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     PageResult<SysUserGroupDetail> findPage(SysUserGroupDetailRequest sysUserGroupDetailRequest);
 

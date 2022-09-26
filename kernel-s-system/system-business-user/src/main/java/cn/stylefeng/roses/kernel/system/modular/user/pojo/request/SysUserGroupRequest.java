@@ -8,10 +8,10 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotNull;
 
 /**
- * 权限分组封装类
+ * 用户组封装类
  *
  * @author fengshuonan
- * @date 2022/09/25 22:11
+ * @date 2022/09/26 10:12
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

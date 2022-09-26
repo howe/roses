@@ -8,10 +8,10 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotNull;
 
 /**
- * 权限分组详情封装类
+ * 用户组详情封装类
  *
  * @author fengshuonan
- * @date 2022/09/25 22:11
+ * @date 2022/09/26 10:12
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -31,9 +31,9 @@ public class SysUserGroupDetailRequest extends BaseRequest {
     private Long userGroupId;
 
     /**
-     * 授权对象类型：1-用户，2-部门，3-角色，4-职位，5-关系
+     * 授权对象类型：1-用户，2-部门，3-角色，4-职位，5-关系，6-部门审批人
      */
-    @ChineseDescription("授权对象类型：1-用户，2-部门，3-角色，4-职位，5-关系")
+    @ChineseDescription("授权对象类型：1-用户，2-部门，3-角色，4-职位，5-关系，6-部门审批人")
     private Integer selectType;
 
     /**
@@ -47,5 +47,17 @@ public class SysUserGroupDetailRequest extends BaseRequest {
      */
     @ChineseDescription("授权对象名称，例如：张三，研发部，管理员等")
     private String selectValueName;
+
+    /**
+     * 子选择对象值，目前只用在select_type为6时，代表审批人类型
+     */
+    @ChineseDescription("子选择对象值，目前只用在select_type为6时，代表审批人类型")
+    private String subSelectValue;
+
+    /**
+     * 子选择对象值的名称，目前只用在select_type为6时，代表审批人类型
+     */
+    @ChineseDescription("子选择对象值的名称，目前只用在select_type为6时，代表审批人类型")
+    private String subSelectValueName;
 
 }

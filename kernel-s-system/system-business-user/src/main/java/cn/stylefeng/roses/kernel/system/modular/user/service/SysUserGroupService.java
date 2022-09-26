@@ -8,10 +8,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
 /**
- * 权限分组 服务类
+ * 用户组 服务类
  *
  * @author fengshuonan
- * @date 2022/09/25 22:11
+ * @date 2022/09/26 10:12
  */
 public interface SysUserGroupService extends IService<SysUserGroup> {
 
@@ -20,7 +20,7 @@ public interface SysUserGroupService extends IService<SysUserGroup> {
      *
      * @param sysUserGroupRequest 请求参数
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     void add(SysUserGroupRequest sysUserGroupRequest);
 
@@ -29,7 +29,7 @@ public interface SysUserGroupService extends IService<SysUserGroup> {
      *
      * @param sysUserGroupRequest 请求参数
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     void del(SysUserGroupRequest sysUserGroupRequest);
 
@@ -38,7 +38,7 @@ public interface SysUserGroupService extends IService<SysUserGroup> {
      *
      * @param sysUserGroupRequest 请求参数
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     void edit(SysUserGroupRequest sysUserGroupRequest);
 
@@ -47,7 +47,7 @@ public interface SysUserGroupService extends IService<SysUserGroup> {
      *
      * @param sysUserGroupRequest 请求参数
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     SysUserGroup detail(SysUserGroupRequest sysUserGroupRequest);
 
@@ -57,7 +57,7 @@ public interface SysUserGroupService extends IService<SysUserGroup> {
      * @param sysUserGroupRequest        请求参数
      * @return List<SysUserGroup>   返回结果
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     List<SysUserGroup> findList(SysUserGroupRequest sysUserGroupRequest);
 
@@ -67,7 +67,7 @@ public interface SysUserGroupService extends IService<SysUserGroup> {
      * @param sysUserGroupRequest              请求参数
      * @return PageResult<SysUserGroup>   返回结果
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     PageResult<SysUserGroup> findPage(SysUserGroupRequest sysUserGroupRequest);
 

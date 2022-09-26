@@ -17,13 +17,13 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 权限分组控制器
+ * 用户组控制器
  *
  * @author fengshuonan
- * @date 2022/09/25 22:11
+ * @date 2022/09/26 10:12
  */
 @RestController
-@ApiResource(name = "权限分组")
+@ApiResource(name = "用户组")
 public class SysUserGroupController {
 
     @Resource
@@ -33,7 +33,7 @@ public class SysUserGroupController {
      * 添加
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     @PostResource(name = "添加", path = "/sysUserGroup/add")
     public ResponseData<SysUserGroup> add(@RequestBody @Validated(SysUserGroupRequest.add.class) SysUserGroupRequest sysUserGroupRequest) {
@@ -45,7 +45,7 @@ public class SysUserGroupController {
      * 删除
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     @PostResource(name = "删除", path = "/sysUserGroup/delete")
     public ResponseData<?> delete(@RequestBody @Validated(SysUserGroupRequest.delete.class) SysUserGroupRequest sysUserGroupRequest) {
@@ -57,7 +57,7 @@ public class SysUserGroupController {
      * 编辑
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     @PostResource(name = "编辑", path = "/sysUserGroup/edit")
     public ResponseData<?> edit(@RequestBody @Validated(SysUserGroupRequest.edit.class) SysUserGroupRequest sysUserGroupRequest) {
@@ -69,7 +69,7 @@ public class SysUserGroupController {
      * 查看详情
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     @GetResource(name = "查看详情", path = "/sysUserGroup/detail")
     public ResponseData<SysUserGroup> detail(@Validated(SysUserGroupRequest.detail.class) SysUserGroupRequest sysUserGroupRequest) {
@@ -80,7 +80,7 @@ public class SysUserGroupController {
      * 获取列表
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     @GetResource(name = "获取列表", path = "/sysUserGroup/list")
     public ResponseData<List<SysUserGroup>> list(SysUserGroupRequest sysUserGroupRequest) {
@@ -91,7 +91,7 @@ public class SysUserGroupController {
      * 获取列表（带分页）
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     @GetResource(name = "分页查询", path = "/sysUserGroup/page")
     public ResponseData<PageResult<SysUserGroup>> page(SysUserGroupRequest sysUserGroupRequest) {

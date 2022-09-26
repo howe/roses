@@ -19,10 +19,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 权限分组业务实现层
+ * 用户组业务实现层
  *
  * @author fengshuonan
- * @date 2022/09/25 22:11
+ * @date 2022/09/26 10:12
  */
 @Service
 public class SysUserGroupServiceImpl extends ServiceImpl<SysUserGroupMapper, SysUserGroup> implements SysUserGroupService {
@@ -69,7 +69,7 @@ public class SysUserGroupServiceImpl extends ServiceImpl<SysUserGroupMapper, Sys
      * 获取信息
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     private SysUserGroup querySysUserGroup(SysUserGroupRequest sysUserGroupRequest) {
         SysUserGroup sysUserGroup = this.getById(sysUserGroupRequest.getUserGroupId());
@@ -83,7 +83,7 @@ public class SysUserGroupServiceImpl extends ServiceImpl<SysUserGroupMapper, Sys
      * 创建查询wrapper
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     private LambdaQueryWrapper<SysUserGroup> createWrapper(SysUserGroupRequest sysUserGroupRequest) {
         LambdaQueryWrapper<SysUserGroup> queryWrapper = new LambdaQueryWrapper<>();

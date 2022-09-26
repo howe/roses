@@ -19,10 +19,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 权限分组详情业务实现层
+ * 用户组详情业务实现层
  *
  * @author fengshuonan
- * @date 2022/09/25 22:11
+ * @date 2022/09/26 10:12
  */
 @Service
 public class SysUserGroupDetailServiceImpl extends ServiceImpl<SysUserGroupDetailMapper, SysUserGroupDetail> implements SysUserGroupDetailService {
@@ -69,7 +69,7 @@ public class SysUserGroupDetailServiceImpl extends ServiceImpl<SysUserGroupDetai
      * 获取信息
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     private SysUserGroupDetail querySysUserGroupDetail(SysUserGroupDetailRequest sysUserGroupDetailRequest) {
         SysUserGroupDetail sysUserGroupDetail = this.getById(sysUserGroupDetailRequest.getDetailId());
@@ -83,7 +83,7 @@ public class SysUserGroupDetailServiceImpl extends ServiceImpl<SysUserGroupDetai
      * 创建查询wrapper
      *
      * @author fengshuonan
-     * @date 2022/09/25 22:11
+     * @date 2022/09/26 10:12
      */
     private LambdaQueryWrapper<SysUserGroupDetail> createWrapper(SysUserGroupDetailRequest sysUserGroupDetailRequest) {
         LambdaQueryWrapper<SysUserGroupDetail> queryWrapper = new LambdaQueryWrapper<>();
@@ -93,12 +93,16 @@ public class SysUserGroupDetailServiceImpl extends ServiceImpl<SysUserGroupDetai
         Integer selectType = sysUserGroupDetailRequest.getSelectType();
         Long selectValue = sysUserGroupDetailRequest.getSelectValue();
         String selectValueName = sysUserGroupDetailRequest.getSelectValueName();
+        String subSelectValue = sysUserGroupDetailRequest.getSubSelectValue();
+        String subSelectValueName = sysUserGroupDetailRequest.getSubSelectValueName();
 
         queryWrapper.eq(ObjectUtil.isNotNull(detailId), SysUserGroupDetail::getDetailId, detailId);
         queryWrapper.eq(ObjectUtil.isNotNull(userGroupId), SysUserGroupDetail::getUserGroupId, userGroupId);
         queryWrapper.eq(ObjectUtil.isNotNull(selectType), SysUserGroupDetail::getSelectType, selectType);
         queryWrapper.eq(ObjectUtil.isNotNull(selectValue), SysUserGroupDetail::getSelectValue, selectValue);
         queryWrapper.like(ObjectUtil.isNotEmpty(selectValueName), SysUserGroupDetail::getSelectValueName, selectValueName);
+        queryWrapper.like(ObjectUtil.isNotEmpty(subSelectValue), SysUserGroupDetail::getSubSelectValue, subSelectValue);
+        queryWrapper.like(ObjectUtil.isNotEmpty(subSelectValueName), SysUserGroupDetail::getSubSelectValueName, subSelectValueName);
 
         return queryWrapper;
     }

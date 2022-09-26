@@ -10,10 +10,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 权限分组详情实例类
+ * 用户组详情实例类
  *
  * @author fengshuonan
- * @date 2022/09/25 22:11
+ * @date 2022/09/26 10:12
  */
 @TableName("sys_user_group_detail")
 @Data
@@ -35,10 +35,10 @@ public class SysUserGroupDetail extends BaseEntity {
     private Long userGroupId;
 
     /**
-     * 授权对象类型：1-用户，2-部门，3-角色，4-职位，5-关系
+     * 授权对象类型：1-用户，2-部门，3-角色，4-职位，5-关系，6-部门审批人
      */
     @TableField("select_type")
-    @ChineseDescription("授权对象类型：1-用户，2-部门，3-角色，4-职位，5-关系")
+    @ChineseDescription("授权对象类型：1-用户，2-部门，3-角色，4-职位，5-关系，6-部门审批人")
     private Integer selectType;
 
     /**
@@ -54,5 +54,19 @@ public class SysUserGroupDetail extends BaseEntity {
     @TableField("select_value_name")
     @ChineseDescription("授权对象名称，例如：张三，研发部，管理员等")
     private String selectValueName;
+
+    /**
+     * 子选择对象值，目前只用在select_type为6时，代表审批人类型
+     */
+    @TableField("sub_select_value")
+    @ChineseDescription("子选择对象值，目前只用在select_type为6时，代表审批人类型")
+    private String subSelectValue;
+
+    /**
+     * 子选择对象值的名称，目前只用在select_type为6时，代表审批人类型
+     */
+    @TableField("sub_select_value_name")
+    @ChineseDescription("子选择对象值的名称，目前只用在select_type为6时，代表审批人类型")
+    private String subSelectValueName;
 
 }
