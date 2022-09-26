@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.modular.user.controller;
 
+import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 用户组控制器
@@ -48,6 +50,17 @@ public class SysUserGroupController {
     @GetResource(name = "查看详情", path = "/sysUserGroup/detail")
     public ResponseData<SysUserGroup> detail(@Validated(SysUserGroupRequest.detail.class) SysUserGroupRequest sysUserGroupRequest) {
         return new SuccessResponseData<>(sysUserGroupService.detail(sysUserGroupRequest));
+    }
+
+    /**
+     * 获取用户组-选择关系列表
+     *
+     * @author fengshuonan
+     * @date 2022/09/26 10:12
+     */
+    @GetResource(name = "获取用户组-选择关系列表", path = "/sysUserGroup/getSelectRelationList")
+    public ResponseData<List<SimpleDict>> getSelectRelationList() {
+        return new SuccessResponseData<>(sysUserGroupService.getSelectRelationList());
     }
 
 }

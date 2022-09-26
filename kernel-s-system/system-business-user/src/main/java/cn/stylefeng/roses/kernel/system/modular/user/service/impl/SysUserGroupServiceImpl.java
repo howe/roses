@@ -5,7 +5,10 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
+import cn.stylefeng.roses.kernel.dict.api.DictApi;
 import cn.stylefeng.roses.kernel.rule.exception.base.ServiceException;
+import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
+import cn.stylefeng.roses.kernel.system.api.constants.SystemConstants;
 import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserGroup;
 import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserGroupDetail;
 import cn.stylefeng.roses.kernel.system.modular.user.enums.SysUserGroupExceptionEnum;
@@ -34,6 +37,9 @@ public class SysUserGroupServiceImpl extends ServiceImpl<SysUserGroupMapper, Sys
 
     @Resource
     private SysUserGroupDetailService sysUserGroupDetailService;
+
+    @Resource
+    private DictApi dictApi;
 
     @Override
     public SysUserGroup add(SysUserGroupRequest sysUserGroupRequest) {
@@ -86,6 +92,11 @@ public class SysUserGroupServiceImpl extends ServiceImpl<SysUserGroupMapper, Sys
         LambdaQueryWrapper<SysUserGroup> wrapper = createWrapper(sysUserGroupRequest);
         Page<SysUserGroup> sysRolePage = this.page(PageFactory.defaultPage(), wrapper);
         return PageResultFactory.createPageResult(sysRolePage);
+    }
+
+    @Override
+    public List<SimpleDict> getSelectRelationList() {
+        return dictApi.getDictDetailsByDictTypeCode(SystemConstants.SELECT_TYPE_DICT_TYPE_CODE);
     }
 
     @Override

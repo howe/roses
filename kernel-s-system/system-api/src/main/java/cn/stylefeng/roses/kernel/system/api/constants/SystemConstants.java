@@ -92,4 +92,9 @@ public interface SystemConstants {
      */
     String APPROVER_TYPE_DICT_TYPE_CODE = "org_approver_type";
 
+    /**
+     * 用户组，获取关系列表的字典编码
+     */
+    String SELECT_TYPE_DICT_TYPE_CODE = "select_relation";
+
 }
