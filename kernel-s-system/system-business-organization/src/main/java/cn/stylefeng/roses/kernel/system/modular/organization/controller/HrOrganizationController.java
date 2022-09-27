@@ -217,6 +217,18 @@ public class HrOrganizationController {
     }
 
     /**
+     * 获取所有组织机构树列表，post方式
+     *
+     * @author fengshuonan
+     * @date 2022/9/27 9:50
+     */
+    @PostResource(name = "获取所有组织机构树列表，post方式", path = "/hrOrganization/post/getOrgTreeList")
+    public ResponseData<List<OrganizationTreeNode>> postGetOrgTreeList(@RequestBody HrOrganizationRequest hrOrganizationRequest) {
+        List<OrganizationTreeNode> list = hrOrganizationService.getOrgTreeList(hrOrganizationRequest);
+        return new SuccessResponseData<>(list);
+    }
+
+    /**
      * 获取某个公司下部门的机构树
      *
      * @author fengshuonan
