@@ -50,7 +50,14 @@ public enum ResBizTypeEnum implements ReadableEnum<ResBizTypeEnum> {
     /**
      * 业务类
      */
-    BUSINESS(2, "业务类");
+    BUSINESS(2, "业务类"),
+
+    /**
+     * 默认
+     * <p>
+     * 如果是默认，则方法的业务类别，则会根据控制器上@ApiResource的类别决定具体方法的类别
+     */
+    DEFAULT(3, "默认类");
 
     /**
      * 使用@EnumValue注解，标记mybatis-plus保存到库中使用code值

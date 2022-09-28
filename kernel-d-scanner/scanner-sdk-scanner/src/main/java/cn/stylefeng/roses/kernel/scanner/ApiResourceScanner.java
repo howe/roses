@@ -246,12 +246,18 @@ public class ApiResourceScanner implements BeanPostProcessor {
         Boolean requiredLogin = invokeAnnotationMethod(apiResource, "requiredLogin", Boolean.class);
         Boolean requiredPermission = invokeAnnotationMethod(apiResource, "requiredPermission", Boolean.class);
         Boolean viewFlag = invokeAnnotationMethod(apiResource, "viewFlag", Boolean.class);
-        ResBizTypeEnum resBizType = invokeAnnotationMethod(apiResource, "resBizType", ResBizTypeEnum.class);
+        ResBizTypeEnum methodResBizType = invokeAnnotationMethod(apiResource, "resBizType", ResBizTypeEnum.class);
 
         resourceDefinition.setRequiredLoginFlag(requiredLogin);
         resourceDefinition.setRequiredPermissionFlag(requiredPermission);
         resourceDefinition.setResourceName(name);
-        resourceDefinition.setResourceBizType(resBizType.getCode());
+
+        // 填充资源的业务类型
+        if (!methodResBizType.equals(ResBizTypeEnum.DEFAULT)) {
+            resourceDefinition.setResourceBizType(methodResBizType.getCode());
+        } else {
+            resourceDefinition.setResourceBizType(classApiAnnotation.resBizType().getCode());
+        }
 
         // 根据控制器和控制器方法的path组装最后的url
         String controllerMethodPath = createControllerPath(controllerClass, methodPath[0]);

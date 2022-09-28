@@ -89,7 +89,7 @@ public @interface GetResource {
     /**
      * 资源的类型，系统类还是业务类资源
      */
-    ResBizTypeEnum resBizType() default ResBizTypeEnum.BUSINESS;
+    ResBizTypeEnum resBizType() default ResBizTypeEnum.DEFAULT;
 
     /**
      * 请求路径(同RequestMapping)
