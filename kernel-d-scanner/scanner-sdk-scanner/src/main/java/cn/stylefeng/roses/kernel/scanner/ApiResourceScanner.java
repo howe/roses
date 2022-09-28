@@ -245,10 +245,12 @@ public class ApiResourceScanner implements BeanPostProcessor {
         Boolean requiredLogin = invokeAnnotationMethod(apiResource, "requiredLogin", Boolean.class);
         Boolean requiredPermission = invokeAnnotationMethod(apiResource, "requiredPermission", Boolean.class);
         Boolean viewFlag = invokeAnnotationMethod(apiResource, "viewFlag", Boolean.class);
+        Integer resBizType = invokeAnnotationMethod(apiResource, "resBizType", Integer.class);
 
         resourceDefinition.setRequiredLoginFlag(requiredLogin);
         resourceDefinition.setRequiredPermissionFlag(requiredPermission);
         resourceDefinition.setResourceName(name);
+        resourceDefinition.setResourceBizType(resBizType);
 
         // 根据控制器和控制器方法的path组装最后的url
         String controllerMethodPath = createControllerPath(controllerClass, methodPath[0]);
