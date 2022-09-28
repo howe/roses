@@ -115,6 +115,12 @@ public class SysMenuRequest extends BaseRequest {
     private String remark;
 
     /**
+     * 菜单的业务类型：1-系统类型，2-业务类型
+     */
+    @ChineseDescription("菜单的业务类型：1-系统类型，2-业务类型")
+    private Integer menuBizType;
+
+    /**
      * 菜单的路径（适用于layui-beetl版本）
      */
     @ChineseDescription("菜单的路径（适用于layui-beetl版本）")
