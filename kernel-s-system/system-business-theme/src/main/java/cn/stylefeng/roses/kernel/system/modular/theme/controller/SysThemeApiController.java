@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.modular.theme.controller;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -18,7 +19,7 @@ import javax.annotation.Resource;
  * @date 2022/1/10 18:27
  */
 @RestController
-@ApiResource(name = "主题开放接口的API")
+@ApiResource(name = "主题开放接口的API", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysThemeApiController {
 
     @Resource

@@ -26,6 +26,7 @@ package cn.stylefeng.roses.kernel.monitor.system.controller;
 
 import cn.stylefeng.roses.kernel.monitor.system.SystemHardwareCalculator;
 import cn.stylefeng.roses.kernel.monitor.system.holder.SystemHardwareInfoHolder;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -41,7 +42,7 @@ import javax.annotation.Resource;
  * @date 2021/4/14 18:44
  */
 @RestController
-@ApiResource(name = "监控的控制器")
+@ApiResource(name = "监控的控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class MonitorStatusController {
 
     @Resource

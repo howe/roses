@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.i18n;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Controller;
  * @date 2021/1/24 19:15
  */
 @Controller
-@ApiResource(name = "多语言界面")
+@ApiResource(name = "多语言界面", resBizType = ResBizTypeEnum.SYSTEM)
 public class TranslationViewController {
 
     /**

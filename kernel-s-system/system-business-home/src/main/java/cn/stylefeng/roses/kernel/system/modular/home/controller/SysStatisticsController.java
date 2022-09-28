@@ -1,6 +1,7 @@
 package cn.stylefeng.roses.kernel.system.modular.home.controller;
 
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -23,7 +24,7 @@ import java.util.List;
  * @date 2022/02/10 21:17
  */
 @RestController
-@ApiResource(name = "常用功能的统计次数")
+@ApiResource(name = "常用功能的统计次数", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysStatisticsController {
 
     @Resource

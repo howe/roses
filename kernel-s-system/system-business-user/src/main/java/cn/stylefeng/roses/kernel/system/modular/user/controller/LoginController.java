@@ -33,6 +33,7 @@ import cn.stylefeng.roses.kernel.auth.api.pojo.auth.LoginResponse;
 import cn.stylefeng.roses.kernel.auth.api.pojo.auth.LoginWithTokenRequest;
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -61,7 +62,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Slf4j
-@ApiResource(name = "登陆登出管理")
+@ApiResource(name = "登陆登出管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class LoginController {
 
     @Resource
@@ -121,7 +122,8 @@ public class LoginController {
      * @author fengshuonan
      * @date 2021/3/17 17:24
      */
-    @ApiResource(name = "单点退出", path = "/logoutByCaClientToken", requiredLogin = false, requiredPermission = false, method = {RequestMethod.GET, RequestMethod.POST})
+    @ApiResource(name = "单点退出", path = "/logoutByCaClientToken", resBizType = ResBizTypeEnum.SYSTEM,
+            requiredLogin = false, requiredPermission = false, method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseData<?> ssoLogout(@RequestParam("caClientToken") String caClientToken) {
 
         // 获取CaClientToken对应的本地用户
@@ -142,7 +144,8 @@ public class LoginController {
      * @author fengshuonan
      * @date 2021/3/17 17:24
      */
-    @ApiResource(name = "登出", path = "/logoutAction", requiredPermission = false, method = {RequestMethod.GET, RequestMethod.POST})
+    @ApiResource(name = "登出", path = "/logoutAction", resBizType = ResBizTypeEnum.SYSTEM,
+            requiredPermission = false, method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseData<?> logoutAction() {
         authServiceApi.logout();
         return new SuccessResponseData<>();

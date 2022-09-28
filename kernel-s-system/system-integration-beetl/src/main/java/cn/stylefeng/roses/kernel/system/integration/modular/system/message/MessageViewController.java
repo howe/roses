@@ -4,6 +4,7 @@ import cn.stylefeng.roses.kernel.message.api.MessageApi;
 import cn.stylefeng.roses.kernel.message.api.enums.MessageReadFlagEnum;
 import cn.stylefeng.roses.kernel.message.api.pojo.request.MessageRequest;
 import cn.stylefeng.roses.kernel.message.api.pojo.response.MessageResponse;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ import java.util.List;
  * @date 2021/1/11 19:37
  */
 @Controller
-@ApiResource(name = "系统消息相关的界面渲染")
+@ApiResource(name = "系统消息相关的界面渲染", resBizType = ResBizTypeEnum.SYSTEM)
 public class MessageViewController {
 
     @Resource

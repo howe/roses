@@ -27,6 +27,7 @@ package cn.stylefeng.roses.kernel.mongodb.integration.controller;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.mongodb.api.MongoFileApi;
 import cn.stylefeng.roses.kernel.mongodb.file.entity.MongoFileEntity;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -52,7 +53,7 @@ import java.util.Optional;
  * @date 2021/03/31 17:28
  */
 @RestController
-@ApiResource(name = "Mongodb文件接口控制器")
+@ApiResource(name = "Mongodb文件接口控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class MongoFileController {
 
     @Resource

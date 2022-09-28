@@ -28,6 +28,7 @@ import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
@@ -58,7 +59,7 @@ import java.util.List;
  * @date 2020/11/6 09:47
  */
 @RestController
-@ApiResource(name = "用户管理")
+@ApiResource(name = "用户管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysUserController {
 
     @Resource

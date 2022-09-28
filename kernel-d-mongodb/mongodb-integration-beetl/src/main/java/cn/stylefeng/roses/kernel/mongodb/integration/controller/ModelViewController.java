@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.mongodb.integration.controller;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,7 @@ import org.springframework.stereotype.Controller;
  * @date 2021/03/30 15:21
  */
 @Controller
-@ApiResource(name = "MongoDB文件管理界面渲染控制器")
+@ApiResource(name = "MongoDB文件管理界面渲染控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class ModelViewController {
 
     /**

@@ -30,6 +30,7 @@ import cn.stylefeng.roses.kernel.log.api.pojo.manage.LogManagerRequest;
 import cn.stylefeng.roses.kernel.log.api.pojo.record.LogRecordDTO;
 import cn.stylefeng.roses.kernel.log.db.service.SysLogService;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -49,7 +50,7 @@ import java.util.List;
  * @date 2020/11/3 12:44
  */
 @RestController
-@ApiResource(name = "日志管理控制器")
+@ApiResource(name = "日志管理控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class LogManagerController {
 
     /**

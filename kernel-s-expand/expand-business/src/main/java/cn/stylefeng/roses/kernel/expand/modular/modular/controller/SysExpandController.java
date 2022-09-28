@@ -7,6 +7,7 @@ import cn.stylefeng.roses.kernel.expand.modular.modular.entity.SysExpand;
 import cn.stylefeng.roses.kernel.expand.modular.modular.entity.SysExpandData;
 import cn.stylefeng.roses.kernel.expand.modular.modular.pojo.request.SysExpandRequest;
 import cn.stylefeng.roses.kernel.expand.modular.modular.service.SysExpandService;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
@@ -27,7 +28,7 @@ import java.util.List;
  * @date 2022/03/29 23:47
  */
 @RestController
-@ApiResource(name = "业务拓展")
+@ApiResource(name = "业务拓展", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysExpandController {
 
     @Resource

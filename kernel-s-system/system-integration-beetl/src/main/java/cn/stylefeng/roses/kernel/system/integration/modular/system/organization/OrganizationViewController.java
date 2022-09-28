@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.organization;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Controller;
  * @date 2020/12/28 9:28
  */
 @Controller
-@ApiResource(name = "组织机构管理控制器界面")
+@ApiResource(name = "组织机构管理控制器界面", resBizType = ResBizTypeEnum.SYSTEM)
 public class OrganizationViewController {
 
     /**

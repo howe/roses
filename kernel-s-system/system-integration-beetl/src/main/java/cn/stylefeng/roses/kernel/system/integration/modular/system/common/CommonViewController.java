@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.common;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.exception.base.ServiceException;
 import cn.stylefeng.roses.kernel.rule.exception.enums.defaults.DefaultBusinessExceptionEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -21,7 +22,7 @@ import java.net.URLDecoder;
  */
 @Controller
 @Slf4j
-@ApiResource(name = "通用界面")
+@ApiResource(name = "通用界面", resBizType = ResBizTypeEnum.SYSTEM)
 public class CommonViewController {
 
     /**

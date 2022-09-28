@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.datasource;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Controller;
  * @date 2021/1/23 21:45
  */
 @Controller
-@ApiResource(name = "多数据源界面")
+@ApiResource(name = "多数据源界面", resBizType = ResBizTypeEnum.SYSTEM)
 public class DataSourceViewController {
 
     /**

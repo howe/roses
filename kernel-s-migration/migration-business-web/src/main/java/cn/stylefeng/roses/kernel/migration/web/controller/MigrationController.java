@@ -3,6 +3,7 @@ package cn.stylefeng.roses.kernel.migration.web.controller;
 import cn.stylefeng.roses.kernel.migration.api.pojo.MigrationAggregationPOJO;
 import cn.stylefeng.roses.kernel.migration.web.pojo.MigrationRequest;
 import cn.stylefeng.roses.kernel.migration.web.service.MigrationService;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -26,7 +27,7 @@ import java.util.List;
  * @date 2021/7/6 17:35
  */
 @RestController
-@ApiResource(name = "数据迁移控制器")
+@ApiResource(name = "数据迁移控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class MigrationController {
 
     @Resource

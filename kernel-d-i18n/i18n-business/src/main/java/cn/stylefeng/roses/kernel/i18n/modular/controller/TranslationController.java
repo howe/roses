@@ -28,6 +28,7 @@ import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.i18n.api.pojo.request.TranslationRequest;
 import cn.stylefeng.roses.kernel.i18n.modular.entity.Translation;
 import cn.stylefeng.roses.kernel.i18n.modular.service.TranslationService;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
@@ -47,7 +48,7 @@ import javax.annotation.Resource;
  * @date 2021/1/24 19:18
  */
 @RestController
-@ApiResource(name = "多语言接口控制器")
+@ApiResource(name = "多语言接口控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class TranslationController {
 
     @Resource

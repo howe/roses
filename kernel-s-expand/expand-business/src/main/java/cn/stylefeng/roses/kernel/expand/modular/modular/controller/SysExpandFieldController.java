@@ -4,6 +4,7 @@ import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.expand.modular.modular.entity.SysExpandField;
 import cn.stylefeng.roses.kernel.expand.modular.modular.pojo.request.SysExpandFieldRequest;
 import cn.stylefeng.roses.kernel.expand.modular.modular.service.SysExpandFieldService;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -23,7 +24,7 @@ import java.util.List;
  * @date 2022/03/29 23:47
  */
 @RestController
-@ApiResource(name = "业务拓展-字段信息")
+@ApiResource(name = "业务拓展-字段信息", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysExpandFieldController {
 
     @Resource

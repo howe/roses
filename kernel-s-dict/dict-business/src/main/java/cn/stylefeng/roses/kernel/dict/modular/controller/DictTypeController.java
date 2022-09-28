@@ -30,6 +30,7 @@ import cn.stylefeng.roses.kernel.dict.modular.entity.SysDictType;
 import cn.stylefeng.roses.kernel.dict.modular.pojo.request.DictTypeRequest;
 import cn.stylefeng.roses.kernel.dict.modular.service.DictTypeService;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
@@ -50,7 +51,7 @@ import java.util.List;
  * @date 2020/10/30 21:46
  */
 @RestController
-@ApiResource(name = "字典类型管理")
+@ApiResource(name = "字典类型管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class DictTypeController {
 
     @Resource

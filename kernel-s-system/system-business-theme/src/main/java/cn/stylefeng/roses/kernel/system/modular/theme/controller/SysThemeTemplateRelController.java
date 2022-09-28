@@ -1,6 +1,7 @@
 package cn.stylefeng.roses.kernel.system.modular.theme.controller;
 
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -20,7 +21,7 @@ import javax.annotation.Resource;
  * @date 2021/12/24 10:55
  */
 @RestController
-@ApiResource(name = "系统主题模板属性关系管理")
+@ApiResource(name = "系统主题模板属性关系管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysThemeTemplateRelController {
 
     @Resource

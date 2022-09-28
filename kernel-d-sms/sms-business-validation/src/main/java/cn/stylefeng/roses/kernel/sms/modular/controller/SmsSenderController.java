@@ -24,10 +24,10 @@
  */
 package cn.stylefeng.roses.kernel.sms.modular.controller;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -52,7 +52,7 @@ import java.util.HashMap;
  * @date 2020/10/26 18:34
  */
 @RestController
-@ApiResource(name = "短信发送控制器")
+@ApiResource(name = "短信发送控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class SmsSenderController {
 
     @Resource

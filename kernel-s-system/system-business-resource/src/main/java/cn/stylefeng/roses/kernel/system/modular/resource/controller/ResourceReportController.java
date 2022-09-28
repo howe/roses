@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.system.modular.resource.controller;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.ResourceReportApi;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
@@ -42,7 +43,7 @@ import java.util.List;
  * @date 2021/9/25 17:55
  */
 @RestController
-@ApiResource(name = "微服务汇报资源接口")
+@ApiResource(name = "微服务汇报资源接口", resBizType = ResBizTypeEnum.SYSTEM)
 public class ResourceReportController {
 
     @Resource

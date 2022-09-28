@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.api;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Controller;
  * @date 2021/1/14 21:05
  */
 @Controller
-@ApiResource(name = "API文档管理")
+@ApiResource(name = "API文档管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class ApiViewController {
 
     /**

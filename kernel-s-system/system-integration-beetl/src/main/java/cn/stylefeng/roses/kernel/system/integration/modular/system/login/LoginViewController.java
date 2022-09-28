@@ -1,6 +1,7 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.login;
 
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Controller;
  * @date 2020/12/27 16:23
  */
 @Controller
-@ApiResource(name = "登录相关的接口")
+@ApiResource(name = "登录相关的接口", resBizType = ResBizTypeEnum.SYSTEM)
 public class LoginViewController {
 
     /**

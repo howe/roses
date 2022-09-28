@@ -26,6 +26,7 @@ package cn.stylefeng.roses.kernel.timer.modular.controller;
 
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -49,7 +50,7 @@ import java.util.List;
  * @date 2020/10/27 14:30
  */
 @RestController
-@ApiResource(name = "定时任务管理")
+@ApiResource(name = "定时任务管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysTimersController {
 
     @Resource

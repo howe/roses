@@ -26,6 +26,7 @@ package cn.stylefeng.roses.kernel.system.modular.app.controller;
 
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -48,7 +49,7 @@ import java.util.List;
  * @date 2020/3/20 21:25
  */
 @RestController
-@ApiResource(name = "系统应用")
+@ApiResource(name = "系统应用", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysAppController {
 
     @Resource

@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.dataCenter;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Controller;
  * @date 2021/3/29 10:00
  */
 @Controller
-@ApiResource(name = "数据中心导入导出相关的界面渲染")
+@ApiResource(name = "数据中心导入导出相关的界面渲染", resBizType = ResBizTypeEnum.SYSTEM)
 public class dataCenterViewController {
 
     /**

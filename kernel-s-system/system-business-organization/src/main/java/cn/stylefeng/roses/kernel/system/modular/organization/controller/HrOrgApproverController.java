@@ -1,6 +1,7 @@
 package cn.stylefeng.roses.kernel.system.modular.organization.controller;
 
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
@@ -24,7 +25,7 @@ import java.util.List;
  * @date 2022/09/13 23:15
  */
 @RestController
-@ApiResource(name = "组织机构审批人")
+@ApiResource(name = "组织机构审批人", resBizType = ResBizTypeEnum.SYSTEM)
 public class HrOrgApproverController {
 
     @Resource

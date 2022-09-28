@@ -34,6 +34,7 @@ import cn.stylefeng.roses.kernel.file.api.pojo.response.SysFileInfoResponse;
 import cn.stylefeng.roses.kernel.file.modular.entity.SysFileInfo;
 import cn.stylefeng.roses.kernel.file.modular.service.SysFileInfoService;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
@@ -70,7 +71,7 @@ import java.util.Map;
  * @date 2020/12/27 13:39
  */
 @RestController
-@ApiResource(name = "文件信息相关接口")
+@ApiResource(name = "文件信息相关接口", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysFileInfoController {
 
     @Resource

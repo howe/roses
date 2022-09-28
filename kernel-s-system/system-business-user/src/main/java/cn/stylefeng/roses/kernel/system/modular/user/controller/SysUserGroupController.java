@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.modular.user.controller;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
@@ -23,7 +24,7 @@ import java.util.List;
  * @date 2022/09/26 10:12
  */
 @RestController
-@ApiResource(name = "用户组")
+@ApiResource(name = "用户组", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysUserGroupController {
 
     @Resource

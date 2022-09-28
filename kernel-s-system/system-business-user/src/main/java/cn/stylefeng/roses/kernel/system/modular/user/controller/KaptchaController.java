@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.system.modular.user.controller;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -45,7 +46,7 @@ import static cn.stylefeng.roses.kernel.rule.constants.RuleConstants.BASE64_IMG_
  * @date 2021/1/15 15:11
  */
 @RestController
-@ApiResource(name = "用户登录图形验证码")
+@ApiResource(name = "用户登录图形验证码", resBizType = ResBizTypeEnum.SYSTEM)
 public class KaptchaController {
 
     @Resource

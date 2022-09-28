@@ -25,6 +25,7 @@
 package cn.stylefeng.roses.kernel.system.modular.menu.controller;
 
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.rule.tree.ztree.ZTreeNode;
@@ -54,7 +55,7 @@ import java.util.List;
  * @date 2020/3/20 18:54
  */
 @RestController
-@ApiResource(name = "菜单管理")
+@ApiResource(name = "菜单管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysMenuController {
 
     @Resource

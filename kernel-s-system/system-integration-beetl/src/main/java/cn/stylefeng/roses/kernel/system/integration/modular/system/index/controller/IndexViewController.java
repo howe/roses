@@ -1,6 +1,7 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.index.controller;
 
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.system.integration.modular.system.index.service.IndexService;
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
  * @date 2020/12/27 16:23
  */
 @Controller
-@ApiResource(name = "首页相关的界面渲染")
+@ApiResource(name = "首页相关的界面渲染", resBizType = ResBizTypeEnum.SYSTEM)
 public class IndexViewController {
 
     @Resource

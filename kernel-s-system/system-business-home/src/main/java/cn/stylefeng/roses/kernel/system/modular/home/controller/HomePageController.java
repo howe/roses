@@ -1,6 +1,7 @@
 package cn.stylefeng.roses.kernel.system.modular.home.controller;
 
 import cn.stylefeng.roses.kernel.log.api.pojo.record.LogRecordDTO;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -22,7 +23,7 @@ import java.util.List;
  * @date 2022/1/25 9:44
  */
 @RestController
-@ApiResource(name = "首页")
+@ApiResource(name = "首页", resBizType = ResBizTypeEnum.SYSTEM)
 public class HomePageController {
 
     @Resource

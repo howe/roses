@@ -27,6 +27,7 @@ package cn.stylefeng.roses.kernel.system.modular.role.controller;
 import cn.hutool.core.collection.ListUtil;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
@@ -53,7 +54,7 @@ import java.util.List;
  * @date 2020/11/5 上午10:19
  */
 @RestController
-@ApiResource(name = "系统角色管理")
+@ApiResource(name = "系统角色管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysRoleController {
 
     @Resource

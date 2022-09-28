@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.error;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,7 @@ import org.springframework.ui.Model;
  * @date 2021/1/1 21:20
  */
 @Controller
-@ApiResource(name = "错误页面的跳转")
+@ApiResource(name = "错误页面的跳转", resBizType = ResBizTypeEnum.SYSTEM)
 public class ErrorViewController {
 
     /**

@@ -1,6 +1,7 @@
 package cn.stylefeng.roses.kernel.system.integration.modular.system.monitor;
 
 import cn.stylefeng.roses.kernel.monitor.system.holder.SystemHardwareInfoHolder;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ import javax.annotation.Resource;
  * @date 2020/12/30 16:40
  */
 @Controller
-@ApiResource(name = "项目监控")
+@ApiResource(name = "项目监控", resBizType = ResBizTypeEnum.SYSTEM)
 public class MonitorController {
 
     @Resource

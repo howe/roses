@@ -4,6 +4,7 @@ import cn.stylefeng.roses.kernel.group.api.GroupApi;
 import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupDTO;
 import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupRequest;
 import cn.stylefeng.roses.kernel.group.modular.service.SysGroupService;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
@@ -24,7 +25,7 @@ import java.util.List;
  * @date 2022/05/11 12:54
  */
 @RestController
-@ApiResource(name = "业务分组")
+@ApiResource(name = "业务分组", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysGroupController {
 
     @Resource

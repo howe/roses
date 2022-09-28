@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.seata.order.controller;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.seata.order.entity.Order;
@@ -14,7 +15,7 @@ import javax.annotation.Resource;
  * @author wangyl
  * @date 2021/04/10 16:42
  */
-@ApiResource(name = "订单接口（测试seata）")
+@ApiResource(name = "订单接口（测试seata）", resBizType = ResBizTypeEnum.SYSTEM)
 public class OrderController {
 
     @Resource

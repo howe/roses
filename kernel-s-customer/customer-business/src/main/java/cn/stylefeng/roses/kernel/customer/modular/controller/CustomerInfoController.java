@@ -5,6 +5,7 @@ import cn.stylefeng.roses.kernel.customer.api.pojo.CustomerInfoRequest;
 import cn.stylefeng.roses.kernel.customer.modular.request.CustomerRequest;
 import cn.stylefeng.roses.kernel.customer.modular.service.CustomerService;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -23,7 +24,7 @@ import javax.annotation.Resource;
  * @date 2021/6/18 16:28
  */
 @RestController
-@ApiResource(name = "C端用户个人信息修改")
+@ApiResource(name = "C端用户个人信息修改", resBizType = ResBizTypeEnum.SYSTEM)
 public class CustomerInfoController {
 
     @Resource

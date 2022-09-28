@@ -32,6 +32,7 @@ import cn.stylefeng.roses.kernel.message.api.pojo.request.MessageRequest;
 import cn.stylefeng.roses.kernel.message.api.pojo.request.MessageSendRequest;
 import cn.stylefeng.roses.kernel.message.api.pojo.response.MessageResponse;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -52,7 +53,7 @@ import java.util.List;
  * @date 2021/1/1 22:30
  */
 @RestController
-@ApiResource(name = "系统消息控制器")
+@ApiResource(name = "系统消息控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysMessageController {
 
     /**

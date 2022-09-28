@@ -28,6 +28,7 @@ import cn.stylefeng.roses.kernel.auth.api.SessionManagerApi;
 import cn.stylefeng.roses.kernel.demo.exception.DemoException;
 import cn.stylefeng.roses.kernel.demo.exception.enums.DemoExceptionEnum;
 import cn.stylefeng.roses.kernel.demo.expander.DemoConfigExpander;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -50,7 +51,7 @@ import java.util.List;
  * @date 2021/1/11 22:52
  */
 @RestController
-@ApiResource(name = "在线用户管理")
+@ApiResource(name = "在线用户管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class OnlineUserController {
 
     @Resource

@@ -30,6 +30,7 @@ import cn.stylefeng.roses.kernel.config.modular.entity.SysConfig;
 import cn.stylefeng.roses.kernel.config.modular.param.SysConfigParam;
 import cn.stylefeng.roses.kernel.config.modular.service.SysConfigService;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -49,7 +50,7 @@ import java.util.List;
  * @date 2020/4/13 22:46
  */
 @RestController
-@ApiResource(name = "参数配置控制器")
+@ApiResource(name = "参数配置控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class SysConfigController {
 
     @Resource

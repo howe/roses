@@ -26,6 +26,7 @@ package cn.stylefeng.roses.kernel.system.modular.organization.controller;
 
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.annotation.BusinessLog;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.rule.tree.ztree.ZTreeNode;
@@ -53,7 +54,7 @@ import java.util.List;
  * @date 2020/11/18 21:55
  */
 @RestController
-@ApiResource(name = "系统组织机构管理")
+@ApiResource(name = "系统组织机构管理", resBizType = ResBizTypeEnum.SYSTEM)
 public class HrOrganizationController {
 
     @Resource

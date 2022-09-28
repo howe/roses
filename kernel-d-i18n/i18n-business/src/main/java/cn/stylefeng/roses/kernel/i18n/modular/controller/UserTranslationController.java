@@ -31,6 +31,7 @@ import cn.stylefeng.roses.kernel.dict.api.DictApi;
 import cn.stylefeng.roses.kernel.dict.api.constants.DictConstants;
 import cn.stylefeng.roses.kernel.i18n.api.context.TranslationContext;
 import cn.stylefeng.roses.kernel.i18n.api.pojo.request.TranslationRequest;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
@@ -52,7 +53,7 @@ import java.util.Map;
  * @date 2021/1/27 21:59
  */
 @RestController
-@ApiResource(name = "用户多语言信息控制器")
+@ApiResource(name = "用户多语言信息控制器", resBizType = ResBizTypeEnum.SYSTEM)
 public class UserTranslationController {
 
     @Resource
