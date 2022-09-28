@@ -92,7 +92,6 @@ public interface MenuServiceApi {
      */
     List<IndexMenuInfo> buildAuthorities(Integer menuFrontType);
 
-
     /**
      * 获取角色绑定菜单和按钮权限的树
      *
@@ -100,5 +99,13 @@ public interface MenuServiceApi {
      * @date 2021/8/10 22:23
      */
     List<MenuAndButtonTreeResponse> getRoleMenuAndButtons(SysRoleRequest sysRoleRequest);
+
+    /**
+     * 获取角色绑定的菜单列表
+     *
+     * @author fengshuonan
+     * @date 2022/9/28 16:06
+     */
+    List<MenuAndButtonTreeResponse> getRoleBindMenuList(SysRoleRequest sysRoleRequest);
 
 }

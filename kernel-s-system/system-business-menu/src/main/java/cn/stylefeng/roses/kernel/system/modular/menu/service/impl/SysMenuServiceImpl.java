@@ -42,6 +42,7 @@ import cn.stylefeng.roses.kernel.rule.tree.ztree.ZTreeNode;
 import cn.stylefeng.roses.kernel.system.api.AppServiceApi;
 import cn.stylefeng.roses.kernel.system.api.MenuServiceApi;
 import cn.stylefeng.roses.kernel.system.api.RoleServiceApi;
+import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.enums.MenuFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
 import cn.stylefeng.roses.kernel.system.api.exception.enums.menu.SysMenuExceptionEnum;
@@ -436,8 +437,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public List<MenuAndButtonTreeResponse> getRoleMenuAndButtons(SysRoleRequest sysRoleRequest) {
-        List<MenuAndButtonTreeResponse> menuTreeNodeList = CollectionUtil.newArrayList();
-
         // 查询未删除的启用的菜单列表
         LambdaQueryWrapper<SysMenu> menuWrapper = new LambdaQueryWrapper<>();
         menuWrapper.eq(SysMenu::getDelFlag, YesOrNotEnum.N.getCode());
@@ -477,6 +476,48 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
         // 菜单列表转化为一棵树
         return new DefaultTreeBuildFactory<MenuAndButtonTreeResponse>().doTreeBuild(menuAndButtonTreeResponses);
+    }
+
+    @Override
+    public List<MenuAndButtonTreeResponse> getRoleBindMenuList(SysRoleRequest sysRoleRequest) {
+
+        // 查询所有菜单列表，根据前台传递参数，可选择前台还是后台菜单
+        LambdaQueryWrapper<SysMenu> menuWrapper = new LambdaQueryWrapper<>();
+        menuWrapper.eq(SysMenu::getDelFlag, YesOrNotEnum.N.getCode());
+        menuWrapper.eq(SysMenu::getStatusFlag, StatusEnum.ENABLE.getCode());
+        menuWrapper.eq(SysMenu::getAntdvFrontType, AntdvFrontTypeEnum.FRONT.getCode());
+        List<SysMenu> sysMenuList = this.list(menuWrapper);
+
+        // 获取角色绑定的菜单
+        List<SysRoleMenuDTO> roleMenuList = roleServiceApi.getRoleMenuList(Collections.singletonList(sysRoleRequest.getRoleId()));
+
+        // 将所有节点转化成树结构，整体只要两级结构，一级是一级菜单，第二级是所有以下菜单
+        Map<Long, SysMenu> firstLevelMenus = new HashMap<>();
+
+        // 找到所有第一级的菜单
+        for (SysMenu sysMenu : sysMenuList) {
+            if (TreeConstants.DEFAULT_PARENT_ID.equals(sysMenu.getMenuParentId())) {
+                firstLevelMenus.put(sysMenu.getMenuId(), sysMenu);
+            }
+        }
+
+        // 找到所有二级和以下菜单，并添加到一级菜单以下
+        for (Map.Entry<Long, SysMenu> menuEntry : firstLevelMenus.entrySet()) {
+            SysMenu firstLevelMenuItem = menuEntry.getValue();
+            List<SysMenu> children = firstLevelMenuItem.getChildren();
+            if (children == null) {
+                children = new ArrayList<>();
+                firstLevelMenuItem.setChildren(children);
+            }
+            for (SysMenu sysMenu : sysMenuList) {
+                if (sysMenu.getMenuPids().contains("[" + firstLevelMenuItem.getMenuId() + "]")) {
+                    children.add(sysMenu);
+                }
+            }
+        }
+
+        // 将组装好的一级菜单和里边的children都转化为响应对象，并填充checked标识
+        return AntdMenusFactory.parseMenuAndButtonTreeResponseWithChildren(sysMenuList, roleMenuList);
     }
 
     @Override

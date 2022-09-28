@@ -180,6 +180,34 @@ public class AntdMenusFactory {
 
     /**
      * 菜单集合转化成角色分配菜单的集合
+     * <p>
+     * 转化过程中包含menu的子集
+     *
+     * @author fengshuonan
+     * @date 2022/9/28 16:42
+     */
+    public static List<MenuAndButtonTreeResponse> parseMenuAndButtonTreeResponseWithChildren(List<SysMenu> sysMenuList, List<SysRoleMenuDTO> roleBindMenus) {
+
+        // 先转化第一层级的菜单
+        List<MenuAndButtonTreeResponse> menuAndButtonTreeResponses = parseMenuAndButtonTreeResponse(sysMenuList, roleBindMenus);
+
+        // 转化菜单的子集
+        for (SysMenu sysMenu : sysMenuList) {
+            if (ObjectUtil.isNotEmpty(sysMenu.getChildren())) {
+                for (MenuAndButtonTreeResponse menuAndButtonTreeRespons : menuAndButtonTreeResponses) {
+                    if (sysMenu.getMenuId().equals(menuAndButtonTreeRespons.getId())) {
+                        List<MenuAndButtonTreeResponse> subLevelItems = parseMenuAndButtonTreeResponse(sysMenuList, roleBindMenus);
+                        menuAndButtonTreeRespons.setChildren(subLevelItems);
+                    }
+                }
+            }
+        }
+
+        return menuAndButtonTreeResponses;
+    }
+
+    /**
+     * 菜单集合转化成角色分配菜单的集合
      *
      * @author fengshuonan
      * @date 2021/8/10 22:56

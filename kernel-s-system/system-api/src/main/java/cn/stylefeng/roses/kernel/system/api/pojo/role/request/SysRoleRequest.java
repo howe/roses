@@ -50,8 +50,8 @@ public class SysRoleRequest extends BaseRequest {
     /**
      * 主键
      */
-    @NotNull(message = "roleId不能为空", groups = {edit.class, delete.class, detail.class, updateStatus.class, grantResource.class,
-            grantResourceV2.class, grantDataScope.class, grantMenuButton.class, grantMenu.class, grantButton.class, grantMenusAndButtons.class})
+    @NotNull(message = "roleId不能为空", groups = {edit.class, delete.class, detail.class, updateStatus.class, grantResource.class, grantResourceV2.class, grantDataScope.class,
+            grantMenuButton.class, grantMenu.class, grantButton.class, grantMenusAndButtons.class, roleBindMenuList.class})
     @ChineseDescription("主键")
     private Long roleId;
 
@@ -66,13 +66,7 @@ public class SysRoleRequest extends BaseRequest {
      * 角色编码
      */
     @NotBlank(message = "角色编码不能为空", groups = {add.class, edit.class})
-    @TableUniqueValue(
-            message = "角色编码存在重复",
-            groups = {add.class, edit.class},
-            tableName = "sys_role",
-            columnName = "role_code",
-            idFieldName = "role_id",
-            excludeLogicDeleteItems = true)
+    @TableUniqueValue(message = "角色编码存在重复", groups = {add.class, edit.class}, tableName = "sys_role", columnName = "role_code", idFieldName = "role_id", excludeLogicDeleteItems = true)
     @ChineseDescription("角色编码")
     private String roleCode;
 
@@ -236,4 +230,9 @@ public class SysRoleRequest extends BaseRequest {
 
     }
 
+    /**
+     * 获取角色绑定的菜单列表
+     */
+    public @interface roleBindMenuList {
+    }
 }
