@@ -182,6 +182,12 @@ public class SysRoleRequest extends BaseRequest {
     private Boolean selectBindFlag;
 
     /**
+     * 资源的业务类型：1-业务类型，2-系统类型
+     */
+    @ChineseDescription("资源的业务类型：1-业务类型，2-系统类型")
+    private Integer resourceBizType;
+
+    /**
      * 参数校验分组：授权菜单和按钮
      */
     public @interface grantMenuButton {

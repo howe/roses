@@ -85,7 +85,7 @@ public class ResourceController {
      */
     @GetResource(name = "Layui版本--获取资源树列表，用于角色分配接口权限", path = "/resource/getRoleResourceTree")
     public List<ResourceTreeNode> getLateralTree(SysRoleRequest sysRoleRequest) {
-        return sysResourceService.getRoleResourceTree(sysRoleRequest.getRoleId(), false);
+        return sysResourceService.getRoleResourceTree(sysRoleRequest.getRoleId(), false, null);
     }
 
     /**
@@ -96,7 +96,7 @@ public class ResourceController {
      */
     @GetResource(name = "AntdVue版本--获取资源树列表，用于角色分配接口权限", path = "/resource/getRoleResourceTreeAntdv")
     public ResponseData<List<ResourceTreeNode>> getLateralTreeChildren(SysRoleRequest sysRoleRequest) {
-        List<ResourceTreeNode> resourceLateralTree = sysResourceService.getRoleResourceTree(sysRoleRequest.getRoleId(), true);
+        List<ResourceTreeNode> resourceLateralTree = sysResourceService.getRoleResourceTree(sysRoleRequest.getRoleId(), true, sysRoleRequest.getResourceBizType());
         return new SuccessResponseData<>(resourceLateralTree);
     }
 }

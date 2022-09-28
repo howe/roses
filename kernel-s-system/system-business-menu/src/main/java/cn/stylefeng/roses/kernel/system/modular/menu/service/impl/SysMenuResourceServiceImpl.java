@@ -61,7 +61,7 @@ public class SysMenuResourceServiceImpl extends ServiceImpl<SysMenuResourceMappe
         List<SysMenuResource> list = this.list(wrapper);
 
         List<String> resourceCodes = list.stream().map(SysMenuResource::getResourceCode).collect(Collectors.toList());
-        return sysResourceService.getResourceList(resourceCodes, true);
+        return sysResourceService.getResourceList(resourceCodes, true, null);
     }
 
     @Override

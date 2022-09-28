@@ -117,7 +117,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
     }
 
     @Override
-    public List<ResourceTreeNode> getRoleResourceTree(Long roleId, Boolean treeBuildFlag) {
+    public List<ResourceTreeNode> getRoleResourceTree(Long roleId, Boolean treeBuildFlag, Integer resourceBizType) {
 
         // 查询当前角色已有的接口
         List<SysRoleResourceDTO> resourceList = roleServiceApi.getRoleResourceList(Collections.singletonList(roleId));
@@ -128,11 +128,11 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
             alreadyList.add(sysRoleResponse.getResourceCode());
         }
 
-        return this.getResourceList(alreadyList, treeBuildFlag);
+        return this.getResourceList(alreadyList, treeBuildFlag, resourceBizType);
     }
 
     @Override
-    public List<ResourceTreeNode> getResourceList(List<String> resourceCodes, Boolean treeBuildFlag) {
+    public List<ResourceTreeNode> getResourceList(List<String> resourceCodes, Boolean treeBuildFlag, Integer resourceBizType) {
         List<ResourceTreeNode> res = new ArrayList<>();
 
         // 获取所有的资源
@@ -142,6 +142,9 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
         // 只查询需要授权的接口
         sysResourceLambdaQueryWrapper.eq(SysResource::getRequiredPermissionFlag, YesOrNotEnum.Y.getCode());
+
+        // 查询指定范围的资源
+        sysResourceLambdaQueryWrapper.eq(ObjectUtil.isNotEmpty(resourceBizType), SysResource::getResourceBizType, resourceBizType);
 
         LoginUserApi loginUserApi = LoginContext.me();
         if (!loginUserApi.getSuperAdminFlag()) {
