@@ -191,12 +191,14 @@ public class AntdMenusFactory {
         // 先转化第一层级的菜单
         List<MenuAndButtonTreeResponse> menuAndButtonTreeResponses = parseMenuAndButtonTreeResponse(sysMenuList, roleBindMenus);
 
-        // 转化菜单的子集
+        // 遍历所有菜单，查看是否有二级菜单
         for (SysMenu sysMenu : sysMenuList) {
+
+            // 如果存在二级菜单，则继续进行转化
             if (ObjectUtil.isNotEmpty(sysMenu.getChildren())) {
                 for (MenuAndButtonTreeResponse menuAndButtonTreeRespons : menuAndButtonTreeResponses) {
                     if (sysMenu.getMenuId().equals(menuAndButtonTreeRespons.getId())) {
-                        List<MenuAndButtonTreeResponse> subLevelItems = parseMenuAndButtonTreeResponse(sysMenuList, roleBindMenus);
+                        List<MenuAndButtonTreeResponse> subLevelItems = parseMenuAndButtonTreeResponse(sysMenu.getChildren(), roleBindMenus);
                         menuAndButtonTreeRespons.setChildren(subLevelItems);
                     }
                 }

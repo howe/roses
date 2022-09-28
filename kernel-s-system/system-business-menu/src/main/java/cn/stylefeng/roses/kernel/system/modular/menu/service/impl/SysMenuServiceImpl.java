@@ -517,7 +517,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
 
         // 将组装好的一级菜单和里边的children都转化为响应对象，并填充checked标识
-        return AntdMenusFactory.parseMenuAndButtonTreeResponseWithChildren(sysMenuList, roleMenuList);
+        return AntdMenusFactory.parseMenuAndButtonTreeResponseWithChildren(ListUtil.toList(firstLevelMenus.values()), roleMenuList);
     }
 
     @Override
