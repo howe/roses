@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.rule.enums;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.rule.base.ReadableEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
@@ -104,7 +105,7 @@ public enum YesOrNotEnum implements ReadableEnum<YesOrNotEnum> {
             return null;
         }
         for (YesOrNotEnum value : YesOrNotEnum.values()) {
-            if (value.code.equals(originValue)) {
+            if (value.boolFlag.equals(Convert.toBool(originValue))) {
                 return value;
             }
         }
