@@ -28,6 +28,7 @@ import cn.hutool.core.exceptions.UtilException;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.util.AopTargetUtils;
 import cn.stylefeng.roses.kernel.scanner.api.ResourceCollectorApi;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
@@ -245,12 +246,12 @@ public class ApiResourceScanner implements BeanPostProcessor {
         Boolean requiredLogin = invokeAnnotationMethod(apiResource, "requiredLogin", Boolean.class);
         Boolean requiredPermission = invokeAnnotationMethod(apiResource, "requiredPermission", Boolean.class);
         Boolean viewFlag = invokeAnnotationMethod(apiResource, "viewFlag", Boolean.class);
-        Integer resBizType = invokeAnnotationMethod(apiResource, "resBizType", Integer.class);
+        ResBizTypeEnum resBizType = invokeAnnotationMethod(apiResource, "resBizType", ResBizTypeEnum.class);
 
         resourceDefinition.setRequiredLoginFlag(requiredLogin);
         resourceDefinition.setRequiredPermissionFlag(requiredPermission);
         resourceDefinition.setResourceName(name);
-        resourceDefinition.setResourceBizType(resBizType);
+        resourceDefinition.setResourceBizType(resBizType.getCode());
 
         // 根据控制器和控制器方法的path组装最后的url
         String controllerMethodPath = createControllerPath(controllerClass, methodPath[0]);
