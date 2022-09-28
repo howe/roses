@@ -138,6 +138,13 @@ public class SysResource extends BaseEntity {
     private String httpMethod;
 
     /**
+     * 资源的业务类型：1-系统类型，2-业务类型
+     */
+    @TableField("resource_biz_type")
+    @ChineseDescription("资源的业务类型：1-系统类型，2-业务类型")
+    private Integer resourceBizType;
+
+    /**
      * 是否需要登录：Y-是，N-否
      */
     @TableField("required_login_flag")
