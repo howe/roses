@@ -112,13 +112,6 @@ public class SysMenu extends BaseEntity implements AbstractTreeNode<SysMenu> {
     private String remark;
 
     /**
-     * 菜单的业务类型：1-系统类型，2-业务类型
-     */
-    @TableField("menu_biz_type")
-    @ChineseDescription("菜单的业务类型：1-系统类型，2-业务类型")
-    private Integer menuBizType;
-
-    /**
      * 菜单的路径，适用于layui-beetl版本
      */
     @TableField("layui_path")
