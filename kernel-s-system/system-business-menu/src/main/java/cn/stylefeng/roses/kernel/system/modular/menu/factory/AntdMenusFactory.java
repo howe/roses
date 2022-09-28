@@ -41,10 +41,8 @@ import cn.stylefeng.roses.kernel.system.modular.menu.entity.SysMenu;
 import cn.stylefeng.roses.kernel.system.modular.menu.entity.SysMenuButton;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 针对于antd vue版本的前端菜单的组装
@@ -247,6 +245,52 @@ public class AntdMenusFactory {
     }
 
     /**
+     * 将按钮集成到菜单列表里，并且只返回一级结构
+     *
+     * @param sysMenuList 菜单集合，包含一级菜单，一级菜单内
+     * @param buttonList  菜单下的操作权限集合
+     * @author fengshuonan
+     * @date 2022/9/28 18:00
+     */
+    public static List<MenuAndButtonTreeResponse> fillButtons(List<SysMenu> sysMenuList, List<SysMenuButton> buttonList) {
+        List<MenuAndButtonTreeResponse> result = new ArrayList<>();
+
+        for (SysMenu sysMenu : sysMenuList) {
+
+            MenuAndButtonTreeResponse menuAndButtonTreeResponse = new MenuAndButtonTreeResponse();
+            menuAndButtonTreeResponse.setId(sysMenu.getMenuId());
+            menuAndButtonTreeResponse.setName(sysMenu.getMenuName());
+            menuAndButtonTreeResponse.setCode(sysMenu.getMenuCode());
+            menuAndButtonTreeResponse.setPid(sysMenu.getMenuParentId());
+            menuAndButtonTreeResponse.setChecked(false);
+
+            // 获取当前菜单下的所有菜单id
+            List<SysMenu> children = sysMenu.getChildren();
+            Set<Long> totalMenusIds = children.stream().map(SysMenu::getMenuId).collect(Collectors.toSet());
+            totalMenusIds.add(sysMenu.getMenuId());
+
+            // 转化按钮的所属菜单id
+            ArrayList<MenuAndButtonTreeResponse> buttons = new ArrayList<>();
+            for (SysMenuButton sysMenuButton : buttonList) {
+                for (Long menuIdItem : totalMenusIds) {
+                    if (sysMenuButton.getMenuId().equals(menuIdItem)) {
+                        MenuAndButtonTreeResponse buttonItem = new MenuAndButtonTreeResponse();
+                        buttonItem.setId(sysMenuButton.getButtonId());
+                        buttonItem.setName(sysMenuButton.getButtonName());
+                        buttonItem.setCode(sysMenuButton.getButtonCode());
+                        buttonItem.setChecked(false);
+                        buttons.add(buttonItem);
+                    }
+                }
+            }
+            menuAndButtonTreeResponse.setButtons(buttons);
+            result.add(menuAndButtonTreeResponse);
+        }
+
+        return result;
+    }
+
+    /**
      * 获取分类过的用户菜单，返回一个menus数组，并且第一个是激活的应用
      *
      * @author fengshuonan
@@ -329,4 +373,26 @@ public class AntdMenusFactory {
         return antdSysMenuDTO;
     }
 
+    /**
+     * 填充按钮的选中标识
+     *
+     * @author fengshuonan
+     * @date 2022/9/28 18:19
+     */
+    public static List<MenuAndButtonTreeResponse> fillButtonsChecked(List<MenuAndButtonTreeResponse> menuAndButtonTreeResponses, List<SysRoleMenuButtonDTO> roleMenuButtonList) {
+
+        // 遍历所有菜单中的按钮，将选中标识加上
+        for (MenuAndButtonTreeResponse menuAndButtonTreeResponse : menuAndButtonTreeResponses) {
+            List<MenuAndButtonTreeResponse> buttons = menuAndButtonTreeResponse.getButtons();
+            for (MenuAndButtonTreeResponse button : buttons) {
+                for (SysRoleMenuButtonDTO sysRoleMenuButtonDTO : roleMenuButtonList) {
+                    if (sysRoleMenuButtonDTO.getButtonId().equals(button.getId())) {
+                        button.setChecked(true);
+                    }
+                }
+            }
+        }
+
+        return menuAndButtonTreeResponses;
+    }
 }

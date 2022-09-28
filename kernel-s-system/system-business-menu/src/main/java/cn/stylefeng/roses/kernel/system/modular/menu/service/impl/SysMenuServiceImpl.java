@@ -481,43 +481,33 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<MenuAndButtonTreeResponse> getRoleBindMenuList(SysRoleRequest sysRoleRequest) {
 
-        // 查询所有菜单列表，根据前台传递参数，可选择前台还是后台菜单
-        LambdaQueryWrapper<SysMenu> menuWrapper = new LambdaQueryWrapper<>();
-        menuWrapper.eq(SysMenu::getDelFlag, YesOrNotEnum.N.getCode());
-        menuWrapper.eq(SysMenu::getStatusFlag, StatusEnum.ENABLE.getCode());
-        menuWrapper.eq(SysMenu::getAntdvFrontType, AntdvFrontTypeEnum.FRONT.getCode());
-        List<SysMenu> sysMenuList = this.list(menuWrapper);
+        // 获取所有一级菜单，子菜单包含在children内
+        List<SysMenu> sysMenus = totalMenusWithOneLevel();
 
         // 获取角色绑定的菜单
         List<SysRoleMenuDTO> roleMenuList = roleServiceApi.getRoleMenuList(Collections.singletonList(sysRoleRequest.getRoleId()));
 
-        // 将所有节点转化成树结构，整体只要两级结构，一级是一级菜单，第二级是所有以下菜单
-        Map<Long, SysMenu> firstLevelMenus = new HashMap<>();
-
-        // 找到所有第一级的菜单
-        for (SysMenu sysMenu : sysMenuList) {
-            if (TreeConstants.DEFAULT_PARENT_ID.equals(sysMenu.getMenuParentId())) {
-                firstLevelMenus.put(sysMenu.getMenuId(), sysMenu);
-            }
-        }
-
-        // 找到所有二级和以下菜单，并添加到一级菜单以下
-        for (Map.Entry<Long, SysMenu> menuEntry : firstLevelMenus.entrySet()) {
-            SysMenu firstLevelMenuItem = menuEntry.getValue();
-            List<SysMenu> children = firstLevelMenuItem.getChildren();
-            if (children == null) {
-                children = new ArrayList<>();
-                firstLevelMenuItem.setChildren(children);
-            }
-            for (SysMenu sysMenu : sysMenuList) {
-                if (sysMenu.getMenuPids().contains("[" + firstLevelMenuItem.getMenuId() + "]")) {
-                    children.add(sysMenu);
-                }
-            }
-        }
-
         // 将组装好的一级菜单和里边的children都转化为响应对象，并填充checked标识
-        return AntdMenusFactory.parseMenuAndButtonTreeResponseWithChildren(ListUtil.toList(firstLevelMenus.values()), roleMenuList);
+        return AntdMenusFactory.parseMenuAndButtonTreeResponseWithChildren(sysMenus, roleMenuList);
+    }
+
+    @Override
+    public List<MenuAndButtonTreeResponse> getRoleBindOperateList(SysRoleRequest sysRoleRequest) {
+
+        // 获取所有一级菜单，子菜单包含在children内
+        List<SysMenu> sysMenus = totalMenusWithOneLevel();
+
+        // 查询这些菜单对应的所有按钮
+        LambdaQueryWrapper<SysMenuButton> buttonWrapper = new LambdaQueryWrapper<>();
+        buttonWrapper.eq(SysMenuButton::getDelFlag, YesOrNotEnum.N.getCode());
+        List<SysMenuButton> buttonList = sysMenuButtonService.list(buttonWrapper);
+
+        // 将组装好的一级菜单和里边的children都转化为响应对象
+        List<MenuAndButtonTreeResponse> menuAndButtonTreeResponses = AntdMenusFactory.fillButtons(sysMenus, buttonList);
+
+        // 填充checked对象
+        List<SysRoleMenuButtonDTO> roleMenuButtonList = roleServiceApi.getRoleMenuButtonList(Collections.singletonList(sysRoleRequest.getRoleId()));
+        return AntdMenusFactory.fillButtonsChecked(menuAndButtonTreeResponses, roleMenuButtonList);
     }
 
     @Override
@@ -816,6 +806,48 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             }
         }
         return newPids;
+    }
+
+    /**
+     * 获取所有的菜单，以一级菜单的形式展示
+     *
+     * @author fengshuonan
+     * @date 2022/9/28 17:46
+     */
+    private List<SysMenu> totalMenusWithOneLevel() {
+        // 查询所有菜单列表，根据前台传递参数，可选择前台还是后台菜单
+        LambdaQueryWrapper<SysMenu> menuWrapper = new LambdaQueryWrapper<>();
+        menuWrapper.eq(SysMenu::getDelFlag, YesOrNotEnum.N.getCode());
+        menuWrapper.eq(SysMenu::getStatusFlag, StatusEnum.ENABLE.getCode());
+        menuWrapper.eq(SysMenu::getAntdvFrontType, AntdvFrontTypeEnum.FRONT.getCode());
+        List<SysMenu> sysMenuList = this.list(menuWrapper);
+
+        // 将所有节点转化成树结构，整体只要两级结构，一级是一级菜单，第二级是所有以下菜单
+        Map<Long, SysMenu> firstLevelMenus = new HashMap<>();
+
+        // 找到所有第一级的菜单
+        for (SysMenu sysMenu : sysMenuList) {
+            if (TreeConstants.DEFAULT_PARENT_ID.equals(sysMenu.getMenuParentId())) {
+                firstLevelMenus.put(sysMenu.getMenuId(), sysMenu);
+            }
+        }
+
+        // 找到所有二级和以下菜单，并添加到一级菜单以下
+        for (Map.Entry<Long, SysMenu> menuEntry : firstLevelMenus.entrySet()) {
+            SysMenu firstLevelMenuItem = menuEntry.getValue();
+            List<SysMenu> children = firstLevelMenuItem.getChildren();
+            if (children == null) {
+                children = new ArrayList<>();
+                firstLevelMenuItem.setChildren(children);
+            }
+            for (SysMenu sysMenu : sysMenuList) {
+                if (sysMenu.getMenuPids().contains("[" + firstLevelMenuItem.getMenuId() + "]")) {
+                    children.add(sysMenu);
+                }
+            }
+        }
+
+        return ListUtil.toList(firstLevelMenus.values());
     }
 
 }

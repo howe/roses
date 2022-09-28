@@ -108,4 +108,12 @@ public interface MenuServiceApi {
      */
     List<MenuAndButtonTreeResponse> getRoleBindMenuList(SysRoleRequest sysRoleRequest);
 
+    /**
+     * 获取角色绑定的操作权限列表
+     *
+     * @author fengshuonan
+     * @date 2022/9/28 17:26
+     */
+    List<MenuAndButtonTreeResponse> getRoleBindOperateList(SysRoleRequest sysRoleRequest);
+
 }
