@@ -418,6 +418,26 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public void grantMenusAndButtons(SysRoleRequest sysRoleRequest) {
+
+        // 授权角色绑定的菜单
+        this.grantRoleMenus(sysRoleRequest);
+
+        // 授权按钮
+        if (ObjectUtil.isNotEmpty(sysRoleRequest.getModularButtonIds())) {
+            this.grantButton(sysRoleRequest);
+        }
+
+    }
+
+    @Override
+    public List<MenuAndButtonTreeResponse> grantMenusAndButtonsAndGetResult(SysRoleRequest sysRoleRequest) {
+        this.grantMenusAndButtons(sysRoleRequest);
+        return menuServiceApi.getRoleMenuAndButtons(sysRoleRequest);
+    }
+
+    @Override
+    public List<MenuAndButtonTreeResponse> grantRoleMenus(SysRoleRequest sysRoleRequest) {
+
         // 获取新增绑定还是取消绑定菜单
         Boolean selectBindFlag = sysRoleRequest.getSelectBindFlag();
 
@@ -448,16 +468,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             this.roleMenuService.remove(wrapper);
         }
 
-        // 授权按钮
-        if (ObjectUtil.isNotEmpty(sysRoleRequest.getModularButtonIds())) {
-            this.grantButton(sysRoleRequest);
-        }
-    }
-
-    @Override
-    public List<MenuAndButtonTreeResponse> grantMenusAndButtonsAndGetResult(SysRoleRequest sysRoleRequest) {
-        this.grantMenusAndButtons(sysRoleRequest);
-        return menuServiceApi.getRoleMenuAndButtons(sysRoleRequest);
+        // 获取当前角色分配的菜单权限
+        return menuServiceApi.getRoleBindMenuList(sysRoleRequest);
     }
 
     @Override

@@ -51,7 +51,7 @@ public class SysRoleRequest extends BaseRequest {
      * 主键
      */
     @NotNull(message = "roleId不能为空", groups = {edit.class, delete.class, detail.class, updateStatus.class, grantResource.class, grantResourceV2.class, grantDataScope.class,
-            grantMenuButton.class, grantMenu.class, grantButton.class, grantMenusAndButtons.class, roleBindMenuList.class})
+            grantMenuButton.class, grantMenu.class, grantButton.class, grantMenusAndButtons.class, roleBindMenuList.class, grantRoleMenus.class})
     @ChineseDescription("主键")
     private Long roleId;
 
@@ -137,7 +137,7 @@ public class SysRoleRequest extends BaseRequest {
     /**
      * 授权菜单
      */
-    @NotEmpty(message = "授权菜单Id不能为空", groups = {grantMenuButton.class, grantMenusAndButtons.class})
+    @NotEmpty(message = "授权菜单Id不能为空", groups = {grantMenuButton.class, grantMenusAndButtons.class, grantRoleMenus.class})
     @ChineseDescription("授权菜单")
     private List<Long> grantMenuIdList;
 
@@ -178,7 +178,7 @@ public class SysRoleRequest extends BaseRequest {
      * 绑定标识，true-新增绑定菜单，false-取消绑定菜单
      */
     @ChineseDescription("绑定标识，true-新增绑定菜单，false-取消绑定菜单")
-    @NotNull(message = "绑定标识不能为空", groups = grantMenusAndButtons.class)
+    @NotNull(message = "绑定标识不能为空", groups = {grantMenusAndButtons.class, grantRoleMenus.class})
     private Boolean selectBindFlag;
 
     /**
@@ -235,4 +235,11 @@ public class SysRoleRequest extends BaseRequest {
      */
     public @interface roleBindMenuList {
     }
+
+    /**
+     * 绑定角色菜单
+     */
+    public @interface grantRoleMenus {
+    }
+
 }
