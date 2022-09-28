@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.scanner.api.annotation;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -89,6 +90,11 @@ public @interface PostResource {
      * 视图层一般会在前后端不分离项目出现
      */
     boolean viewFlag() default false;
+
+    /**
+     * 资源的类型，系统类还是业务类资源
+     */
+    ResBizTypeEnum resBizType() default ResBizTypeEnum.BUSINESS;
 
     /**
      * 请求路径(同RequestMapping)
