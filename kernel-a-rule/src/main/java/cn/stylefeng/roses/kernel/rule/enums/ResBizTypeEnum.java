@@ -43,14 +43,14 @@ import lombok.Getter;
 public enum ResBizTypeEnum implements ReadableEnum<ResBizTypeEnum> {
 
     /**
-     * 系统类
-     */
-    SYSTEM(1, "系统类"),
-
-    /**
      * 业务类
      */
-    BUSINESS(2, "业务类"),
+    BUSINESS(1, "业务类"),
+
+    /**
+     * 系统类
+     */
+    SYSTEM(2, "系统类"),
 
     /**
      * 默认

@@ -126,9 +126,9 @@ public class ResourceRequest extends BaseRequest {
     private String httpMethod;
 
     /**
-     * 资源的业务类型：1-系统类型，2-业务类型
+     * 资源的业务类型：1-业务类型，2-系统类型
      */
-    @ChineseDescription("资源的业务类型：1-系统类型，2-业务类型")
+    @ChineseDescription("资源的业务类型：1-业务类型，2-系统类型")
     private Integer resourceBizType;
 
     /**
