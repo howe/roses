@@ -664,14 +664,19 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             return queryWrapper;
         }
 
-        if (ObjectUtil.isNotEmpty(sysMenuRequest.getAppCode()) || ObjectUtil.isNotEmpty(sysMenuRequest.getMenuName()) || ObjectUtil.isNotEmpty(sysMenuRequest.getMenuCode())) {
-            queryWrapper.nested(
-                    // 根据所属应用查询
-                    i -> i.like(ObjectUtil.isNotEmpty(sysMenuRequest.getAppCode()), SysMenu::getAppCode, sysMenuRequest.getAppCode()).or()
-                            // 根据菜单名称模糊查询
-                            .like(ObjectUtil.isNotEmpty(sysMenuRequest.getMenuName()), SysMenu::getMenuName, sysMenuRequest.getMenuName()).or()
-                            // 根据菜单编码模糊查询
-                            .like(ObjectUtil.isNotEmpty(sysMenuRequest.getMenuCode()), SysMenu::getMenuCode, sysMenuRequest.getMenuCode()));
+        // 根据应用查询
+        if (ObjectUtil.isNotEmpty(sysMenuRequest.getAppCode())) {
+            queryWrapper.eq(SysMenu::getAppCode, sysMenuRequest.getAppCode());
+        }
+
+        // 根据菜单名称模糊查询
+        if (ObjectUtil.isNotEmpty(sysMenuRequest.getMenuName())) {
+            queryWrapper.like(SysMenu::getMenuName, sysMenuRequest.getMenuName());
+        }
+
+        // 根据菜单编码模糊查询
+        if (ObjectUtil.isNotEmpty(sysMenuRequest.getMenuCode())) {
+            queryWrapper.like(SysMenu::getMenuCode, sysMenuRequest.getMenuCode());
         }
 
         return queryWrapper;
@@ -760,7 +765,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                         // 子节点pids组成 = 当前菜单新pids + 当前菜单id + 子节点自己的pids后缀
                         String oldParentCodesPrefix = oldPids + SymbolConstant.LEFT_SQUARE_BRACKETS + oldMenu.getMenuId() + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA;
                         String oldParentCodesSuffix = child.getMenuPids().substring(oldParentCodesPrefix.length());
-                        String menuParentCodes = newPids + SymbolConstant.LEFT_SQUARE_BRACKETS + oldMenu.getMenuId() + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA + oldParentCodesSuffix;
+                        String menuParentCodes =
+                                newPids + SymbolConstant.LEFT_SQUARE_BRACKETS + oldMenu.getMenuId() + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA + oldParentCodesSuffix;
                         child.setMenuPids(menuParentCodes);
                     });
                 }
