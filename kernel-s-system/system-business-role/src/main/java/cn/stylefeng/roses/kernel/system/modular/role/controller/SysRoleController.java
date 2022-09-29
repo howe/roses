@@ -173,18 +173,6 @@ public class SysRoleController {
     }
 
     /**
-     * 角色授权按钮，新版界面用
-     *
-     * @author fengshuonan
-     * @date 2021/8/11 9:58
-     */
-    @PostResource(name = "角色授权按钮", path = "/sysRole/grantButton")
-    public ResponseData<?> grantButton(@RequestBody @Validated(SysRoleRequest.grantButton.class) SysRoleRequest sysRoleRequest) {
-        sysRoleService.grantButton(sysRoleRequest);
-        return new SuccessResponseData<>();
-    }
-
-    /**
      * 角色绑定或取消绑定菜单和按钮
      *
      * @author fengshuonan
@@ -250,39 +238,6 @@ public class SysRoleController {
     @GetResource(name = "获取角色下拉列表", path = "/sysRole/getRoleSelectList")
     public ResponseData<List<SysRoleDTO>> getRoleSelectList(SysRoleRequest sysRoleRequest) {
         return new SuccessResponseData<>(sysRoleService.getRoleSelectList(sysRoleRequest));
-    }
-
-    /**
-     * 角色权限界面：角色绑定菜单权限
-     *
-     * @author fengshuonan
-     * @date 2022/9/28 20:28
-     */
-    @PostResource(name = "角色权限界面：角色绑定菜单权限", path = "/sysRole/grantRoleMenus")
-    public ResponseData<List<MenuAndButtonTreeResponse>> grantRoleMenus(@RequestBody @Validated(SysRoleRequest.grantRoleMenus.class) SysRoleRequest sysRoleRequest) {
-        return new SuccessResponseData<>(sysRoleService.grantRoleMenus(sysRoleRequest));
-    }
-
-    /**
-     * 角色权限界面：角色绑定菜单权限（全选操作）
-     *
-     * @author fengshuonan
-     * @date 2022/9/28 20:28
-     */
-    @PostResource(name = "角色权限界面：角色绑定菜单权限（全选操作）", path = "/sysRole/grantRoleMenus/grantAll")
-    public ResponseData<List<MenuAndButtonTreeResponse>> grantRoleMenusGrantAll(@RequestBody @Validated(SysRoleRequest.grantAll.class) SysRoleRequest sysRoleRequest) {
-        return new SuccessResponseData<>(sysRoleService.grantRoleMenusGrantAll(sysRoleRequest));
-    }
-
-    /**
-     * 角色权限界面：角色绑定操作权限（全选操作）
-     *
-     * @author fengshuonan
-     * @date 2022/9/28 20:28
-     */
-    @PostResource(name = "角色权限界面：角色绑定操作权限（全选操作）", path = "/sysRole/grantButton/grantAll")
-    public ResponseData<List<MenuAndButtonTreeResponse>> grantButtonGrantAll(@RequestBody @Validated(SysRoleRequest.grantAll.class) SysRoleRequest sysRoleRequest) {
-        return new SuccessResponseData<>(sysRoleService.grantButtonGrantAll(sysRoleRequest));
     }
 
 }
