@@ -483,25 +483,61 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         wrapper.eq(SysRoleMenu::getRoleId, sysRoleRequest.getRoleId());
         this.roleMenuService.remove(wrapper);
 
-        // 如果是全部选中
-        if (sysRoleRequest.getTotalSelectFlag()) {
+        // 获取当前角色分配的菜单权限
+        List<MenuAndButtonTreeResponse> roleBindMenuList = menuServiceApi.getRoleBindMenuList(sysRoleRequest);
 
-            // 获取所有前台菜单id
-            List<Long> totalMenuIdList = this.menuServiceApi.getTotalMenuIdList(AntdvFrontTypeEnum.FRONT);
-
-            // 批量保存绑定的菜单集合
-            List<SysRoleMenu> sysRoleMenus = new ArrayList<>();
-            for (Long menuId : totalMenuIdList) {
-                SysRoleMenu item = new SysRoleMenu();
-                item.setRoleId(sysRoleRequest.getRoleId());
-                item.setMenuId(menuId);
-                sysRoleMenus.add(item);
-            }
-            this.roleMenuService.saveBatch(sysRoleMenus);
+        // 如果是取消权限，则直接返回
+        if (!sysRoleRequest.getTotalSelectFlag()) {
+            return roleBindMenuList;
         }
 
-        // 获取当前角色分配的菜单权限
-        return menuServiceApi.getRoleBindMenuList(sysRoleRequest);
+        // 获取所有前台菜单id
+        List<Long> totalMenuIdList = this.menuServiceApi.getTotalMenuIdList(AntdvFrontTypeEnum.FRONT);
+
+        // 批量保存绑定的菜单集合
+        List<SysRoleMenu> sysRoleMenus = new ArrayList<>();
+        for (Long menuId : totalMenuIdList) {
+            SysRoleMenu item = new SysRoleMenu();
+            item.setRoleId(sysRoleRequest.getRoleId());
+            item.setMenuId(menuId);
+            sysRoleMenus.add(item);
+        }
+        this.roleMenuService.saveBatch(sysRoleMenus);
+
+        return roleBindMenuList;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_UNCOMMITTED)
+    public List<MenuAndButtonTreeResponse> grantButtonGrantAll(SysRoleRequest sysRoleRequest) {
+
+        // 删除角色绑定的所有按钮权限
+        LambdaUpdateWrapper<SysRoleMenuButton> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(SysRoleMenuButton::getRoleId, sysRoleRequest.getRoleId());
+        this.sysRoleMenuButtonService.remove(wrapper);
+
+        // 获取当前角色分配的操作权限
+        List<MenuAndButtonTreeResponse> roleBindOperateList = menuServiceApi.getRoleBindOperateList(sysRoleRequest);
+
+        // 如果是取消权限，则直接返回
+        if (!sysRoleRequest.getTotalSelectFlag()) {
+            return roleBindOperateList;
+        }
+
+        // 获取所有前台按钮集合
+        List<Long> totalButtonIds = this.menuServiceApi.getTotalMenuButtonIdList(AntdvFrontTypeEnum.FRONT);
+
+        // 批量保存绑定的按钮集合
+        List<SysRoleMenuButton> sysRoleMenuButtons = new ArrayList<>();
+        for (Long buttonId : totalButtonIds) {
+            SysRoleMenuButton item = new SysRoleMenuButton();
+            item.setRoleId(sysRoleRequest.getRoleId());
+            item.setButtonId(buttonId);
+            sysRoleMenuButtons.add(item);
+        }
+        this.sysRoleMenuButtonService.saveBatch(sysRoleMenuButtons);
+
+        return roleBindOperateList;
     }
 
     @Override

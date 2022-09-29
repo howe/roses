@@ -526,6 +526,25 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
+    public List<Long> getTotalMenuButtonIdList(AntdvFrontTypeEnum antdvFrontTypeEnum) {
+
+        List<Long> totalMenuIdList = this.getTotalMenuIdList(antdvFrontTypeEnum);
+
+        if (ObjectUtil.isEmpty(totalMenuIdList)) {
+            return new ArrayList<>();
+        }
+
+        // 获取所有按钮id集合
+        LambdaQueryWrapper<SysMenuButton> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(SysMenuButton::getButtonId);
+        wrapper.eq(SysMenuButton::getDelFlag, YesOrNotEnum.N.getCode());
+        wrapper.in(SysMenuButton::getMenuId, totalMenuIdList);
+
+        List<SysMenuButton> list = this.sysMenuButtonService.list(wrapper);
+        return list.stream().map(SysMenuButton::getButtonId).collect(Collectors.toList());
+    }
+
+    @Override
     public List<SysMenu> getCurrentUserMenus(List<String> appCodeList, Boolean layuiVisibleFlag, Integer antdvFrontType) {
 
         // 菜单查询条件

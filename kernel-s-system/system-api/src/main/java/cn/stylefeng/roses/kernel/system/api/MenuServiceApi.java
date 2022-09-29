@@ -126,4 +126,13 @@ public interface MenuServiceApi {
      */
     List<Long> getTotalMenuIdList(AntdvFrontTypeEnum antdvFrontTypeEnum);
 
+    /**
+     * 获取所有菜单按钮id集合
+     *
+     * @param antdvFrontTypeEnum 前台还是后台菜单
+     * @author fengshuonan
+     * @date 2022/9/29 9:56
+     */
+    List<Long> getTotalMenuButtonIdList(AntdvFrontTypeEnum antdvFrontTypeEnum);
+
 }

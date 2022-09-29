@@ -274,4 +274,15 @@ public class SysRoleController {
         return new SuccessResponseData<>(sysRoleService.grantRoleMenusGrantAll(sysRoleRequest));
     }
 
+    /**
+     * 角色权限界面：角色绑定操作权限（全选操作）
+     *
+     * @author fengshuonan
+     * @date 2022/9/28 20:28
+     */
+    @PostResource(name = "角色权限界面：角色绑定操作权限（全选操作）", path = "/sysRole/grantButton/grantAll")
+    public ResponseData<List<MenuAndButtonTreeResponse>> grantButtonGrantAll(@RequestBody @Validated(SysRoleRequest.grantAll.class) SysRoleRequest sysRoleRequest) {
+        return new SuccessResponseData<>(sysRoleService.grantButtonGrantAll(sysRoleRequest));
+    }
+
 }
