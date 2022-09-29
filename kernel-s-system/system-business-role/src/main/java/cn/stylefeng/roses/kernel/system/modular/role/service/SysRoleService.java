@@ -122,7 +122,7 @@ public interface SysRoleService extends IService<SysRole>, RoleServiceApi {
      * @author fengshuonan
      * @date 2021/8/11 10:02
      */
-    void grantButton(SysRoleRequest sysRoleMenuButtonRequest);
+    List<MenuAndButtonTreeResponse> grantButton(SysRoleRequest sysRoleMenuButtonRequest);
 
     /**
      * 授权数据范围（组织机构）

@@ -310,7 +310,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public void grantButton(SysRoleRequest sysRoleMenuButtonRequest) {
+    public List<MenuAndButtonTreeResponse> grantButton(SysRoleRequest sysRoleMenuButtonRequest) {
         // 该模块下角色绑定的按钮全部删除
         List<Long> modularButtonIds = sysRoleMenuButtonRequest.getModularButtonIds();
         if (ObjectUtil.isNotEmpty(modularButtonIds)) {
@@ -337,6 +337,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             }
             this.sysRoleMenuButtonService.saveBatch(sysRoleMenuButtons, sysRoleMenuButtons.size());
         }
+
+        // 返回角色绑定的按钮列表
+        return this.menuServiceApi.getRoleBindOperateList(sysRoleMenuButtonRequest);
     }
 
     @Override

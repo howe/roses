@@ -28,7 +28,9 @@ import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
+import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
+import cn.stylefeng.roses.kernel.system.api.MenuServiceApi;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.modular.role.service.SysRoleService;
@@ -52,6 +54,33 @@ public class SysRoleAuthController {
     @Resource
     private SysRoleService sysRoleService;
 
+    @Resource
+    private MenuServiceApi menuServiceApi;
+
+    /**
+     * 获取角色分配菜单界面，绑定情况列表
+     *
+     * @author fengshuonan
+     * @date 2022/9/28 16:04
+     */
+    @GetResource(name = "获取角色分配菜单界面，绑定情况列表", path = "/sysMenu/roleBindMenuList")
+    public ResponseData<List<MenuAndButtonTreeResponse>> roleBindMenuList(@Validated(SysRoleRequest.roleBindMenuList.class) SysRoleRequest sysRoleRequest) {
+        List<MenuAndButtonTreeResponse> treeResponseList = menuServiceApi.getRoleBindMenuList(sysRoleRequest);
+        return new SuccessResponseData<>(treeResponseList);
+    }
+
+    /**
+     * 获取角色分配操作权限，绑定情况列表
+     *
+     * @author fengshuonan
+     * @date 2022/9/28 17:23
+     */
+    @GetResource(name = "获取角色分配操作权限，绑定情况列表", path = "/sysMenu/roleBindOperateList")
+    public ResponseData<List<MenuAndButtonTreeResponse>> roleBindOperateList(@Validated(SysRoleRequest.roleBindMenuList.class) SysRoleRequest sysRoleRequest) {
+        List<MenuAndButtonTreeResponse> treeResponseList = menuServiceApi.getRoleBindOperateList(sysRoleRequest);
+        return new SuccessResponseData<>(treeResponseList);
+    }
+
     /**
      * 角色权限界面：角色绑定菜单权限
      *
@@ -71,8 +100,8 @@ public class SysRoleAuthController {
      */
     @PostResource(name = "角色权限界面，角色绑定操作权限", path = "/sysRole/grantButton")
     public ResponseData<List<MenuAndButtonTreeResponse>> grantButton(@RequestBody @Validated(SysRoleRequest.grantButton.class) SysRoleRequest sysRoleRequest) {
-        sysRoleService.grantButton(sysRoleRequest);
-        return new SuccessResponseData<>();
+        List<MenuAndButtonTreeResponse> menuAndButtonTreeResponses = sysRoleService.grantButton(sysRoleRequest);
+        return new SuccessResponseData<>(menuAndButtonTreeResponses);
     }
 
     /**

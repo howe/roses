@@ -205,28 +205,4 @@ public class SysMenuController {
         return new SuccessResponseData<>(treeResponseList);
     }
 
-    /**
-     * 获取角色分配菜单界面，绑定情况列表
-     *
-     * @author fengshuonan
-     * @date 2022/9/28 16:04
-     */
-    @GetResource(name = "获取角色分配菜单界面，绑定情况列表", path = "/sysMenu/roleBindMenuList")
-    public ResponseData<List<MenuAndButtonTreeResponse>> roleBindMenuList(@Validated(SysRoleRequest.roleBindMenuList.class) SysRoleRequest sysRoleRequest) {
-        List<MenuAndButtonTreeResponse> treeResponseList = menuServiceApi.getRoleBindMenuList(sysRoleRequest);
-        return new SuccessResponseData<>(treeResponseList);
-    }
-
-    /**
-     * 获取角色分配操作权限，绑定情况列表
-     *
-     * @author fengshuonan
-     * @date 2022/9/28 17:23
-     */
-    @GetResource(name = "获取角色分配操作权限，绑定情况列表", path = "/sysMenu/roleBindOperateList")
-    public ResponseData<List<MenuAndButtonTreeResponse>> roleBindOperateList(@Validated(SysRoleRequest.roleBindMenuList.class) SysRoleRequest sysRoleRequest) {
-        List<MenuAndButtonTreeResponse> treeResponseList = menuServiceApi.getRoleBindOperateList(sysRoleRequest);
-        return new SuccessResponseData<>(treeResponseList);
-    }
-
 }
