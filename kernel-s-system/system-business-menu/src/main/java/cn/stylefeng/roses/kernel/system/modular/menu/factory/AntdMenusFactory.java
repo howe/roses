@@ -383,16 +383,32 @@ public class AntdMenusFactory {
 
         // 遍历所有菜单中的按钮，将选中标识加上
         for (MenuAndButtonTreeResponse menuAndButtonTreeResponse : menuAndButtonTreeResponses) {
+
+            // 获取菜单中所有的按钮
             List<MenuAndButtonTreeResponse> buttons = menuAndButtonTreeResponse.getButtons();
+
+            // 当前菜单中的所有按钮的数量
+            int totalSize = buttons.size();
+
+            // 当前菜单中所有已选择的数量
+            int totalSelectSize = 0;
+
             for (MenuAndButtonTreeResponse button : buttons) {
                 for (SysRoleMenuButtonDTO sysRoleMenuButtonDTO : roleMenuButtonList) {
                     if (sysRoleMenuButtonDTO.getButtonId().equals(button.getId())) {
                         button.setChecked(true);
+                        totalSelectSize++;
                     }
                 }
+            }
+
+            // 如果所有按钮都选中行，则设置菜单的选中标识
+            if (totalSelectSize == totalSize) {
+                menuAndButtonTreeResponse.setChecked(true);
             }
         }
 
         return menuAndButtonTreeResponses;
     }
+
 }
