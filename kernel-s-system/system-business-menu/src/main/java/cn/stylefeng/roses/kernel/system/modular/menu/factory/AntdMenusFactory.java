@@ -403,7 +403,7 @@ public class AntdMenusFactory {
             }
 
             // 如果所有按钮都选中行，则设置菜单的选中标识
-            if (totalSelectSize == totalSize) {
+            if (totalSelectSize == totalSize && totalSelectSize != 0) {
                 menuAndButtonTreeResponse.setChecked(true);
             }
         }
