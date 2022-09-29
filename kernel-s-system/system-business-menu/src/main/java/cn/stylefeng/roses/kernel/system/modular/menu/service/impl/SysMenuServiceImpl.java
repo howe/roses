@@ -49,6 +49,7 @@ import cn.stylefeng.roses.kernel.system.api.exception.enums.menu.SysMenuExceptio
 import cn.stylefeng.roses.kernel.system.api.pojo.app.SysAppResult;
 import cn.stylefeng.roses.kernel.system.api.pojo.login.v3.IndexMenuInfo;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
+import cn.stylefeng.roses.kernel.system.api.pojo.menu.SysMenuButtonDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.SysMenuRequest;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.antd.AntdMenuSelectTreeNode;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.antd.AntdSysMenuDTO;
@@ -526,7 +527,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<Long> getTotalMenuButtonIdList(AntdvFrontTypeEnum antdvFrontTypeEnum) {
+    public List<SysMenuButtonDTO> getTotalMenuButtonIdList(AntdvFrontTypeEnum antdvFrontTypeEnum) {
 
         List<Long> totalMenuIdList = this.getTotalMenuIdList(antdvFrontTypeEnum);
 
@@ -536,12 +537,20 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
         // 获取所有按钮id集合
         LambdaQueryWrapper<SysMenuButton> wrapper = new LambdaQueryWrapper<>();
-        wrapper.select(SysMenuButton::getButtonId);
+        wrapper.select(SysMenuButton::getButtonId, SysMenuButton::getButtonCode);
         wrapper.eq(SysMenuButton::getDelFlag, YesOrNotEnum.N.getCode());
         wrapper.in(SysMenuButton::getMenuId, totalMenuIdList);
 
         List<SysMenuButton> list = this.sysMenuButtonService.list(wrapper);
-        return list.stream().map(SysMenuButton::getButtonId).collect(Collectors.toList());
+
+        ArrayList<SysMenuButtonDTO> menuButtonDTOS = new ArrayList<>();
+        for (SysMenuButton sysMenuButton : list) {
+            SysMenuButtonDTO sysMenuButtonDTO = new SysMenuButtonDTO();
+            sysMenuButtonDTO.setButtonId(sysMenuButton.getButtonId());
+            sysMenuButtonDTO.setButtonCode(sysMenuButton.getButtonCode());
+            menuButtonDTOS.add(sysMenuButtonDTO);
+        }
+        return menuButtonDTOS;
     }
 
     @Override

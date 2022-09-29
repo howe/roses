@@ -27,6 +27,7 @@ package cn.stylefeng.roses.kernel.system.api;
 import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.login.v3.IndexMenuInfo;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
+import cn.stylefeng.roses.kernel.system.api.pojo.menu.SysMenuButtonDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 
 import java.util.List;
@@ -133,6 +134,6 @@ public interface MenuServiceApi {
      * @author fengshuonan
      * @date 2022/9/29 9:56
      */
-    List<Long> getTotalMenuButtonIdList(AntdvFrontTypeEnum antdvFrontTypeEnum);
+    List<SysMenuButtonDTO> getTotalMenuButtonIdList(AntdvFrontTypeEnum antdvFrontTypeEnum);
 
 }

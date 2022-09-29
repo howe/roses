@@ -48,6 +48,7 @@ import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
 import cn.stylefeng.roses.kernel.system.api.exception.enums.role.SysRoleExceptionEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
+import cn.stylefeng.roses.kernel.system.api.pojo.menu.SysMenuButtonDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuButtonDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuDTO;
@@ -528,14 +529,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
 
         // 获取所有前台按钮集合
-        List<Long> totalButtonIds = this.menuServiceApi.getTotalMenuButtonIdList(AntdvFrontTypeEnum.FRONT);
+        List<SysMenuButtonDTO> totalButtonIds = this.menuServiceApi.getTotalMenuButtonIdList(AntdvFrontTypeEnum.FRONT);
 
         // 批量保存绑定的按钮集合
         List<SysRoleMenuButton> sysRoleMenuButtons = new ArrayList<>();
-        for (Long buttonId : totalButtonIds) {
+        for (SysMenuButtonDTO buttonDTO : totalButtonIds) {
             SysRoleMenuButton item = new SysRoleMenuButton();
             item.setRoleId(sysRoleRequest.getRoleId());
-            item.setButtonId(buttonId);
+            item.setButtonId(buttonDTO.getButtonId());
+            item.setButtonCode(buttonDTO.getButtonCode());
             sysRoleMenuButtons.add(item);
         }
         this.sysRoleMenuButtonService.saveBatch(sysRoleMenuButtons);
