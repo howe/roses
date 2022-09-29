@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.system.api;
 
+import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.login.v3.IndexMenuInfo;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
@@ -115,5 +116,14 @@ public interface MenuServiceApi {
      * @date 2022/9/28 17:26
      */
     List<MenuAndButtonTreeResponse> getRoleBindOperateList(SysRoleRequest sysRoleRequest);
+
+    /**
+     * 获取所有菜单id集合
+     *
+     * @param antdvFrontTypeEnum 前台还是后台菜单
+     * @author fengshuonan
+     * @date 2022/9/29 9:56
+     */
+    List<Long> getTotalMenuIdList(AntdvFrontTypeEnum antdvFrontTypeEnum);
 
 }

@@ -511,6 +511,21 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
+    public List<Long> getTotalMenuIdList(AntdvFrontTypeEnum antdvFrontTypeEnum) {
+
+        // 查询所有菜单列表，根据前台传递参数，可选择前台还是后台菜单
+        LambdaQueryWrapper<SysMenu> menuWrapper = new LambdaQueryWrapper<>();
+        menuWrapper.select(SysMenu::getMenuId);
+
+        menuWrapper.eq(SysMenu::getDelFlag, YesOrNotEnum.N.getCode());
+        menuWrapper.eq(SysMenu::getStatusFlag, StatusEnum.ENABLE.getCode());
+        menuWrapper.nested(i -> i.eq(SysMenu::getAntdvFrontType, antdvFrontTypeEnum.getCode()).or().eq(SysMenu::getAntdvFrontType, AntdvFrontTypeEnum.TOTAL_SHOW.getCode()));
+
+        List<SysMenu> sysMenuList = this.list(menuWrapper);
+        return sysMenuList.stream().map(SysMenu::getMenuId).collect(Collectors.toList());
+    }
+
+    @Override
     public List<SysMenu> getCurrentUserMenus(List<String> appCodeList, Boolean layuiVisibleFlag, Integer antdvFrontType) {
 
         // 菜单查询条件

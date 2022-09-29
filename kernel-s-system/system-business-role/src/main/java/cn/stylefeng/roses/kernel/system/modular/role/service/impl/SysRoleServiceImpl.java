@@ -44,6 +44,7 @@ import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.system.api.MenuServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
 import cn.stylefeng.roses.kernel.system.api.constants.SystemConstants;
+import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
 import cn.stylefeng.roses.kernel.system.api.exception.enums.role.SysRoleExceptionEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
@@ -62,6 +63,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -466,6 +468,36 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             wrapper.eq(SysRoleMenu::getRoleId, roleId);
             wrapper.in(SysRoleMenu::getMenuId, grantMenuIdList);
             this.roleMenuService.remove(wrapper);
+        }
+
+        // 获取当前角色分配的菜单权限
+        return menuServiceApi.getRoleBindMenuList(sysRoleRequest);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_UNCOMMITTED)
+    public List<MenuAndButtonTreeResponse> grantRoleMenusGrantAll(SysRoleRequest sysRoleRequest) {
+
+        // 删除角色绑定的所有菜单
+        LambdaUpdateWrapper<SysRoleMenu> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(SysRoleMenu::getRoleId, sysRoleRequest.getRoleId());
+        this.roleMenuService.remove(wrapper);
+
+        // 如果是全部选中
+        if (sysRoleRequest.getTotalSelectFlag()) {
+
+            // 获取所有前台菜单id
+            List<Long> totalMenuIdList = this.menuServiceApi.getTotalMenuIdList(AntdvFrontTypeEnum.FRONT);
+
+            // 批量保存绑定的菜单集合
+            List<SysRoleMenu> sysRoleMenus = new ArrayList<>();
+            for (Long menuId : totalMenuIdList) {
+                SysRoleMenu item = new SysRoleMenu();
+                item.setRoleId(sysRoleRequest.getRoleId());
+                item.setMenuId(menuId);
+                sysRoleMenus.add(item);
+            }
+            this.roleMenuService.saveBatch(sysRoleMenus);
         }
 
         // 获取当前角色分配的菜单权限

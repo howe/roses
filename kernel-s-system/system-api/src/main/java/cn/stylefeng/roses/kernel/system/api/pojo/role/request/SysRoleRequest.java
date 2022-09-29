@@ -51,7 +51,7 @@ public class SysRoleRequest extends BaseRequest {
      * 主键
      */
     @NotNull(message = "roleId不能为空", groups = {edit.class, delete.class, detail.class, updateStatus.class, grantResource.class, grantResourceV2.class, grantDataScope.class,
-            grantMenuButton.class, grantMenu.class, grantButton.class, grantMenusAndButtons.class, roleBindMenuList.class, grantRoleMenus.class})
+            grantMenuButton.class, grantMenu.class, grantButton.class, grantMenusAndButtons.class, roleBindMenuList.class, grantRoleMenus.class, grantAll.class})
     @ChineseDescription("主键")
     private Long roleId;
 
@@ -188,6 +188,13 @@ public class SysRoleRequest extends BaseRequest {
     private Integer resourceBizType;
 
     /**
+     * 全选标识：true-全选，false-取消全选
+     */
+    @ChineseDescription("全选标识：true-全选，false-取消全选")
+    @NotNull(message = "全选标识不能为空", groups = {grantAll.class})
+    private Boolean totalSelectFlag;
+
+    /**
      * 参数校验分组：授权菜单和按钮
      */
     public @interface grantMenuButton {
@@ -246,6 +253,12 @@ public class SysRoleRequest extends BaseRequest {
      * 绑定角色菜单
      */
     public @interface grantRoleMenus {
+    }
+
+    /**
+     * 角色分配菜单，绑定全部菜单或取消绑定全部菜单
+     */
+    public @interface grantAll {
     }
 
 }
