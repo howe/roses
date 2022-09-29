@@ -24,9 +24,11 @@
  */
 package cn.stylefeng.roses.kernel.system.api;
 
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ResourceDefinition;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ResourceUrlParam;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -64,5 +66,15 @@ public interface ResourceServiceApi {
      * @date 2021/11/3 15:11
      */
     Integer getResourceCount();
+
+    /**
+     * 根据业务类型，获取所有的资源
+     *
+     * @param resBizTypeEnum 资源类型
+     * @return 所有资源的编码集合
+     * @author fengshuonan
+     * @date 2022/9/29 14:27
+     */
+    List<String> getTotalResourceCode(ResBizTypeEnum resBizTypeEnum);
 
 }

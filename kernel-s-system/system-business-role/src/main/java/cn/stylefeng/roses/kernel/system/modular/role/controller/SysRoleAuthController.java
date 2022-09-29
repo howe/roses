@@ -142,4 +142,16 @@ public class SysRoleAuthController {
         return new SuccessResponseData<>();
     }
 
+    /**
+     * 角色绑定所有接口数据
+     *
+     * @author fengshuonan
+     * @date 2021/8/10 18:23
+     */
+    @PostResource(name = "角色绑定所有接口数据", path = "/sysRole/grantResourceV2/grantAll")
+    public ResponseData<?> grantResourceV2GrantAll(@RequestBody @Validated(SysRoleRequest.grantAll.class) SysRoleRequest sysRoleRequest) {
+        sysRoleResourceService.grantResourceV2GrantAll(sysRoleRequest);
+        return new SuccessResponseData<>();
+    }
+
 }

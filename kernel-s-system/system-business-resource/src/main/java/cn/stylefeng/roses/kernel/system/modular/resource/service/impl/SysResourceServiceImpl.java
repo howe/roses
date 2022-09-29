@@ -39,6 +39,7 @@ import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.constants.TreeConstants;
 import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.rule.tree.factory.DefaultTreeBuildFactory;
 import cn.stylefeng.roses.kernel.scanner.api.ResourceReportApi;
@@ -137,8 +138,8 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
         // 获取所有的资源
         LambdaQueryWrapper<SysResource> sysResourceLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        sysResourceLambdaQueryWrapper.select(SysResource::getAppCode, SysResource::getModularCode, SysResource::getModularName, SysResource::getResourceCode,
-                SysResource::getUrl, SysResource::getResourceName);
+        sysResourceLambdaQueryWrapper.select(SysResource::getAppCode, SysResource::getModularCode, SysResource::getModularName, SysResource::getResourceCode, SysResource::getUrl,
+                SysResource::getResourceName);
 
         // 只查询需要授权的接口
         sysResourceLambdaQueryWrapper.eq(SysResource::getRequiredPermissionFlag, YesOrNotEnum.Y.getCode());
@@ -149,8 +150,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         LoginUserApi loginUserApi = LoginContext.me();
         if (!loginUserApi.getSuperAdminFlag()) {
             // 获取权限列表
-            List<Long> roleIds = loginUserApi.getLoginUser().getSimpleRoleInfoList().parallelStream().map(SimpleRoleInfo::getRoleId)
-                    .collect(Collectors.toList());
+            List<Long> roleIds = loginUserApi.getLoginUser().getSimpleRoleInfoList().parallelStream().map(SimpleRoleInfo::getRoleId).collect(Collectors.toList());
             Set<String> resourceCodeList = roleServiceApi.getRoleResourceCodeList(roleIds);
             if (!resourceCodeList.isEmpty()) {
                 sysResourceLambdaQueryWrapper.in(SysResource::getResourceCode, resourceCodeList);
@@ -234,13 +234,12 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         // 1. 获取所有的资源
         LambdaQueryWrapper<SysResource> sysResourceLambdaQueryWrapper = new LambdaQueryWrapper<>();
         sysResourceLambdaQueryWrapper.eq(SysResource::getViewFlag, YesOrNotEnum.N.getCode());
-        sysResourceLambdaQueryWrapper.select(SysResource::getAppCode, SysResource::getModularCode, SysResource::getModularName, SysResource::getResourceCode,
-                SysResource::getUrl, SysResource::getResourceName);
+        sysResourceLambdaQueryWrapper.select(SysResource::getAppCode, SysResource::getModularCode, SysResource::getModularName, SysResource::getResourceCode, SysResource::getUrl,
+                SysResource::getResourceName);
 
         // 查询条件
         if (ObjectUtil.isNotEmpty(resourceRequest.getResourceName())) {
-            sysResourceLambdaQueryWrapper.like(SysResource::getUrl, resourceRequest.getResourceName()).or()
-                    .like(SysResource::getResourceName, resourceRequest.getResourceName());
+            sysResourceLambdaQueryWrapper.like(SysResource::getUrl, resourceRequest.getResourceName()).or().like(SysResource::getResourceName, resourceRequest.getResourceName());
         }
 
         List<SysResource> allResource = this.list(sysResourceLambdaQueryWrapper);
@@ -401,6 +400,19 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         return Convert.toInt(count);
     }
 
+    @Override
+    public List<String> getTotalResourceCode(ResBizTypeEnum resBizTypeEnum) {
+
+        LambdaQueryWrapper<SysResource> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.select(SysResource::getResourceCode);
+
+        // 根据资源类型查询
+        queryWrapper.eq(ObjectUtil.isNotEmpty(resBizTypeEnum), SysResource::getResourceBizType, resBizTypeEnum.getCode());
+
+        List<SysResource> list = this.list(queryWrapper);
+        return list.stream().map(SysResource::getResourceCode).collect(Collectors.toList());
+    }
+
     /**
      * 创建wrapper
      *
@@ -488,8 +500,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
      * @author fengshuonan
      * @date 2020/12/18 15:45
      */
-    private List<LayuiApiResourceTreeNode> createResourceTree(Map<String, Map<String, List<LayuiApiResourceTreeNode>>> appModularResources, Map<String,
-            String> modularCodeName) {
+    private List<LayuiApiResourceTreeNode> createResourceTree(Map<String, Map<String, List<LayuiApiResourceTreeNode>>> appModularResources, Map<String, String> modularCodeName) {
 
         List<LayuiApiResourceTreeNode> finalTree = new ArrayList<>();
 

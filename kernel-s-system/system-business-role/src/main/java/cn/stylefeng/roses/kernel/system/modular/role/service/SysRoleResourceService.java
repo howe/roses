@@ -81,4 +81,12 @@ public interface SysRoleResourceService extends IService<SysRoleResource> {
      */
     void quickSaveAll(List<SysRoleResource> sysRoleResourceList);
 
+    /**
+     * 角色绑定所有资源
+     *
+     * @author fengshuonan
+     * @date 2022/9/29 14:05
+     */
+    void grantResourceV2GrantAll(SysRoleRequest sysRoleRequest);
+
 }
