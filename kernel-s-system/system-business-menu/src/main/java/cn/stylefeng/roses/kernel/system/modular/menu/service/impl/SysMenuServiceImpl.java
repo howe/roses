@@ -43,7 +43,6 @@ import cn.stylefeng.roses.kernel.system.api.AppServiceApi;
 import cn.stylefeng.roses.kernel.system.api.MenuServiceApi;
 import cn.stylefeng.roses.kernel.system.api.RoleServiceApi;
 import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
-import cn.stylefeng.roses.kernel.system.api.enums.MenuFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
 import cn.stylefeng.roses.kernel.system.api.exception.enums.menu.SysMenuExceptionEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.app.SysAppResult;
@@ -137,7 +136,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
         // 设置如果菜单前后台类型如果为空，则默认为都显示
         if (ObjectUtil.isEmpty(sysMenuRequest.getAntdvFrontType())) {
-            sysMenu.setAntdvFrontType(MenuFrontTypeEnum.TOTAL.getCode());
+            sysMenu.setAntdvFrontType(AntdvFrontTypeEnum.TOTAL_SHOW.getCode());
         }
 
         this.save(sysMenu);
@@ -310,7 +309,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         // 获取前台或者后台类型
         Integer antdvFrontType = sysMenuRequest.getAntdvFrontType();
         if (antdvFrontType == null) {
-            antdvFrontType = MenuFrontTypeEnum.FRONT.getCode();
+            antdvFrontType = AntdvFrontTypeEnum.FRONT.getCode();
         }
 
         // 获取当前已经启用的应用，并且按排序字段排序的
@@ -520,7 +519,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
         menuWrapper.eq(SysMenu::getDelFlag, YesOrNotEnum.N.getCode());
         menuWrapper.eq(SysMenu::getStatusFlag, StatusEnum.ENABLE.getCode());
-        menuWrapper.nested(i -> i.eq(SysMenu::getAntdvFrontType, antdvFrontTypeEnum.getCode()).or().eq(SysMenu::getAntdvFrontType, AntdvFrontTypeEnum.TOTAL_SHOW.getCode()));
+
+        if (antdvFrontTypeEnum != null) {
+            menuWrapper.nested(i -> i.eq(SysMenu::getAntdvFrontType, antdvFrontTypeEnum.getCode()).or().eq(SysMenu::getAntdvFrontType, AntdvFrontTypeEnum.TOTAL_SHOW.getCode()));
+        }
 
         List<SysMenu> sysMenuList = this.list(menuWrapper);
         return sysMenuList.stream().map(SysMenu::getMenuId).collect(Collectors.toList());
@@ -567,7 +569,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
         // 判断前台还是后台菜单
         if (ObjectUtil.isNotEmpty(antdvFrontType)) {
-            queryWrapper.in(SysMenu::getAntdvFrontType, ListUtil.list(true, antdvFrontType, MenuFrontTypeEnum.TOTAL.getCode()));
+            queryWrapper.in(SysMenu::getAntdvFrontType, ListUtil.list(true, antdvFrontType, AntdvFrontTypeEnum.TOTAL_SHOW.getCode()));
         }
 
         // 如果是不分离版本，则筛选一下不需要显示的菜单

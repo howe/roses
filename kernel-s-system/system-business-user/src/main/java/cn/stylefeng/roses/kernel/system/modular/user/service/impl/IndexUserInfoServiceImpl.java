@@ -31,7 +31,7 @@ import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.basic.SimpleRoleInfo;
 import cn.stylefeng.roses.kernel.rule.enums.SexEnum;
 import cn.stylefeng.roses.kernel.system.api.MenuServiceApi;
-import cn.stylefeng.roses.kernel.system.api.enums.MenuFrontTypeEnum;
+import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.login.v3.IndexRoleInfo;
 import cn.stylefeng.roses.kernel.system.api.pojo.login.v3.IndexUserInfoV3;
 import cn.stylefeng.roses.kernel.system.modular.user.service.IndexUserInfoService;
@@ -111,7 +111,7 @@ public class IndexUserInfoServiceImpl implements IndexUserInfoService {
 
         // 获取用户菜单和权限信息
         if (ObjectUtil.isEmpty(menuFrontType)) {
-            menuFrontType = MenuFrontTypeEnum.FRONT.getCode();
+            menuFrontType = AntdvFrontTypeEnum.FRONT.getCode();
         }
         indexUserInfoV3.setAuthorities(menuServiceApi.buildAuthorities(menuFrontType));
 

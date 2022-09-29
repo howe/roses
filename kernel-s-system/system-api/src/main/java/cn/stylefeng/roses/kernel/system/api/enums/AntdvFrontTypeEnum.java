@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.system.api.enums;
 
+import cn.hutool.core.util.ObjectUtil;
 import lombok.Getter;
 
 /**
@@ -58,5 +59,24 @@ public enum AntdvFrontTypeEnum {
         this.code = code;
         this.message = message;
     }
+
+    /**
+     * 转化int为枚举类型
+     *
+     * @author fengshuonan
+     * @date 2022/9/29 15:50
+     */
+    public static AntdvFrontTypeEnum parseToEnum(Integer originValue) {
+        if (ObjectUtil.isEmpty(originValue)) {
+            return null;
+        }
+        for (AntdvFrontTypeEnum value : AntdvFrontTypeEnum.values()) {
+            if (value.code.equals(originValue)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
 
 }

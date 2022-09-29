@@ -496,7 +496,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
 
         // 获取所有前台菜单id
-        List<Long> totalMenuIdList = this.menuServiceApi.getTotalMenuIdList(AntdvFrontTypeEnum.FRONT);
+        AntdvFrontTypeEnum antdvFrontTypeEnum = AntdvFrontTypeEnum.parseToEnum(sysRoleRequest.getResourceBizType());
+        List<Long> totalMenuIdList = this.menuServiceApi.getTotalMenuIdList(antdvFrontTypeEnum);
 
         // 批量保存绑定的菜单集合
         List<SysRoleMenu> sysRoleMenus = new ArrayList<>();
@@ -529,7 +530,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
 
         // 获取所有前台按钮集合
-        List<SysMenuButtonDTO> totalButtonIds = this.menuServiceApi.getTotalMenuButtonIdList(AntdvFrontTypeEnum.FRONT);
+        AntdvFrontTypeEnum antdvFrontTypeEnum = AntdvFrontTypeEnum.parseToEnum(sysRoleRequest.getResourceBizType());
+        List<SysMenuButtonDTO> totalButtonIds = this.menuServiceApi.getTotalMenuButtonIdList(antdvFrontTypeEnum);
 
         // 批量保存绑定的按钮集合
         List<SysRoleMenuButton> sysRoleMenuButtons = new ArrayList<>();
