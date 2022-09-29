@@ -483,7 +483,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<MenuAndButtonTreeResponse> getRoleBindMenuList(SysRoleRequest sysRoleRequest) {
 
         // 获取所有一级菜单，子菜单包含在children内
-        List<SysMenu> sysMenus = totalMenusWithOneLevel();
+        List<SysMenu> sysMenus = totalMenusWithOneLevel(sysRoleRequest.getResourceBizType());
 
         // 获取角色绑定的菜单
         List<SysRoleMenuDTO> roleMenuList = roleServiceApi.getRoleMenuList(Collections.singletonList(sysRoleRequest.getRoleId()));
@@ -496,7 +496,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<MenuAndButtonTreeResponse> getRoleBindOperateList(SysRoleRequest sysRoleRequest) {
 
         // 获取所有一级菜单，子菜单包含在children内
-        List<SysMenu> sysMenus = totalMenusWithOneLevel();
+        List<SysMenu> sysMenus = totalMenusWithOneLevel(sysRoleRequest.getResourceBizType());
 
         // 查询这些菜单对应的所有按钮
         LambdaQueryWrapper<SysMenuButton> buttonWrapper = new LambdaQueryWrapper<>();
@@ -854,15 +854,21 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     /**
      * 获取所有的菜单，以一级菜单的形式展示
      *
+     * @param antdvFrontType 菜单是前台显示还是后台显示
      * @author fengshuonan
      * @date 2022/9/28 17:46
      */
-    private List<SysMenu> totalMenusWithOneLevel() {
+    private List<SysMenu> totalMenusWithOneLevel(Integer antdvFrontType) {
         // 查询所有菜单列表，根据前台传递参数，可选择前台还是后台菜单
         LambdaQueryWrapper<SysMenu> menuWrapper = new LambdaQueryWrapper<>();
         menuWrapper.eq(SysMenu::getDelFlag, YesOrNotEnum.N.getCode());
         menuWrapper.eq(SysMenu::getStatusFlag, StatusEnum.ENABLE.getCode());
-        menuWrapper.eq(SysMenu::getAntdvFrontType, AntdvFrontTypeEnum.FRONT.getCode());
+
+        // 查询所有指定类型的菜单
+        if (antdvFrontType != null) {
+            menuWrapper.nested(i -> i.eq(SysMenu::getAntdvFrontType, antdvFrontType).or().eq(SysMenu::getAntdvFrontType, AntdvFrontTypeEnum.TOTAL_SHOW.getCode()));
+        }
+
         List<SysMenu> sysMenuList = this.list(menuWrapper);
 
         // 将所有节点转化成树结构，整体只要两级结构，一级是一级菜单，第二级是所有以下菜单
