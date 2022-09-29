@@ -48,7 +48,7 @@ public enum AntdvFrontTypeEnum {
     /**
      * 3-前后台都显示
      */
-    TOTAL_SHOW(2, "前后台都显示");
+    TOTAL_SHOW(3, "前后台都显示");
 
     private final Integer code;
 
