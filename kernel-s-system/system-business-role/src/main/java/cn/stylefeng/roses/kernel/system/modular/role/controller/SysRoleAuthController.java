@@ -33,6 +33,7 @@ import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
 import cn.stylefeng.roses.kernel.system.api.MenuServiceApi;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
+import cn.stylefeng.roses.kernel.system.modular.role.service.SysRoleResourceService;
 import cn.stylefeng.roses.kernel.system.modular.role.service.SysRoleService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +57,9 @@ public class SysRoleAuthController {
 
     @Resource
     private MenuServiceApi menuServiceApi;
+
+    @Resource
+    private SysRoleResourceService sysRoleResourceService;
 
     /**
      * 获取角色分配菜单界面，绑定情况列表
@@ -124,6 +128,18 @@ public class SysRoleAuthController {
     @PostResource(name = "角色权限界面：角色绑定操作权限（全选操作）", path = "/sysRole/grantButton/grantAll")
     public ResponseData<List<MenuAndButtonTreeResponse>> grantButtonGrantAll(@RequestBody @Validated(SysRoleRequest.grantAll.class) SysRoleRequest sysRoleRequest) {
         return new SuccessResponseData<>(sysRoleService.grantButtonGrantAll(sysRoleRequest));
+    }
+
+    /**
+     * 角色绑定接口数据V2
+     *
+     * @author fengshuonan
+     * @date 2021/8/10 18:23
+     */
+    @PostResource(name = "角色绑定接口数据V2", path = "/sysRole/grantResourceV2")
+    public ResponseData<?> grantResourceV2(@RequestBody @Validated(SysRoleRequest.grantResourceV2.class) SysRoleRequest sysRoleRequest) {
+        sysRoleResourceService.grantResourceV2(sysRoleRequest);
+        return new SuccessResponseData<>();
     }
 
 }
