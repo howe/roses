@@ -22,36 +22,40 @@
  * 5.在修改包名，模块名称，项目代码等时，请注明软件出处 https://gitee.com/stylefeng/guns
  * 6.若您的项目无法满足以上几点，可申请商业授权
  */
-package cn.stylefeng.roses.kernel.system.modular.user.service;
+package cn.stylefeng.roses.kernel.system.api.pojo.user.request;
 
-import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserAdminDTO;
-import cn.stylefeng.roses.kernel.system.api.pojo.user.request.SysAdminRequest;
+import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
+import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
- * 管理员用户业务
+ * 用户管理员相关的请求
  *
  * @author fengshuonan
- * @date 2022/9/30 11:05
+ * @date 2022/9/30 11:44
  */
-public interface SysUserAdminService {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class SysAdminRequest extends BaseRequest {
 
     /**
-     * 获取管理员列表
-     *
-     * @return 返回的包装类中，id是角色id
-     * @author fengshuonan
-     * @date 2022/9/30 11:06
+     * 用户id集合
      */
-    List<SysUserAdminDTO> getAdminUserList();
+    @ChineseDescription("用户id集合")
+    @NotEmpty(message = "用户id集合不能为空", groups = add.class)
+    private List<Long> userIdList;
 
     /**
-     * 添加管理员
-     *
-     * @author fengshuonan
-     * @date 2022/9/30 13:12
+     * 单个用户id
      */
-    void addAdminUser(SysAdminRequest sysAdminRequest);
+    @ChineseDescription("用户id")
+    @NotEmpty(message = "用户id不能为空", groups = delete.class)
+    private Long userId;
 
 }
+
+

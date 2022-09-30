@@ -25,14 +25,16 @@
 package cn.stylefeng.roses.kernel.system.modular.user.controller;
 
 import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
+import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.rule.pojo.response.ResponseData;
 import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserAdminDTO;
-import cn.stylefeng.roses.kernel.system.api.pojo.user.request.SysUserRequest;
+import cn.stylefeng.roses.kernel.system.api.pojo.user.request.SysAdminRequest;
 import cn.stylefeng.roses.kernel.system.modular.user.service.SysUserAdminService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -73,8 +75,8 @@ public class SysUserAdminController {
      * @date 2022/9/28 20:28
      */
     @PostResource(name = "添加后台管理员", path = "/sysUser/backAuth/addAdmin")
-    public ResponseData<?> addAdmin(@RequestBody SysUserRequest sysUserRequest) {
-
+    public ResponseData<?> addAdmin(@RequestBody @Validated(BaseRequest.add.class) SysAdminRequest sysAdminRequest) {
+        this.sysUserAdminService.addAdminUser(sysAdminRequest);
         return new SuccessResponseData<>();
     }
 
@@ -85,7 +87,7 @@ public class SysUserAdminController {
      * @date 2022/9/28 20:28
      */
     @PostResource(name = "删除后台管理员", path = "/sysUser/backAuth/delAdmin")
-    public ResponseData<?> delAdmin(@RequestBody SysUserRequest sysUserRequest) {
+    public ResponseData<?> delAdmin(@RequestBody SysAdminRequest sysAdminRequest) {
 
         return new SuccessResponseData<>();
     }

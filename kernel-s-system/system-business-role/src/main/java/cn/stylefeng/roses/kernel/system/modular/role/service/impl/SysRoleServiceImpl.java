@@ -68,6 +68,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -715,6 +716,24 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
 
         return sysRoleDTOS;
+    }
+
+    @Override
+    public void addAdminRole(SysRoleRequest sysRoleRequest) {
+        SysRole sysRole = new SysRole();
+
+        sysRole.setRoleId(sysRoleRequest.getRoleId());
+        sysRole.setRoleName(sysRoleRequest.getRoleName());
+        sysRole.setRoleCode(sysRoleRequest.getRoleCode());
+
+        sysRole.setRoleSort(new BigDecimal(9999));
+        sysRole.setDataScopeType(DataScopeTypeEnum.ALL.getCode());
+        sysRole.setStatusFlag(StatusEnum.ENABLE.getCode());
+        sysRole.setAdminFlag(YesOrNotEnum.Y.getCode());
+        sysRole.setRoleSystemFlag(YesOrNotEnum.Y.getCode());
+        sysRole.setDelFlag(YesOrNotEnum.N.getCode());
+
+        this.save(sysRole);
     }
 
     /**

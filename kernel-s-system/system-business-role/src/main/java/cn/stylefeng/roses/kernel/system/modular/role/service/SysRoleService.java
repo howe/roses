@@ -184,12 +184,4 @@ public interface SysRoleService extends IService<SysRole>, RoleServiceApi {
      */
     List<MenuAndButtonTreeResponse> grantRoleMenusGrantAll(SysRoleRequest sysRoleRequest);
 
-    /**
-     * 角色权限界面，绑定角色的操作权限，全选操作
-     *
-     * @author fengshuonan
-     * @date 2022/9/29 10:46
-     */
-    List<MenuAndButtonTreeResponse> grantButtonGrantAll(SysRoleRequest sysRoleRequest);
-
 }

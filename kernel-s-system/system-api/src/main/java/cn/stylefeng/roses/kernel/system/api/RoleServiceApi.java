@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.system.api;
 
+import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuButtonDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuDTO;
@@ -126,4 +127,21 @@ public interface RoleServiceApi {
      * @date 2022/6/8 14:58
      */
     List<SysRoleDTO> getRoleSelectList(SysRoleRequest sysRoleRequest);
+
+    /**
+     * 添加管理员角色
+     *
+     * @author fengshuonan
+     * @date 2022/6/8 14:58
+     */
+    void addAdminRole(SysRoleRequest sysRoleRequest);
+
+    /**
+     * 角色权限界面，绑定角色的操作权限，全选操作
+     *
+     * @author fengshuonan
+     * @date 2022/9/29 10:46
+     */
+    List<MenuAndButtonTreeResponse> grantButtonGrantAll(SysRoleRequest sysRoleRequest);
+
 }

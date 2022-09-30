@@ -2,4 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.stylefeng.roses.kernel.system.modular.user.mapper.SysUserRoleMapper">
 
+    <select id="getAdminUserRoleList"
+            resultType="cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserRole">
+        select ur.user_id as userId,
+               ur.role_id as roleId,
+               r.admin_flag
+        from sys_user_role ur
+                 left join sys_role r on ur.role_id = r.role_id
+        where r.admin_flag = "Y" and ur.user_id in
+        <foreach item="item" collection="userIdList" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
 </mapper>
