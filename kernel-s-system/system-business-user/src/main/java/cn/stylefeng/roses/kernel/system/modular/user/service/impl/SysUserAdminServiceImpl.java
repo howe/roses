@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.system.modular.user.service.impl;
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
@@ -122,13 +123,13 @@ public class SysUserAdminServiceImpl implements SysUserAdminService {
     @Override
     public void deleteAdminUser(SysAdminRequest sysAdminRequest) {
 
-        // 获取用户绑定的角色
-        List<Long> roleIdList = this.sysUserRoleService.findRoleIdsByUserId(sysAdminRequest.getUserId());
+        // 获取用户绑定的超级管理员角色
+        List<SysUserRole> userRoleList = this.sysUserRoleMapper.getAdminUserRoleList(ListUtil.toList(sysAdminRequest.getUserId()));
 
         // 删除角色
-        for (Long roleId : roleIdList) {
+        for (SysUserRole sysUserRole : userRoleList) {
             SysRoleRequest sysRoleRequest = new SysRoleRequest();
-            sysRoleRequest.setRoleId(roleId);
+            sysRoleRequest.setRoleId(sysUserRole.getRoleId());
             this.roleServiceApi.del(sysRoleRequest);
         }
 

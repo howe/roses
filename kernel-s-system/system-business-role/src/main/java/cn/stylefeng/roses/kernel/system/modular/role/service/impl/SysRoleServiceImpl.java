@@ -45,7 +45,6 @@ import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.system.api.MenuServiceApi;
 import cn.stylefeng.roses.kernel.system.api.ResourceServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
-import cn.stylefeng.roses.kernel.system.api.constants.SystemConstants;
 import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
 import cn.stylefeng.roses.kernel.system.api.exception.enums.role.SysRoleExceptionEnum;
@@ -76,6 +75,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static cn.stylefeng.roses.kernel.system.api.constants.SystemConstants.SUPER_ADMIN_ROLE_CODE;
 
 
 /**
@@ -143,17 +144,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void del(SysRoleRequest sysRoleRequest) {
         SysRole sysRole = this.querySysRole(sysRoleRequest);
 
-        // 超级管理员不能删除，但是管理角色可以删除
-        if (!YesOrNotEnum.Y.getCode().equals(sysRole.getAdminFlag())) {
-            if (YesOrNotEnum.Y.getCode().equals(sysRole.getRoleSystemFlag())) {
-                throw new ServiceException(SysRoleExceptionEnum.SYSTEM_ROLE_CANT_DELETE);
-            }
+        // 超级管理员不能删除
+        if (SUPER_ADMIN_ROLE_CODE.equals(sysRole.getRoleCode())) {
+            throw new ServiceException(SysRoleExceptionEnum.SYSTEM_ROLE_CANT_DELETE);
         }
-
-        // 逻辑删除，设为删除标志
-        sysRole.setDelFlag(YesOrNotEnum.Y.getCode());
-
-        this.updateById(sysRole);
 
         Long roleId = sysRole.getRoleId();
 
@@ -171,6 +165,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
         // 删除角色的数据范围缓存
         roleDataScopeCacheApi.remove(String.valueOf(sysRoleRequest.getRoleId()));
+
+        // 删除角色
+        this.removeById(roleId);
     }
 
     @Override
@@ -199,7 +196,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         SysRole sysRole = this.querySysRole(sysRoleRequest);
 
         // 不能修改超级管理员编码
-        if (SystemConstants.SUPER_ADMIN_ROLE_CODE.equals(sysRole.getRoleCode())) {
+        if (SUPER_ADMIN_ROLE_CODE.equals(sysRole.getRoleCode())) {
             if (!sysRole.getRoleCode().equals(sysRoleRequest.getRoleCode())) {
                 throw new SystemModularException(SysRoleExceptionEnum.SUPER_ADMIN_ROLE_CODE_ERROR);
             }
@@ -440,6 +437,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
         // 只查询正常状态
         queryWrapper.eq(SysRole::getStatusFlag, StatusEnum.ENABLE.getCode()).eq(SysRole::getDelFlag, YesOrNotEnum.N.getCode());
+
+        // 只查询非管理员的角色
+        queryWrapper.eq(SysRole::getAdminFlag, YesOrNotEnum.N.getCode());
 
         this.list(queryWrapper).forEach(sysRole -> {
             SimpleDict simpleDict = new SimpleDict();
