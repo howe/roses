@@ -93,17 +93,17 @@ public class SysRole extends BaseEntity {
     private String remark;
 
     /**
-     * 删除标记（Y-已删除，N-未删除）
+     * 是否是管理员角色，管理员角色只能管理后台相关菜单
      */
-    @TableField(value = "del_flag",fill = FieldFill.INSERT)
-    @ChineseDescription("删除标记（Y-已删除，N-未删除）")
-    private String delFlag;
+    @TableField("admin_flag")
+    @ChineseDescription("是否是管理员角色，管理员角色只能管理后台相关菜单")
+    private String adminFlag;
 
     /**
-     * 是否是系统角色：Y-是，N-否
+     * 是否是系统角色：Y-是，N-否。系统角色不能删除
      */
     @TableField("role_system_flag")
-    @ChineseDescription("是否是系统角色：Y-是，N-否")
+    @ChineseDescription("是否是系统角色：Y-是，N-否。系统角色不能删除")
     private String roleSystemFlag;
 
     /**
@@ -112,5 +112,12 @@ public class SysRole extends BaseEntity {
     @TableField("role_type_code")
     @ChineseDescription("角色类型")
     private String roleTypeCode;
+
+    /**
+     * 删除标记（Y-已删除，N-未删除）
+     */
+    @TableField(value = "del_flag", fill = FieldFill.INSERT)
+    @ChineseDescription("删除标记（Y-已删除，N-未删除）")
+    private String delFlag;
 
 }
