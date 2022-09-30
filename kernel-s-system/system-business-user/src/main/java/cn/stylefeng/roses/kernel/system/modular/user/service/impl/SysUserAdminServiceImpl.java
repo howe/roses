@@ -1,6 +1,7 @@
 package cn.stylefeng.roses.kernel.system.modular.user.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.system.api.RoleServiceApi;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
@@ -165,6 +166,13 @@ public class SysUserAdminServiceImpl implements SysUserAdminService {
         temp.setRoleId(sysRoleRequest.getRoleId());
         temp.setTotalSelectFlag(true);
         this.roleServiceApi.grantButtonGrantAll(temp);
+
+        // 添加用户默认的所有后端接口权限
+        SysRoleRequest tempResRequest = new SysRoleRequest();
+        tempResRequest.setRoleId(sysRoleRequest.getRoleId());
+        tempResRequest.setTotalSelectFlag(true);
+        tempResRequest.setResourceBizType(ResBizTypeEnum.SYSTEM.getCode());
+        this.roleServiceApi.grantResourceV2GrantAll(tempResRequest);
     }
 
 }

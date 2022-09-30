@@ -37,11 +37,13 @@ import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.constants.SymbolConstant;
+import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.StatusEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.rule.exception.base.ServiceException;
 import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.system.api.MenuServiceApi;
+import cn.stylefeng.roses.kernel.system.api.ResourceServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
 import cn.stylefeng.roses.kernel.system.api.constants.SystemConstants;
 import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
@@ -112,6 +114,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Resource(name = "roleDataScopeCacheApi")
     private CacheOperatorApi<List<Long>> roleDataScopeCacheApi;
 
+    @Resource
+    private ResourceServiceApi resourceServiceApi;
+
     @Override
     public void add(SysRoleRequest sysRoleRequest) {
 
@@ -166,6 +171,26 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    public void grantResourceV2GrantAll(SysRoleRequest sysRoleRequest) {
+
+        // 删除角色绑定的所有资源
+        this.sysRoleResourceService.deleteRoleResourceListByRoleId(sysRoleRequest.getRoleId());
+
+        // 获取是全部选中，还是全部取消，如果是全部取消，则直接返回
+        if (!sysRoleRequest.getTotalSelectFlag()) {
+            return;
+        }
+
+        // 如果是全部选中，则查询一共有多少资源，将角色赋予全部资源
+        ResBizTypeEnum resBizTypeEnum = null;
+        if (ObjectUtil.isNotEmpty(sysRoleRequest.getResourceBizType())) {
+            resBizTypeEnum = ResBizTypeEnum.DEFAULT.parseToEnum(sysRoleRequest.getResourceBizType().toString());
+        }
+        List<String> totalResourceCode = resourceServiceApi.getTotalResourceCode(resBizTypeEnum);
+        this.sysRoleResourceService.batchSaveResCodes(sysRoleRequest.getRoleId(), totalResourceCode);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(SysRoleRequest sysRoleRequest) {
         SysRole sysRole = this.querySysRole(sysRoleRequest);
@@ -206,7 +231,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         LambdaQueryWrapper<SysRole> wrapper = createWrapper(sysRoleRequest);
 
         // 不查询管理员类型的
-        wrapper.eq(SysRole::getRoleSystemFlag, YesOrNotEnum.N.getCode());
+        wrapper.eq(SysRole::getAdminFlag, YesOrNotEnum.N.getCode());
 
         Page<SysRole> sysRolePage = this.page(PageFactory.defaultPage(), wrapper);
         return PageResultFactory.createPageResult(sysRolePage);

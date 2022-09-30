@@ -150,7 +150,7 @@ public class SysRoleAuthController {
      */
     @PostResource(name = "角色绑定所有接口数据", path = "/sysRole/grantResourceV2/grantAll")
     public ResponseData<?> grantResourceV2GrantAll(@RequestBody @Validated(SysRoleRequest.grantAll.class) SysRoleRequest sysRoleRequest) {
-        sysRoleResourceService.grantResourceV2GrantAll(sysRoleRequest);
+        this.sysRoleService.grantResourceV2GrantAll(sysRoleRequest);
         return new SuccessResponseData<>();
     }
 

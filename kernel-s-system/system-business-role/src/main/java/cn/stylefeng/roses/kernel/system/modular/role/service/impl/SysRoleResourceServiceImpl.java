@@ -30,8 +30,6 @@ import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 import cn.stylefeng.roses.kernel.db.api.context.DbOperatorContext;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
-import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
-import cn.stylefeng.roses.kernel.system.api.ResourceServiceApi;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRoleResource;
 import cn.stylefeng.roses.kernel.system.modular.role.mapper.SysRoleResourceMapper;
@@ -58,9 +56,6 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
 
     @Resource(name = "roleResourceCacheApi")
     private CacheOperatorApi<List<String>> roleResourceCacheApi;
-
-    @Resource
-    private ResourceServiceApi resourceServiceApi;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -157,33 +152,14 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
         }
     }
 
-    @Override
-    public void grantResourceV2GrantAll(SysRoleRequest sysRoleRequest) {
-
-        // 删除角色绑定的所有资源
-        this.deleteRoleResourceListByRoleId(sysRoleRequest.getRoleId());
-
-        // 获取是全部选中，还是全部取消，如果是全部取消，则直接返回
-        if (!sysRoleRequest.getTotalSelectFlag()) {
-            return;
-        }
-
-        // 如果是全部选中，则查询一共有多少资源，将角色赋予全部资源
-        ResBizTypeEnum resBizTypeEnum = null;
-        if (ObjectUtil.isNotEmpty(sysRoleRequest.getResourceBizType())) {
-            resBizTypeEnum = ResBizTypeEnum.DEFAULT.parseToEnum(sysRoleRequest.getResourceBizType().toString());
-        }
-        List<String> totalResourceCode = resourceServiceApi.getTotalResourceCode(resBizTypeEnum);
-        this.batchSaveResCodes(sysRoleRequest.getRoleId(), totalResourceCode);
-    }
-
     /**
      * 批量保存角色和资源的绑定
      *
      * @author fengshuonan
      * @date 2022/9/29 14:34
      */
-    private void batchSaveResCodes(Long roleId, List<String> totalResourceCode) {
+    @Override
+    public void batchSaveResCodes(Long roleId, List<String> totalResourceCode) {
         ArrayList<SysRoleResource> sysRoleResourceList = new ArrayList<>();
 
         if (ObjectUtil.isNotEmpty(totalResourceCode)) {

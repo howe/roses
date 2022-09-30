@@ -82,11 +82,11 @@ public interface SysRoleResourceService extends IService<SysRoleResource> {
     void quickSaveAll(List<SysRoleResource> sysRoleResourceList);
 
     /**
-     * 角色绑定所有资源
+     * 批量保存角色和资源的绑定
      *
      * @author fengshuonan
-     * @date 2022/9/29 14:05
+     * @date 2022/9/29 14:34
      */
-    void grantResourceV2GrantAll(SysRoleRequest sysRoleRequest);
+    void batchSaveResCodes(Long roleId, List<String> totalResourceCode);
 
 }
