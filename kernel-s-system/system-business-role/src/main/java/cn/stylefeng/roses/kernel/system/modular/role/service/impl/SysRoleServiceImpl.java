@@ -124,6 +124,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         BeanUtil.copyProperties(sysRoleRequest, sysRole);
 
         // 默认设置为启用
+        sysRole.setAdminFlag(YesOrNotEnum.N.getCode());
+
+        // 默认设置为启用
         sysRole.setStatusFlag(StatusEnum.ENABLE.getCode());
 
         // 默认设置为普通角色
