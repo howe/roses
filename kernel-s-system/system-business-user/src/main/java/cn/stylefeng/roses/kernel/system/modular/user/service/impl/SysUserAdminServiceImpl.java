@@ -94,7 +94,8 @@ public class SysUserAdminServiceImpl implements SysUserAdminService {
             }
 
             // 设置用户名称
-            sysUserAdminDTO.setRealName(sysUser.getNickName());
+            sysUserAdminDTO.setRealName(sysUser.getRealName());
+            sysUserAdminDTOS.add(sysUserAdminDTO);
         }
 
         return sysUserAdminDTOS;
