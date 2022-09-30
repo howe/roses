@@ -30,6 +30,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -53,7 +54,7 @@ public class SysAdminRequest extends BaseRequest {
      * 单个用户id
      */
     @ChineseDescription("用户id")
-    @NotEmpty(message = "用户id不能为空", groups = delete.class)
+    @NotNull(message = "用户id不能为空", groups = delete.class)
     private Long userId;
 
 }
