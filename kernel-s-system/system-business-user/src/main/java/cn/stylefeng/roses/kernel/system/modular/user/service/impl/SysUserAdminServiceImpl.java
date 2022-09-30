@@ -73,7 +73,7 @@ public class SysUserAdminServiceImpl implements SysUserAdminService {
         // 查询对应的人员信息
         LambdaQueryWrapper<SysUser> sysUserLambdaQueryWrapper = new LambdaQueryWrapper<>();
         sysUserLambdaQueryWrapper.select(SysUser::getUserId, SysUser::getRealName);
-        sysUserLambdaQueryWrapper.in(SysUser::getUserId);
+        sysUserLambdaQueryWrapper.in(SysUser::getUserId, userIdList);
         sysUserLambdaQueryWrapper.ne(SysUser::getDelFlag, YesOrNotEnum.Y.getCode());
         List<SysUser> userList = sysUserService.list(sysUserLambdaQueryWrapper);
         if (ObjectUtil.isEmpty(userList)) {
@@ -139,6 +139,12 @@ public class SysUserAdminServiceImpl implements SysUserAdminService {
      * @date 2022/9/30 13:29
      */
     private void addSingleAdminUser(Long userId) {
+
+        // 判断有没有此人
+        SysUser user = this.sysUserService.getById(userId);
+        if (user == null) {
+            return;
+        }
 
         // 创建用户对应的角色
         SysRoleRequest sysRoleRequest = new SysRoleRequest();
