@@ -24,9 +24,9 @@
  */
 package cn.stylefeng.roses.kernel.system.modular.user.service;
 
-import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserRole;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.request.SysUserRequest;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.request.UserRoleRequest;
+import cn.stylefeng.roses.kernel.system.modular.user.entity.SysUserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -38,7 +38,6 @@ import java.util.List;
  * @date 2021/2/3 15:23
  */
 public interface SysUserRoleService extends IService<SysUserRole> {
-
 
     /**
      * 新增
@@ -98,7 +97,6 @@ public interface SysUserRoleService extends IService<SysUserRole> {
      * 根据userId查询列表
      *
      * @param userId 用户id
-     * @return
      * @author chenjinlong
      * @date 2021/2/3 15:06
      */
@@ -118,7 +116,6 @@ public interface SysUserRoleService extends IService<SysUserRole> {
      * 角色分配
      *
      * @param sysUserRequest 请求参数
-     * @return
      * @author chenjinlong
      * @date 2021/2/3 15:16
      */
