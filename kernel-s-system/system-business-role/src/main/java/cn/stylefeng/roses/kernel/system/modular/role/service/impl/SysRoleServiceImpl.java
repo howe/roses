@@ -201,6 +201,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public PageResult<SysRole> findPage(SysRoleRequest sysRoleRequest) {
         LambdaQueryWrapper<SysRole> wrapper = createWrapper(sysRoleRequest);
+
+        // 不查询管理员类型的
+        wrapper.eq(SysRole::getRoleSystemFlag, YesOrNotEnum.N.getCode());
+
         Page<SysRole> sysRolePage = this.page(PageFactory.defaultPage(), wrapper);
         return PageResultFactory.createPageResult(sysRolePage);
     }
@@ -765,6 +769,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 根据编码模糊查询
         queryWrapper.like(ObjectUtil.isNotEmpty(sysRoleRequest.getRoleCode()), SysRole::getRoleCode, sysRoleRequest.getRoleCode());
 
+        // 根据是否是管理员类型查询
+        queryWrapper.eq(ObjectUtil.isNotEmpty(sysRoleRequest.getAdminFlag()), SysRole::getAdminFlag, sysRoleRequest.getAdminFlag());
 
         return queryWrapper;
     }

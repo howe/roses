@@ -195,6 +195,12 @@ public class SysRoleRequest extends BaseRequest {
     private Boolean totalSelectFlag;
 
     /**
+     * 是否是管理员角色，管理员角色只能管理后台相关菜单
+     */
+    @ChineseDescription("是否是管理员角色，管理员角色只能管理后台相关菜单")
+    private String adminFlag;
+
+    /**
      * 参数校验分组：授权菜单和按钮
      */
     public @interface grantMenuButton {
