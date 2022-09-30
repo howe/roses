@@ -30,7 +30,7 @@ import cn.stylefeng.roses.kernel.system.api.pojo.user.request.SysAdminRequest;
 import java.util.List;
 
 /**
- * 管理员用户业务
+ * 后台管理员用户业务
  *
  * @author fengshuonan
  * @date 2022/9/30 11:05
@@ -53,5 +53,13 @@ public interface SysUserAdminService {
      * @date 2022/9/30 13:12
      */
     void addAdminUser(SysAdminRequest sysAdminRequest);
+
+    /**
+     * 删除管理员
+     *
+     * @author fengshuonan
+     * @date 2022/9/30 13:52
+     */
+    void deleteAdminUser(SysAdminRequest sysAdminRequest);
 
 }

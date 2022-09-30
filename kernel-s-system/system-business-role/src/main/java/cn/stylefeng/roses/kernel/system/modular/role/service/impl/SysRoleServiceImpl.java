@@ -135,9 +135,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void del(SysRoleRequest sysRoleRequest) {
         SysRole sysRole = this.querySysRole(sysRoleRequest);
 
-        // 超级管理员不能删除
-        if (YesOrNotEnum.Y.getCode().equals(sysRole.getRoleSystemFlag())) {
-            throw new ServiceException(SysRoleExceptionEnum.SYSTEM_ROLE_CANT_DELETE);
+        // 超级管理员不能删除，但是管理角色可以删除
+        if (!YesOrNotEnum.Y.getCode().equals(sysRole.getAdminFlag())) {
+            if (YesOrNotEnum.Y.getCode().equals(sysRole.getRoleSystemFlag())) {
+                throw new ServiceException(SysRoleExceptionEnum.SYSTEM_ROLE_CANT_DELETE);
+            }
         }
 
         // 逻辑删除，设为删除标志

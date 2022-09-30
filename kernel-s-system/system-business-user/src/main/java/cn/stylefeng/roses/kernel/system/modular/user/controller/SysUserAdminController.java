@@ -87,8 +87,8 @@ public class SysUserAdminController {
      * @date 2022/9/28 20:28
      */
     @PostResource(name = "删除后台管理员", path = "/sysUser/backAuth/delAdmin")
-    public ResponseData<?> delAdmin(@RequestBody SysAdminRequest sysAdminRequest) {
-
+    public ResponseData<?> delAdmin(@RequestBody @Validated(BaseRequest.delete.class) SysAdminRequest sysAdminRequest) {
+        this.sysUserAdminService.deleteAdminUser(sysAdminRequest);
         return new SuccessResponseData<>();
     }
 

@@ -144,4 +144,13 @@ public interface RoleServiceApi {
      */
     List<MenuAndButtonTreeResponse> grantButtonGrantAll(SysRoleRequest sysRoleRequest);
 
+    /**
+     * 删除系统角色
+     *
+     * @param sysRoleRequest 删除参数
+     * @author majianguo
+     * @date 2020/11/5 上午11:14
+     */
+    void del(SysRoleRequest sysRoleRequest);
+
 }

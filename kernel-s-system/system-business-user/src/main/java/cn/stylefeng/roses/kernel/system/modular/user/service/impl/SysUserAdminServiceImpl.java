@@ -117,6 +117,21 @@ public class SysUserAdminServiceImpl implements SysUserAdminService {
         }
     }
 
+    @Override
+    public void deleteAdminUser(SysAdminRequest sysAdminRequest) {
+
+        // 获取用户绑定的角色
+        List<Long> roleIdList = this.sysUserRoleService.findRoleIdsByUserId(sysAdminRequest.getUserId());
+
+        // 删除角色
+        for (Long roleId : roleIdList) {
+            SysRoleRequest sysRoleRequest = new SysRoleRequest();
+            sysRoleRequest.setRoleId(roleId);
+            this.roleServiceApi.del(sysRoleRequest);
+        }
+
+    }
+
     /**
      * 单个添加管理员用户
      *
