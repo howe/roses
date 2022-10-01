@@ -30,6 +30,8 @@ import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 import cn.stylefeng.roses.kernel.db.api.context.DbOperatorContext;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
+import cn.stylefeng.roses.kernel.system.api.ResourceServiceApi;
+import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleResourceDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRoleResource;
 import cn.stylefeng.roses.kernel.system.modular.role.mapper.SysRoleResourceMapper;
@@ -57,6 +59,9 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
     @Resource(name = "roleResourceCacheApi")
     private CacheOperatorApi<List<String>> roleResourceCacheApi;
 
+    @Resource
+    private ResourceServiceApi resourceServiceApi;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void grantResource(SysRoleRequest sysRoleRequest) {
@@ -72,8 +77,14 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
         roleResourceCacheApi.remove(String.valueOf(roleId));
 
         // 授权资源
-        List<String> grantResourceList = sysRoleRequest.getGrantResourceList();
-        this.batchSaveResCodes(roleId, grantResourceList);
+        List<String> codeList = sysRoleRequest.getGrantResourceList();
+        List<SysRoleResourceDTO> list = new ArrayList<>();
+        for (String resCode : codeList) {
+            SysRoleResourceDTO sysRoleResourceDTO = new SysRoleResourceDTO();
+            sysRoleResourceDTO.setResourceCode(resCode);
+            list.add(sysRoleResourceDTO);
+        }
+        this.batchSaveResCodes(roleId, list);
     }
 
     @Override
@@ -95,6 +106,7 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
                 SysRoleResource sysRoleResource = new SysRoleResource();
                 sysRoleResource.setRoleId(sysRoleRequest.getRoleId());
                 sysRoleResource.setResourceCode(resourceCode);
+                sysRoleResource.setResourceBizType(resourceServiceApi.getResourceBizTypeByCode(resourceCode));
                 sysRoleResources.add(sysRoleResource);
             }
             this.saveBatch(sysRoleResources, sysRoleResources.size());
@@ -128,9 +140,10 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteRoleResourceListByRoleId(Long roleId) {
+    public void deleteRoleResourceListByRoleId(Long roleId, Integer resourceBizType) {
         LambdaQueryWrapper<SysRoleResource> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysRoleResource::getRoleId, roleId);
+        queryWrapper.eq(ObjectUtil.isNotEmpty(resourceBizType), SysRoleResource::getResourceBizType, resourceBizType);
         this.remove(queryWrapper);
 
         // 清除角色绑定的资源缓存
@@ -159,14 +172,15 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
      * @date 2022/9/29 14:34
      */
     @Override
-    public void batchSaveResCodes(Long roleId, List<String> totalResourceCode) {
+    public void batchSaveResCodes(Long roleId, List<SysRoleResourceDTO> totalResource) {
         ArrayList<SysRoleResource> sysRoleResourceList = new ArrayList<>();
 
-        if (ObjectUtil.isNotEmpty(totalResourceCode)) {
-            for (String resCode : totalResourceCode) {
+        if (ObjectUtil.isNotEmpty(totalResource)) {
+            for (SysRoleResourceDTO resCode : totalResource) {
                 SysRoleResource sysRoleResource = new SysRoleResource();
                 sysRoleResource.setRoleId(roleId);
-                sysRoleResource.setResourceCode(resCode);
+                sysRoleResource.setResourceCode(resCode.getResourceCode());
+                sysRoleResource.setResourceBizType(resCode.getResourceBizType());
                 sysRoleResourceList.add(sysRoleResource);
             }
             this.saveBatch(sysRoleResourceList);

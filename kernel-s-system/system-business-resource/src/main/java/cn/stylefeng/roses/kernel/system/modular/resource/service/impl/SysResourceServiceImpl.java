@@ -401,16 +401,38 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
     }
 
     @Override
-    public List<String> getTotalResourceCode(ResBizTypeEnum resBizTypeEnum) {
+    public List<SysRoleResourceDTO> getTotalResourceCode(ResBizTypeEnum resBizTypeEnum) {
 
         LambdaQueryWrapper<SysResource> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.select(SysResource::getResourceCode);
+        queryWrapper.select(SysResource::getResourceCode, SysResource::getResourceBizType);
 
         // 根据资源类型查询
         queryWrapper.eq(ObjectUtil.isNotEmpty(resBizTypeEnum), SysResource::getResourceBizType, resBizTypeEnum.getCode());
 
         List<SysResource> list = this.list(queryWrapper);
-        return list.stream().map(SysResource::getResourceCode).collect(Collectors.toList());
+
+        ArrayList<SysRoleResourceDTO> results = new ArrayList<>();
+        for (SysResource sysResource : list) {
+            SysRoleResourceDTO sysRoleResourceDTO = new SysRoleResourceDTO();
+            sysRoleResourceDTO.setResourceCode(sysResource.getResourceCode());
+            sysRoleResourceDTO.setResourceBizType(sysResource.getResourceBizType());
+            results.add(sysRoleResourceDTO);
+        }
+
+        return results;
+    }
+
+    @Override
+    public Integer getResourceBizTypeByCode(String resCode) {
+        LambdaQueryWrapper<SysResource> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.select(SysResource::getResourceBizType);
+        queryWrapper.eq(SysResource::getResourceCode, resCode);
+        SysResource one = this.getOne(queryWrapper, false);
+        if (one == null) {
+            return ResBizTypeEnum.DEFAULT.getCode();
+        } else {
+            return one.getResourceBizType();
+        }
     }
 
     /**

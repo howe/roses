@@ -27,6 +27,7 @@ package cn.stylefeng.roses.kernel.system.api;
 import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ResourceDefinition;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ResourceUrlParam;
+import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleResourceDTO;
 
 import java.util.List;
 import java.util.Set;
@@ -75,6 +76,14 @@ public interface ResourceServiceApi {
      * @author fengshuonan
      * @date 2022/9/29 14:27
      */
-    List<String> getTotalResourceCode(ResBizTypeEnum resBizTypeEnum);
+    List<SysRoleResourceDTO> getTotalResourceCode(ResBizTypeEnum resBizTypeEnum);
+
+    /**
+     * 获取资源编码对应的资源类型
+     *
+     * @author fengshuonan
+     * @date 2022/10/1 14:29
+     */
+    Integer getResourceBizTypeByCode(String resCode);
 
 }

@@ -53,4 +53,9 @@ public class SysRoleResourceDTO extends BaseEntity {
      */
     private String resourceCode;
 
+    /**
+     * 资源的类型，1-业务类，2-系统类
+     */
+    private Integer resourceBizType;
+
 }

@@ -59,4 +59,10 @@ public class SysRoleResource extends BaseEntity {
     @TableField("resource_code")
     private String resourceCode;
 
+    /**
+     * 资源的业务类型：1-业务类型，2-系统类型
+     */
+    @TableField("resource_biz_type")
+    private Integer resourceBizType;
+
 }

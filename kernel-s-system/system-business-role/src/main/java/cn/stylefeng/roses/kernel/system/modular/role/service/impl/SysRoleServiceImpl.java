@@ -158,7 +158,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         userServiceApi.deleteUserRoleListByRoleId(roleId);
 
         // 级联删除该角色对应的角色-菜单表关联信息
-        sysRoleResourceService.deleteRoleResourceListByRoleId(roleId);
+        sysRoleResourceService.deleteRoleResourceListByRoleId(roleId, null);
 
         // 删除角色缓存信息
         roleInfoCacheApi.remove(String.valueOf(roleId));
@@ -174,7 +174,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void grantResourceV2GrantAll(SysRoleRequest sysRoleRequest) {
 
         // 删除角色绑定的所有资源
-        this.sysRoleResourceService.deleteRoleResourceListByRoleId(sysRoleRequest.getRoleId());
+        this.sysRoleResourceService.deleteRoleResourceListByRoleId(sysRoleRequest.getRoleId(), sysRoleRequest.getResourceBizType());
 
         // 获取是全部选中，还是全部取消，如果是全部取消，则直接返回
         if (!sysRoleRequest.getTotalSelectFlag()) {
@@ -186,7 +186,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         if (ObjectUtil.isNotEmpty(sysRoleRequest.getResourceBizType())) {
             resBizTypeEnum = ResBizTypeEnum.DEFAULT.parseToEnum(sysRoleRequest.getResourceBizType().toString());
         }
-        List<String> totalResourceCode = resourceServiceApi.getTotalResourceCode(resBizTypeEnum);
+        List<SysRoleResourceDTO> totalResourceCode = resourceServiceApi.getTotalResourceCode(resBizTypeEnum);
         this.sysRoleResourceService.batchSaveResCodes(sysRoleRequest.getRoleId(), totalResourceCode);
     }
 

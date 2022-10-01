@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.system.modular.role.service;
 
+import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleResourceDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRoleResource;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -67,11 +68,12 @@ public interface SysRoleResourceService extends IService<SysRoleResource> {
     /**
      * 根据角色id删除对应的角色资源信息
      *
-     * @param roleId 角色id
+     * @param roleId          角色id
+     * @param resourceBizType 指定的资源类型，如果为空，则删除所有类型的
      * @author majianguo
      * @date 2020/11/5 上午11:18
      */
-    void deleteRoleResourceListByRoleId(Long roleId);
+    void deleteRoleResourceListByRoleId(Long roleId, Integer resourceBizType);
 
     /**
      * 保存所有的角色资源
@@ -87,6 +89,6 @@ public interface SysRoleResourceService extends IService<SysRoleResource> {
      * @author fengshuonan
      * @date 2022/9/29 14:34
      */
-    void batchSaveResCodes(Long roleId, List<String> totalResourceCode);
+    void batchSaveResCodes(Long roleId, List<SysRoleResourceDTO> totalResourceCode);
 
 }

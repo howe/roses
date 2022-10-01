@@ -79,14 +79,15 @@ public class InitAdminService {
 
         // 找到所有Resource，将所有资源赋给这个角色
         LambdaQueryWrapper<SysResource> sysResourceLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        sysResourceLambdaQueryWrapper.select(SysResource::getResourceCode);
+        sysResourceLambdaQueryWrapper.select(SysResource::getResourceCode, SysResource::getResourceBizType);
         List<SysResource> resources = sysResourceService.list(sysResourceLambdaQueryWrapper);
 
         ArrayList<SysRoleResource> sysRoleResources = new ArrayList<>();
         for (SysResource resource : resources) {
             SysRoleResource sysRoleResource = new SysRoleResource();
-            sysRoleResource.setResourceCode(resource.getResourceCode());
             sysRoleResource.setRoleId(superAdminRole.getRoleId());
+            sysRoleResource.setResourceCode(resource.getResourceCode());
+            sysRoleResource.setResourceBizType(resource.getResourceBizType());
             sysRoleResources.add(sysRoleResource);
         }
         sysRoleResourceService.quickSaveAll(sysRoleResources);
