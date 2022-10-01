@@ -50,6 +50,7 @@ import cn.stylefeng.roses.kernel.system.api.RoleDataScopeServiceApi;
 import cn.stylefeng.roses.kernel.system.api.RoleServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserOrgServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
+import cn.stylefeng.roses.kernel.system.api.enums.DetectModeEnum;
 import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
 import cn.stylefeng.roses.kernel.system.api.exception.enums.organization.OrganizationExceptionEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrOrganizationDTO;
@@ -414,13 +415,12 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
     }
 
     @Override
-    public Long getParentLevelOrgId(Long orgId, Integer parentLevelNum) {
-        return calcParentOrgId(orgId, parentLevelNum, true);
-    }
-
-    @Override
-    public Long getHighestLevelOrgId(Long orgId, Integer highestLevelNum) {
-        return calcParentOrgId(orgId, highestLevelNum, false);
+    public Long getParentLevelOrgId(Long orgId, Integer parentLevelNum, DetectModeEnum detectModeEnum) {
+        if (DetectModeEnum.TO_TOP.equals(detectModeEnum)) {
+            return calcParentOrgId(orgId, parentLevelNum, true);
+        } else {
+            return calcParentOrgId(orgId, parentLevelNum, false);
+        }
     }
 
     /**

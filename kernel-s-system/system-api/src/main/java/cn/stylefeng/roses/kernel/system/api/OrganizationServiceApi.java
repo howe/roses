@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.system.api;
 
+import cn.stylefeng.roses.kernel.system.api.enums.DetectModeEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrOrganizationDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrOrganizationRequest;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.OrganizationTreeNode;
@@ -74,27 +75,16 @@ public interface OrganizationServiceApi {
     /**
      * 获取指定组织机构的上级组织机构是什么
      * <p>
-     * 逐级向上获取直到获取到最高级
+     * 自下而上：逐级向上获取直到获取到最高级
+     * 自上而下：逐级向下获取，直到获取到本层机构
      *
      * @param orgId          指定机构id
      * @param parentLevelNum 上级机构的层级数，从0开始，0代表直接返回本部门
+     * @param detectModeEnum  自上而下还是自下而上
      * @return 上级机构的id
      * @author fengshuonan
      * @date 2022/9/18 15:02
      */
-    Long getParentLevelOrgId(Long orgId, Integer parentLevelNum);
-
-    /**
-     * 获取该部门从最高一级上级开始计算的子组织
-     * <p>
-     * 逐级向下获取，直到获取到本层机构
-     *
-     * @param orgId           指定机构id
-     * @param highestLevelNum 自上而下的层级数，从0开始，0代表直接返回本部门
-     * @return 计算后的上级机构id
-     * @author fengshuonan
-     * @date 2022/10/1 11:37
-     */
-    Long getHighestLevelOrgId(Long orgId, Integer highestLevelNum);
+    Long getParentLevelOrgId(Long orgId, Integer parentLevelNum, DetectModeEnum detectModeEnum);
 
 }

@@ -9,6 +9,7 @@ import cn.stylefeng.roses.kernel.system.api.OrganizationServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserOrgServiceApi;
 import cn.stylefeng.roses.kernel.system.api.UserServiceApi;
 import cn.stylefeng.roses.kernel.system.api.constants.SystemConstants;
+import cn.stylefeng.roses.kernel.system.api.enums.DetectModeEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.BindUserItem;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserOrgDTO;
@@ -158,7 +159,7 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
     }
 
     @Override
-    public List<Long> getUserOrgApprover(Long userId, Integer orgApproverType, Integer parentLevel) {
+    public List<Long> getUserOrgApprover(Long userId, Integer orgApproverType, Integer parentLevel, DetectModeEnum detectModeEnum) {
 
         // 获取用户的所属机构id
         SysUserOrgDTO sysUserOrgDTO = userOrgServiceApi.getUserOrgByUserId(userId);
@@ -170,14 +171,14 @@ public class HrOrgApproverServiceImpl extends ServiceImpl<HrOrgApproverMapper, H
         }
 
         // 获取指定部门的负责人id信息
-        return getDeptOrgApprover(orgId, orgApproverType, parentLevel);
+        return getDeptOrgApprover(orgId, orgApproverType, parentLevel, detectModeEnum);
     }
 
     @Override
-    public List<Long> getDeptOrgApprover(Long deptId, Integer orgApproverType, Integer parentLevel) {
+    public List<Long> getDeptOrgApprover(Long deptId, Integer orgApproverType, Integer parentLevel, DetectModeEnum detectModeEnum) {
 
         // 根据参数的级别，获取组织机构的父级机构
-        Long parentLevelOrgId = this.organizationServiceApi.getParentLevelOrgId(deptId, parentLevel);
+        Long parentLevelOrgId = this.organizationServiceApi.getParentLevelOrgId(deptId, parentLevel, detectModeEnum);
 
         // 如果没有上级组织机构，则直接返回为空
         if (ObjectUtil.isEmpty(parentLevelOrgId)) {
