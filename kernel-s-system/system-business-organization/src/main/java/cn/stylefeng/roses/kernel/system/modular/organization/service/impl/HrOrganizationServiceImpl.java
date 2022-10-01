@@ -583,16 +583,30 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
             return null;
         }
         String orgParentIdListStr = hrOrganization.getOrgPids();
+
+        // 去掉中括号符号
+        orgParentIdListStr = orgParentIdListStr.replaceAll("\\[", "");
+        orgParentIdListStr = orgParentIdListStr.replaceAll("]", "");
+
+        // 获取所有上级id列表
         String[] orgParentIdList = orgParentIdListStr.split(",");
         if (reverse) {
             orgParentIdList = ArrayUtil.reverse(orgParentIdList);
         }
 
-        // 根据请求参数，需要从orgParentIdList获取的下标
+        // 先删掉id为-1的机构，因为-1是不存在的
+        ArrayList<String> parentOrgIdList = new ArrayList<>();
+        for (String orgIdItem : orgParentIdList) {
+            if (!TreeConstants.DEFAULT_PARENT_ID.toString().equals(orgIdItem)) {
+                parentOrgIdList.add(orgIdItem);
+            }
+        }
+
+        // 根据请求参数，需要从parentOrgIdList获取的下标
         int needGetArrayIndex = parentLevelNum - 1;
 
-        // orgParentIdList最大能提供的下表，这里为什么是-2，因为所有组织机构，最顶级的父级id是[-1]，[-1]是不存在
-        int maxCanGetIndex = orgParentIdList.length - 2;
+        // parentOrgIdList最大能提供的下标
+        int maxCanGetIndex = parentOrgIdList.size() - 1;
 
         // 如果没有最顶级的上级，则他本身就是最顶级上级
         if (maxCanGetIndex < 0) {
@@ -602,9 +616,14 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
         // 根据参数传参，进行获取上级的操作
         String orgIdString;
         if (needGetArrayIndex <= (maxCanGetIndex)) {
-            orgIdString = orgParentIdList[needGetArrayIndex];
+            orgIdString = parentOrgIdList.get(needGetArrayIndex);
         } else {
-            orgIdString = orgParentIdList[maxCanGetIndex];
+            // 如果需要获取的下标，大于了最大下标
+            if (reverse) {
+                orgIdString = parentOrgIdList.get(maxCanGetIndex);
+            } else {
+                return orgId;
+            }
         }
         return Long.valueOf(orgIdString);
     }
