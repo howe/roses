@@ -415,44 +415,12 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
 
     @Override
     public Long getParentLevelOrgId(Long orgId, Integer parentLevelNum) {
+        return calcParentOrgId(orgId, parentLevelNum, true);
+    }
 
-        if (ObjectUtil.isEmpty(orgId) || ObjectUtil.isEmpty(parentLevelNum)) {
-            return null;
-        }
-
-        // 如果上级层数为0，则直接返回参数的orgId，代表同级别组织机构
-        if (parentLevelNum == 0) {
-            return orgId;
-        }
-
-        // 获取当前部门的所有父级id
-        HrOrganization hrOrganization = this.getById(orgId);
-        if (hrOrganization == null || StrUtil.isEmpty(hrOrganization.getOrgPids())) {
-            return null;
-        }
-        String orgParentIdListStr = hrOrganization.getOrgPids();
-        String[] orgParentIdList = orgParentIdListStr.split(",");
-        String[] orgParentIdListReverse = ArrayUtil.reverse(orgParentIdList);
-
-        // 根据请求参数，需要从orgParentIdListReverse获取的下表
-        int needGetArrayIndex = parentLevelNum - 1;
-
-        // orgParentIdListReverse最大能提供的下表，这里为什么是-2，因为所有组织机构，最顶级的父级id是[-1]，[-1]是不存在
-        int maxCanGetIndex = orgParentIdListReverse.length - 2;
-
-        // 如果没有最顶级的上级，则他本身就是最顶级上级
-        if (maxCanGetIndex < 0) {
-            return orgId;
-        }
-
-        // 根据参数传参，进行获取上级的操作
-        String orgIdString;
-        if (needGetArrayIndex <= (maxCanGetIndex)) {
-            orgIdString = orgParentIdListReverse[needGetArrayIndex];
-        } else {
-            orgIdString = orgParentIdListReverse[maxCanGetIndex];
-        }
-        return Long.valueOf(orgIdString);
+    @Override
+    public Long getHighestLevelOrgId(Long orgId, Integer highestLevelNum) {
+        return calcParentOrgId(orgId, highestLevelNum, false);
     }
 
     /**
@@ -587,6 +555,58 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
         }
 
         return this.list(queryWrapper);
+    }
+
+    /**
+     * 计算获取上级组织机构id
+     *
+     * @param orgId          指定机构id
+     * @param parentLevelNum 上级机构的层级数，从0开始，0代表不计算直接返回本身
+     * @param reverse        是否反转，true-代表自下而上计算，false-代表自上而下计算
+     * @author fengshuonan
+     * @date 2022/10/1 11:45
+     */
+    private Long calcParentOrgId(Long orgId, Integer parentLevelNum, boolean reverse) {
+
+        if (ObjectUtil.isEmpty(orgId) || ObjectUtil.isEmpty(parentLevelNum)) {
+            return null;
+        }
+
+        // 如果上级层数为0，则直接返回参数的orgId，代表同级别组织机构
+        if (parentLevelNum == 0) {
+            return orgId;
+        }
+
+        // 获取当前部门的所有父级id
+        HrOrganization hrOrganization = this.getById(orgId);
+        if (hrOrganization == null || StrUtil.isEmpty(hrOrganization.getOrgPids())) {
+            return null;
+        }
+        String orgParentIdListStr = hrOrganization.getOrgPids();
+        String[] orgParentIdList = orgParentIdListStr.split(",");
+        if (reverse) {
+            orgParentIdList = ArrayUtil.reverse(orgParentIdList);
+        }
+
+        // 根据请求参数，需要从orgParentIdList获取的下标
+        int needGetArrayIndex = parentLevelNum - 1;
+
+        // orgParentIdList最大能提供的下表，这里为什么是-2，因为所有组织机构，最顶级的父级id是[-1]，[-1]是不存在
+        int maxCanGetIndex = orgParentIdList.length - 2;
+
+        // 如果没有最顶级的上级，则他本身就是最顶级上级
+        if (maxCanGetIndex < 0) {
+            return orgId;
+        }
+
+        // 根据参数传参，进行获取上级的操作
+        String orgIdString;
+        if (needGetArrayIndex <= (maxCanGetIndex)) {
+            orgIdString = orgParentIdList[needGetArrayIndex];
+        } else {
+            orgIdString = orgParentIdList[maxCanGetIndex];
+        }
+        return Long.valueOf(orgIdString);
     }
 
 }
