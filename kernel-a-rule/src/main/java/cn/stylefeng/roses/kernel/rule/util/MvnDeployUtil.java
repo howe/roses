@@ -41,9 +41,9 @@ public class MvnDeployUtil {
      * <p>
      * 一般压缩包中包含了多个目录的jar
      * <p>
-     * 例如：D:\tmp\needToDeploy.zip
+     * 例如：D:\tmp\needToDeploy
      */
-    private String targetZipPath;
+    private String targetToDeployPath;
 
     /**
      * maven的settings文件配置路径
@@ -68,7 +68,7 @@ public class MvnDeployUtil {
 
     public static void main(String[] args) {
         MvnDeployUtil mvnDeployUtil = new MvnDeployUtil();
-        mvnDeployUtil.setTargetZipPath("D:\\workspace-guns\\roses\\kernel-a-rule\\target");
+        mvnDeployUtil.setTargetToDeployPath("D:\\tmp\\devops-plugins");
         mvnDeployUtil.setMvnExePath("D:\\apache-maven-3.5.4\\bin\\mvn.cmd");
         mvnDeployUtil.setMvnSettingXmlPath("D:\\apache-maven-3.5.4\\conf\\settings.xml");
         mvnDeployUtil.setRepositoryId("company-hosted");
@@ -220,7 +220,7 @@ public class MvnDeployUtil {
     public void beginDeploy() {
 
         //初始化，获取所有的目录存到list
-        this.getAllDirs(targetZipPath);
+        this.getAllDirs(targetToDeployPath);
 
         //遍历所有目录，并根据不同类型的目录，执行deploy
         for (File directory : directories) {
