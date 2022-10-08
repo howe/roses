@@ -253,7 +253,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
      * @author fengshuonan
      * @date 2020/4/14 11:19
      */
-    private SysConfig querySysConfig(SysConfigParam sysConfigParam) {
+    public SysConfig querySysConfig(SysConfigParam sysConfigParam) {
         SysConfig sysConfig = this.getById(sysConfigParam.getConfigId());
         if (ObjectUtil.isEmpty(sysConfig) || sysConfig.getDelFlag().equals(YesOrNotEnum.Y.getCode())) {
             String userTip = StrUtil.format(ConfigExceptionEnum.CONFIG_NOT_EXIST.getUserTip(), "id: " + sysConfigParam.getConfigId());
