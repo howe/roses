@@ -881,6 +881,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (ObjectUtil.isNotEmpty(sysUser)) {
             SysUserDTO result = BeanUtil.copyProperties(sysUser, SysUserDTO.class);
 
+            // 获取用户的组织机构名称
+            LambdaQueryWrapper<SysUserOrg> sysUserOrgLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            sysUserOrgLambdaQueryWrapper.eq(SysUserOrg::getUserId, userId);
+            SysUserOrg one = sysUserOrgService.getOne(sysUserOrgLambdaQueryWrapper, false);
+            if (one != null) {
+                Long orgId = one.getOrgId();
+                HrOrganizationDTO orgDetail = this.organizationServiceApi.getOrgDetail(orgId);
+                if (orgDetail != null) {
+                    String orgName = orgDetail.getOrgName();
+                    result.setOrgName(orgName);
+                }
+            }
+
             // 获取用户的头像地址
             String fileAuthUrl = fileInfoApi.getFileAuthUrl(sysUser.getAvatar());
             if (fileAuthUrl != null) {
