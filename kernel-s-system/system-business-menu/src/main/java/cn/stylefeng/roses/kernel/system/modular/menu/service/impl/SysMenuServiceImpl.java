@@ -442,14 +442,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         menuWrapper.eq(SysMenu::getDelFlag, YesOrNotEnum.N.getCode());
         menuWrapper.eq(SysMenu::getStatusFlag, StatusEnum.ENABLE.getCode());
 
-        // 非超级管理员则获取自己拥有的菜单
-        if (!LoginContext.me().getSuperAdminFlag()) {
-            List<Long> menuIdList = getCurrentUserMenuIds();
-            if (!menuIdList.isEmpty()) {
-                menuWrapper.in(SysMenu::getMenuId, menuIdList);
-            }
-        }
-
         // 查询所有菜单列表
         List<SysMenu> sysMenuList = this.list(menuWrapper);
 
