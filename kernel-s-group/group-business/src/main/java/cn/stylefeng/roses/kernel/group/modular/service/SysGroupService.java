@@ -1,5 +1,6 @@
 package cn.stylefeng.roses.kernel.group.modular.service;
 
+import cn.stylefeng.roses.kernel.group.api.GroupApi;
 import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupDTO;
 import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupRequest;
 import cn.stylefeng.roses.kernel.group.modular.entity.SysGroup;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author fengshuonan
  * @date 2022/05/11 12:54
  */
-public interface SysGroupService extends IService<SysGroup> {
+public interface SysGroupService extends IService<SysGroup>, GroupApi {
 
     /**
      * 添加时候的选择分组列表

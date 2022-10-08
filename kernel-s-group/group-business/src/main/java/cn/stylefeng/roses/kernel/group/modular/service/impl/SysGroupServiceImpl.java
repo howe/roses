@@ -2,7 +2,6 @@ package cn.stylefeng.roses.kernel.group.modular.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
-import cn.stylefeng.roses.kernel.group.api.GroupApi;
 import cn.stylefeng.roses.kernel.group.api.constants.GroupConstants;
 import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupDTO;
 import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupRequest;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
  * @date 2022/05/11 12:54
  */
 @Service
-public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> implements SysGroupService, GroupApi {
+public class SysGroupServiceImpl extends ServiceImpl<SysGroupMapper, SysGroup> implements SysGroupService {
 
     @Override
     public List<SysGroupDTO> findGroupList(SysGroupRequest sysGroupRequest, boolean getTotal) {
