@@ -80,6 +80,11 @@ public class HrOrganizationDTO {
     private Integer orgType;
 
     /**
+     * 税号
+     */
+    private String taxNo;
+
+    /**
      * 组织机构描述
      */
     private String orgRemark;

@@ -29,6 +29,7 @@ import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.validator.api.validators.status.StatusValue;
 import cn.stylefeng.roses.kernel.validator.api.validators.unique.TableUniqueValue;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -108,6 +109,12 @@ public class HrOrganizationRequest extends BaseRequest {
      */
     @ChineseDescription("组织机构类型：1-公司，2-部门")
     private Integer orgType;
+
+    /**
+     * 税号
+     */
+    @ChineseDescription("税号")
+    private String taxNo;
 
     /**
      * 描述

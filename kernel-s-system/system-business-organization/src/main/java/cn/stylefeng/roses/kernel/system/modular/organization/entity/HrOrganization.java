@@ -103,6 +103,13 @@ public class HrOrganization extends BaseEntity {
     private Integer orgType;
 
     /**
+     * 税号
+     */
+    @TableField(value = "tax_no")
+    @ChineseDescription("税号")
+    private String taxNo;
+
+    /**
      * 组织机构描述
      */
     @TableField("org_remark")

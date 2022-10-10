@@ -102,6 +102,12 @@ public class OrganizationTreeNode implements AbstractTreeNode<OrganizationTreeNo
     private Integer orgType;
 
     /**
+     * 税号
+     */
+    @ChineseDescription("税号")
+    private String taxNo;
+
+    /**
      * 组织机构描述
      */
     @ChineseDescription("组织机构描述")
