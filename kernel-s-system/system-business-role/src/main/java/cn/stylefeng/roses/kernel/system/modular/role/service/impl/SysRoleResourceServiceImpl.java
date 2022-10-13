@@ -183,7 +183,16 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
                 sysRoleResource.setResourceBizType(resCode.getResourceBizType());
                 sysRoleResourceList.add(sysRoleResource);
             }
-            this.saveBatch(sysRoleResourceList);
+
+            DbTypeEnum currentDbType = DbOperatorContext.me().getCurrentDbType();
+            if (DbTypeEnum.MYSQL.equals(currentDbType)) {
+                List<List<SysRoleResource>> split = ListUtil.split(sysRoleResourceList, RuleConstants.DEFAULT_BATCH_INSERT_SIZE);
+                for (List<SysRoleResource> sysRoleResources : split) {
+                    this.getBaseMapper().insertBatchSomeColumn(sysRoleResources);
+                }
+            } else {
+                this.saveBatch(sysRoleResourceList);
+            }
         }
     }
 
