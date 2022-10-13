@@ -24,11 +24,17 @@
  */
 package cn.stylefeng.roses.kernel.system.modular.role.service.impl;
 
+import cn.hutool.core.collection.ListUtil;
+import cn.stylefeng.roses.kernel.db.api.context.DbOperatorContext;
+import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
+import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRoleMenuButton;
 import cn.stylefeng.roses.kernel.system.modular.role.mapper.SysRoleMenuButtonMapper;
 import cn.stylefeng.roses.kernel.system.modular.role.service.SysRoleMenuButtonService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 角色按钮关联 服务实现类
@@ -38,5 +44,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysRoleMenuButtonServiceImpl extends ServiceImpl<SysRoleMenuButtonMapper, SysRoleMenuButton> implements SysRoleMenuButtonService {
+
+    @Override
+    public void batchSaveRoleMenuButton(List<SysRoleMenuButton> roleMenuButtons) {
+        DbTypeEnum currentDbType = DbOperatorContext.me().getCurrentDbType();
+        if (DbTypeEnum.MYSQL.equals(currentDbType)) {
+            List<List<SysRoleMenuButton>> split = ListUtil.split(roleMenuButtons, RuleConstants.DEFAULT_BATCH_INSERT_SIZE);
+            for (List<SysRoleMenuButton> roleMenuButtonList : split) {
+                this.getBaseMapper().insertBatchSomeColumn(roleMenuButtonList);
+            }
+        } else {
+            this.saveBatch(roleMenuButtons);
+        }
+    }
 
 }

@@ -27,6 +27,8 @@ package cn.stylefeng.roses.kernel.system.modular.role.service;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRoleMenuButton;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 角色按钮关联 服务类
  *
@@ -35,5 +37,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SysRoleMenuButtonService extends IService<SysRoleMenuButton> {
 
+    /**
+     * 批量保存角色绑定的菜单按钮
+     *
+     * @param roleMenuButtons 角色按钮关联列表
+     * @author fengshuonan
+     * @date 2022/10/14 0:56
+     */
+    void batchSaveRoleMenuButton(List<SysRoleMenuButton> roleMenuButtons);
 
 }

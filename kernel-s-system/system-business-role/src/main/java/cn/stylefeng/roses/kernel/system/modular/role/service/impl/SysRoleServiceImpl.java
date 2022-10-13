@@ -577,7 +577,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             item.setButtonCode(buttonDTO.getButtonCode());
             sysRoleMenuButtons.add(item);
         }
-        this.sysRoleMenuButtonService.saveBatch(sysRoleMenuButtons);
+        this.sysRoleMenuButtonService.batchSaveRoleMenuButton(sysRoleMenuButtons);
 
         return roleBindOperateList;
     }
