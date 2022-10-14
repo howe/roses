@@ -113,6 +113,13 @@ public class HrOrganizationRequest extends BaseRequest {
     /**
      * 税号
      */
+    @TableUniqueValue(
+            message = "企业税号存在重复",
+            groups = {add.class, edit.class},
+            tableName = "hr_organization",
+            columnName = "tax_no",
+            idFieldName = "org_id",
+            excludeLogicDeleteItems = true)
     @ChineseDescription("税号")
     private String taxNo;
 
