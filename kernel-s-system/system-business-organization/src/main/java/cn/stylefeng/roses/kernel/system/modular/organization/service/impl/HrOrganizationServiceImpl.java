@@ -447,6 +447,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
         Long orgParentId = hrOrganizationRequest.getOrgParentId();
         Long orgId = hrOrganizationRequest.getOrgId();
         Integer orgType = hrOrganizationRequest.getOrgType();
+        String taxNo = hrOrganizationRequest.getTaxNo();
 
         // 拼接组织机构名称条件
         queryWrapper.like(ObjectUtil.isNotEmpty(orgName), HrOrganization::getOrgName, orgName);
@@ -456,6 +457,9 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
 
         // 组织机构类型拼接
         queryWrapper.eq(ObjectUtil.isNotEmpty(orgType), HrOrganization::getOrgType, orgType);
+
+        // 税号查询条件
+        queryWrapper.eq(StrUtil.isNotEmpty(taxNo), HrOrganization::getTaxNo, taxNo);
 
         // 拼接父机构id查询条件
         if (ObjectUtil.isNotEmpty(orgParentId)) {
