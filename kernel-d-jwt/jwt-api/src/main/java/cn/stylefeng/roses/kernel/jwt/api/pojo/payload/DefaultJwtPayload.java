@@ -54,7 +54,7 @@ public class DefaultJwtPayload {
     private String uuid;
 
     /**
-     * 是否记住我
+     * 是否记住我（7天免登陆）
      */
     private Boolean rememberMe;
 

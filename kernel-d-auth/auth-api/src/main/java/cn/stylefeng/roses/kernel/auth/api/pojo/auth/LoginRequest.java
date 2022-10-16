@@ -57,9 +57,9 @@ public class LoginRequest extends BaseRequest {
     private String password;
 
     /**
-     * 记住我，不传就是false
+     * 记录会话，7天免登录
      */
-    @ChineseDescription("记住我，不传就是false")
+    @ChineseDescription("记录会话，7天免登录")
     private Boolean rememberMe = false;
 
     /**
