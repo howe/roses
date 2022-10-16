@@ -28,6 +28,7 @@ import cn.stylefeng.roses.kernel.auth.api.exception.AuthException;
 import cn.stylefeng.roses.kernel.auth.api.pojo.auth.LoginRequest;
 import cn.stylefeng.roses.kernel.auth.api.pojo.auth.LoginResponse;
 import cn.stylefeng.roses.kernel.auth.api.pojo.auth.LoginWithTokenRequest;
+import cn.stylefeng.roses.kernel.jwt.api.pojo.payload.DefaultJwtPayload;
 
 /**
  * 认证服务的接口，包括基本的登录退出操作和校验token等操作
@@ -98,11 +99,12 @@ public interface AuthServiceApi {
      * 结果有三种，第一是jwt过期了，第二是用户随便写的错误token，第三种是token正确，token正确不会抛出异常
      *
      * @param token 某个用户的登录token
+     * @return token解析出的用户基本信息
      * @throws AuthException 认证异常，如果token错误或过期，会有相关的异常抛出
      * @author fengshuonan
      * @date 2020/10/19 14:16
      */
-    void validateToken(String token) throws AuthException;
+    DefaultJwtPayload validateToken(String token) throws AuthException;
 
     /**
      * 校验用户是否认证通过，认证是校验token的过程，校验失败会抛出异常

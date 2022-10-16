@@ -17,6 +17,14 @@
 
     <dependencies>
 
+        <!--jwt模块的api-->
+        <!--AuthServiceApi解析token的结果需要用到jwt模块-->
+        <dependency>
+            <groupId>cn.stylefeng.roses</groupId>
+            <artifactId>jwt-api</artifactId>
+            <version>${roses.version}</version>
+        </dependency>
+
         <!--解析需要转化时间-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

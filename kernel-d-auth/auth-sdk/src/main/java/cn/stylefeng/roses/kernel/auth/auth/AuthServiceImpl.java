@@ -216,16 +216,26 @@ public class AuthServiceImpl implements AuthServiceApi {
     }
 
     @Override
-    public void validateToken(String token) throws AuthException {
+    public DefaultJwtPayload validateToken(String token) throws AuthException {
         try {
             // 1. 先校验jwt token本身是否有问题
             JwtContext.me().validateTokenWithException(token);
 
-            // 2. 判断session里是否有这个token
+            // 2. 获取jwt的payload
+            DefaultJwtPayload defaultPayload = JwtContext.me().getDefaultPayload(token);
+
+            // 3. 如果是7天免登陆，则不校验session过期
+            if (defaultPayload.getRememberMe()) {
+                return defaultPayload;
+            }
+
+            // 4. 判断session里是否有这个token
             LoginUser session = sessionManagerApi.getSession(token);
             if (session == null) {
                 throw new AuthException(AUTH_EXPIRED_ERROR);
             }
+
+            return defaultPayload;
         } catch (JwtException jwtException) {
             // jwt token本身过期的话，返回 AUTH_EXPIRED_ERROR
             if (JwtExceptionEnum.JWT_EXPIRED_ERROR.getErrorCode().equals(jwtException.getErrorCode())) {
@@ -316,8 +326,11 @@ public class AuthServiceImpl implements AuthServiceApi {
             throw new ScannerException(ScannerExceptionEnum.SYSTEM_RESOURCE_URL_NOT_INIT);
         }
 
-        // 3. 解密密码的密文
-        String decryptPassword = passwordTransferEncryptApi.decrypt(loginRequest.getPassword());
+        // 3. 解密密码的密文，需要sys_config相关配置打开
+        if (loginRequest.getPassword() != null && AuthConfigExpander.getPasswordRsaValidateFlag()) {
+            String decryptPassword = passwordTransferEncryptApi.decrypt(loginRequest.getPassword());
+            loginRequest.setPassword(decryptPassword);
+        }
 
         // 4. 如果开启了单点登录，并且CaToken没有值，走单点登录，获取loginCode
         if (ssoProperties.getOpenFlag() && StrUtil.isEmpty(caToken)) {
@@ -330,7 +343,7 @@ public class AuthServiceImpl implements AuthServiceApi {
                 SsoServerApi ssoServerApi = SpringUtil.getBean(SsoServerApi.class);
                 SsoLoginCodeRequest ssoLoginCodeRequest = new SsoLoginCodeRequest();
                 ssoLoginCodeRequest.setAccount(loginRequest.getAccount());
-                ssoLoginCodeRequest.setPassword(decryptPassword);
+                ssoLoginCodeRequest.setPassword(loginRequest.getPassword());
                 String remoteLoginCode = ssoServerApi.createSsoLoginCode(ssoLoginCodeRequest);
                 return new LoginResponse(remoteLoginCode);
             }

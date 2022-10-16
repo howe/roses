@@ -235,4 +235,16 @@ public class AuthConfigExpander {
         return ConfigContext.me().getSysConfigValueWithDefault("SYS_AUTH_SSO_HOST", String.class, SYS_AUTH_SSO_HOST);
     }
 
+    /**
+     * 登录密码是否进行RSA加密校验，默认关闭
+     * <p>
+     * 需要前端配合加密后再打开开关
+     *
+     * @author fengshuonan
+     * @date 2022/10/16 23:28
+     */
+    public static Boolean getPasswordRsaValidateFlag() {
+        return ConfigContext.me().getSysConfigValueWithDefault("SYS_AUTH_PASSWORD_RSA_VALIDATE", Boolean.class, false);
+    }
+
 }
