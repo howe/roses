@@ -268,6 +268,18 @@ public class AuthServiceImpl implements AuthServiceApi {
         loginErrorCountCacheApi.remove(loginRequest.getAccount());
     }
 
+    @Override
+    public LoginUser createNewLoginInfo(String token, String account) {
+
+        // 获取用户的信息
+        UserLoginInfoDTO userLoginInfo = userServiceApi.getUserLoginInfo(account);
+
+        // 创建用户会话信息
+        sessionManagerApi.updateSession(token, userLoginInfo.getLoginUser());
+
+        return userLoginInfo.getLoginUser();
+    }
+
     /**
      * 登录的真正业务逻辑
      *

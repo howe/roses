@@ -28,6 +28,7 @@ import cn.stylefeng.roses.kernel.auth.api.exception.AuthException;
 import cn.stylefeng.roses.kernel.auth.api.pojo.auth.LoginRequest;
 import cn.stylefeng.roses.kernel.auth.api.pojo.auth.LoginResponse;
 import cn.stylefeng.roses.kernel.auth.api.pojo.auth.LoginWithTokenRequest;
+import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
 import cn.stylefeng.roses.kernel.jwt.api.pojo.payload.DefaultJwtPayload;
 
 /**
@@ -123,4 +124,16 @@ public interface AuthServiceApi {
      * @date 2022/1/22 16:37
      */
     void cancelFreeze(LoginRequest loginRequest);
+
+    /**
+     * 为指定token创建新的登录信息
+     *
+     * @param token   用户旧的token
+     * @param account 用户账号
+     * @return 新的当前登录用户
+     * @author fengshuonan
+     * @date 2022/10/17 0:04
+     */
+    LoginUser createNewLoginInfo(String token, String account);
+
 }

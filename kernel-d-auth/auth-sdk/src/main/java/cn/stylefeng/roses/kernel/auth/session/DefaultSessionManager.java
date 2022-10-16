@@ -26,6 +26,8 @@ package cn.stylefeng.roses.kernel.auth.session;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.auth.api.SessionManagerApi;
 import cn.stylefeng.roses.kernel.auth.api.cookie.SessionCookieCreator;
 import cn.stylefeng.roses.kernel.auth.api.expander.AuthConfigExpander;
@@ -109,13 +111,9 @@ public class DefaultSessionManager implements SessionManagerApi {
 
     @Override
     public void updateSession(String token, LoginUser loginUser) {
-        LoginUser session = this.getSession(token);
-
-        // 该用户session为空不能更新
-        if (session == null) {
+        if (StrUtil.isEmpty(token) || ObjectUtil.isEmpty(loginUser)) {
             return;
         }
-
         loginUserCache.put(token, loginUser, sessionExpiredSeconds);
     }
 
