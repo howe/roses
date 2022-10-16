@@ -317,7 +317,7 @@ public class AuthServiceImpl implements AuthServiceApi {
         }
 
         // 3. 解密密码的密文
-        //        String decryptPassword = passwordTransferEncryptApi.decrypt(loginRequest.getPassword());
+        String decryptPassword = passwordTransferEncryptApi.decrypt(loginRequest.getPassword());
 
         // 4. 如果开启了单点登录，并且CaToken没有值，走单点登录，获取loginCode
         if (ssoProperties.getOpenFlag() && StrUtil.isEmpty(caToken)) {
@@ -330,7 +330,7 @@ public class AuthServiceImpl implements AuthServiceApi {
                 SsoServerApi ssoServerApi = SpringUtil.getBean(SsoServerApi.class);
                 SsoLoginCodeRequest ssoLoginCodeRequest = new SsoLoginCodeRequest();
                 ssoLoginCodeRequest.setAccount(loginRequest.getAccount());
-                ssoLoginCodeRequest.setPassword(loginRequest.getPassword());
+                ssoLoginCodeRequest.setPassword(decryptPassword);
                 String remoteLoginCode = ssoServerApi.createSsoLoginCode(ssoLoginCodeRequest);
                 return new LoginResponse(remoteLoginCode);
             }
