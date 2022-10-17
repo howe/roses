@@ -27,12 +27,14 @@ package cn.stylefeng.roses.kernel.scanner.starter;
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.scanner.ApiResourceScanner;
 import cn.stylefeng.roses.kernel.scanner.DefaultResourceCollector;
-import cn.stylefeng.roses.kernel.scanner.DevOpsReportImpl;
-import cn.stylefeng.roses.kernel.scanner.api.DevOpsReportApi;
+import cn.stylefeng.roses.kernel.scanner.api.DevOpsDetectApi;
 import cn.stylefeng.roses.kernel.scanner.api.ResourceCollectorApi;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.devops.DevOpsReportProperties;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.scanner.ScannerProperties;
+import cn.stylefeng.roses.kernel.scanner.devops.DefaultDevOpsReportImpl;
+import cn.stylefeng.roses.kernel.scanner.devops.LocalizedDevOpsReportImpl;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -115,14 +117,27 @@ public class GunsResourceAutoConfiguration {
     }
 
     /**
-     * 向DevOps平台汇报资源
+     * 向DevOps平台汇报资源，传统方式，远程资源汇报
      *
      * @author fengshuonan
      * @date 2022/4/2 14:41
      */
     @Bean
-    public DevOpsReportApi devOpsReportApi() {
-        return new DevOpsReportImpl();
+    @ConditionalOnMissingBean(DevOpsDetectApi.class)
+    public DefaultDevOpsReportImpl defaultDevOpsReport() {
+        return new DefaultDevOpsReportImpl();
+    }
+
+    /**
+     * 向DevOps平台汇报资源，新方式，本地化集成运维平台
+     *
+     * @author fengshuonan
+     * @date 2022/10/18 0:03
+     */
+    @Bean
+    @ConditionalOnBean(DevOpsDetectApi.class)
+    public LocalizedDevOpsReportImpl localizedDevOpsReport() {
+        return new LocalizedDevOpsReportImpl();
     }
 
 }

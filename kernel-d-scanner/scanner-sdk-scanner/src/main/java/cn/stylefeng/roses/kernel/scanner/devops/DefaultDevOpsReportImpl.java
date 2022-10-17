@@ -1,4 +1,4 @@
-package cn.stylefeng.roses.kernel.scanner;
+package cn.stylefeng.roses.kernel.scanner.devops;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
@@ -28,7 +28,7 @@ import static cn.stylefeng.roses.kernel.scanner.api.constants.ScannerConstants.*
  * @author fengshuonan
  * @date 2022/4/2 14:38
  */
-public class DevOpsReportImpl implements DevOpsReportApi {
+public class DefaultDevOpsReportImpl implements DevOpsReportApi {
 
     @Override
     public void reportResources(DevOpsReportProperties devOpsReportProperties, List<SysResourcePersistencePojo> sysResourcePersistencePojoList) {
