@@ -26,6 +26,7 @@ package cn.stylefeng.roses.kernel.scanner;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.rule.listener.ApplicationReadyListener;
+import cn.stylefeng.roses.kernel.scanner.api.DevOpsDetectApi;
 import cn.stylefeng.roses.kernel.scanner.api.DevOpsReportApi;
 import cn.stylefeng.roses.kernel.scanner.api.ResourceCollectorApi;
 import cn.stylefeng.roses.kernel.scanner.api.ResourceReportApi;
@@ -77,18 +78,21 @@ public class ResourceReportListener extends ApplicationReadyListener implements 
 
             // 持久化资源，发送资源到资源服务或本项目
             ResourceReportApi resourceService = applicationContext.getBean(ResourceReportApi.class);
-            List<SysResourcePersistencePojo> persistencePojos =
-                    resourceService.reportResourcesAndGetResult(new ReportResourceParam(scannerProperties.getAppCode(), modularResources));
+            List<SysResourcePersistencePojo> persistencePojos = resourceService.reportResourcesAndGetResult(new ReportResourceParam(scannerProperties.getAppCode(), modularResources));
 
             long saveLocalFinish = System.currentTimeMillis();
             log.info("存储本地接口资源完成，耗时：{}ms", (saveLocalFinish - beginSaveLocal));
 
-            // 向DevOps一体化平台汇报资源
+            // 向DevOps一体化平台汇报资源，只有两种情况会汇报资源：1.本地配置了远程服务器地址；2.本地化集成了devops模块
             DevOpsReportProperties devOpsReportProperties = applicationContext.getBean(DevOpsReportProperties.class);
-            // 如果配置了相关属性则进行DevOps资源汇报
-            if (ObjectUtil.isAllNotEmpty(devOpsReportProperties, devOpsReportProperties.getServerHost(),
-                    devOpsReportProperties.getProjectInteractionSecretKey(), devOpsReportProperties.getProjectUniqueCode(),
-                    devOpsReportProperties.getServerHost())) {
+            DevOpsDetectApi devOpsDetectApi = null;
+            try {
+                devOpsDetectApi = applicationContext.getBean(DevOpsDetectApi.class);
+            } catch (Exception ignored) {
+            }
+
+            // 判断是否配置了host或者本地有集成化的devops平台
+            if (ObjectUtil.isNotEmpty(devOpsReportProperties.getServerHost()) || devOpsDetectApi != null) {
                 DevOpsReportApi devOpsReportApi = applicationContext.getBean(DevOpsReportApi.class);
                 try {
                     devOpsReportApi.reportResources(devOpsReportProperties, persistencePojos);
