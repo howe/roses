@@ -143,6 +143,9 @@ public class FlywayInitListener extends ContextInitializedListener implements Or
                     // 是否开启占位符
                     .placeholderReplacement(enablePlaceholder)
 
+                    // 忽略丢失的脚本
+                    .ignoreMissingMigrations(true)
+
                     .load();
 
             // 执行迁移
