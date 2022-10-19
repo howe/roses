@@ -42,6 +42,7 @@ import cn.stylefeng.roses.kernel.file.modular.service.SysFileStorageService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 
@@ -126,6 +127,72 @@ public class FileInfoFactory {
         sysFileInfo.setSecretFlag(sysFileInfoRequest.getSecretFlag());
 
         // 返回结果
+        return sysFileInfo;
+    }
+
+    /**
+     * 创建文件存储的基础信息
+     *
+     * @author fengshuonan
+     * @date 2022/10/19 18:37
+     */
+    public static SysFileInfo createSysFileInfo(File file, SysFileInfoRequest sysFileInfoRequest) {
+
+        // 封装存储文件信息（上传替换公共信息）
+        SysFileInfo sysFileInfo = new SysFileInfo();
+
+        // 创建文件id
+        sysFileInfo.setFileId(IdWorker.getId());
+
+        // 文件编码生成
+        sysFileInfo.setFileCode(IdWorker.getId());
+
+        // 默认版本号从1开始
+        sysFileInfo.setFileVersion(1);
+
+        // 文件状态
+        sysFileInfo.setFileStatus(FileStatusEnum.NEW.getCode());
+
+        // 如果是存在数据库库里，单独处理一下，如果不是存储到库里，则读取当前fileApi的存储位置
+        FileOperatorApi fileOperatorApi = SpringUtil.getBean(FileOperatorApi.class);
+        if (FileLocationEnum.DB.getCode().equals(sysFileInfoRequest.getFileLocation())) {
+            sysFileInfo.setFileLocation(FileLocationEnum.DB.getCode());
+        } else {
+            sysFileInfo.setFileLocation(fileOperatorApi.getFileLocationEnum().getCode());
+        }
+
+        // 文件bucket信息
+        String fileBucket = FileConfigExpander.getDefaultBucket();
+        if (StrUtil.isNotEmpty(sysFileInfoRequest.getFileBucket())) {
+            fileBucket = sysFileInfoRequest.getFileBucket();
+        }
+
+        // 原始文件名称
+        sysFileInfo.setFileOriginName(file.getName());
+
+        // 文件后缀
+        String fileSuffix = null;
+        if (ObjectUtil.isNotEmpty(sysFileInfo.getFileOriginName())) {
+            fileSuffix = StrUtil.subAfter(sysFileInfo.getFileOriginName(), FILE_POSTFIX_SEPARATOR, true);
+        }
+
+        // 文件大小 kb
+        long fileSizeKb = Convert.toLong(NumberUtil.div(new BigDecimal(file.length()), BigDecimal.valueOf(1024)).setScale(0, BigDecimal.ROUND_HALF_UP));
+
+        // 计算文件大小信息
+        String fileSizeInfo = FileUtil.readableFileSize(file.length());
+        sysFileInfo.setFileSizeInfo(fileSizeInfo);
+
+        // 最终存储名称
+        String finalFileName = sysFileInfo.getFileId() + FILE_POSTFIX_SEPARATOR + fileSuffix;
+        sysFileInfo.setFileObjectName(sysFileInfoRequest.getFileObjectName());
+
+        // 存储的路径
+        sysFileInfo.setFilePath(null);
+
+        // 是否是机密文件
+        sysFileInfo.setSecretFlag(sysFileInfoRequest.getSecretFlag());
+
         return sysFileInfo;
     }
 

@@ -71,8 +71,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -152,8 +151,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         // 拼接文件可直接访问的url
         String fileAuthUrl;
         if (YesOrNotEnum.Y.getCode().equals(sysFileInfoRequest.getSecretFlag())) {
-            fileAuthUrl = fileOperatorApi.getFileAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(),
-                    FileConfigExpander.getDefaultFileTimeoutSeconds() * 1000);
+            fileAuthUrl = fileOperatorApi.getFileAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(), FileConfigExpander.getDefaultFileTimeoutSeconds() * 1000);
         } else {
             fileAuthUrl = fileOperatorApi.getFileUnAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName());
         }
@@ -245,8 +243,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         List<SysFileInfoListResponse> list = this.baseMapper.fileInfoList(page, sysFileInfoRequest);
 
         // 排除defaultAvatar.png这个图片,这个是默认头像
-        List<SysFileInfoListResponse> newList = list.stream().filter(i -> !i.getFileOriginName().equals(FileConstants.DEFAULT_AVATAR_FILE_OBJ_NAME))
-                .collect(Collectors.toList());
+        List<SysFileInfoListResponse> newList = list.stream().filter(i -> !i.getFileOriginName().equals(FileConstants.DEFAULT_AVATAR_FILE_OBJ_NAME)).collect(Collectors.toList());
 
         // 拼接图片url地址
         for (SysFileInfoListResponse sysFileInfoListResponse : newList) {
@@ -459,8 +456,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
             return this.sysFileStorageService.getFileAuthUrl(String.valueOf(fileId));
         } else {
             // 返回第三方存储文件url
-            return fileOperatorApi.getFileAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(),
-                    FileConfigExpander.getDefaultFileTimeoutSeconds());
+            return fileOperatorApi.getFileAuthUrl(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(), FileConfigExpander.getDefaultFileTimeoutSeconds());
         }
     }
 
@@ -504,6 +500,29 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         SysFileInfoRequest sysFileInfoRequest = new SysFileInfoRequest();
         sysFileInfoRequest.setFileId(fileId);
         this.deleteReally(sysFileInfoRequest);
+    }
+
+    @Override
+    public SysFileInfoResponse uploadFileAndSave(File file, SysFileInfoRequest sysFileInfoRequest) {
+
+        // 创建文件信息
+        SysFileInfo sysFileInfo = FileInfoFactory.createSysFileInfo(file, sysFileInfoRequest);
+
+        // 保存文件到库中
+        this.save(sysFileInfo);
+
+        // 保存文件到存储中
+        try {
+            this.fileOperatorApi.storageFile(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(), new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            log.warn("保存文件到storage中出错!", e);
+        }
+
+        // 转化响应
+        SysFileInfoResponse fileUploadInfoResult = new SysFileInfoResponse();
+        BeanUtil.copyProperties(sysFileInfo, fileUploadInfoResult);
+
+        return fileUploadInfoResult;
     }
 
     /**

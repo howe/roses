@@ -25,7 +25,10 @@
 package cn.stylefeng.roses.kernel.file.api;
 
 import cn.stylefeng.roses.kernel.file.api.pojo.AntdvFileInfo;
+import cn.stylefeng.roses.kernel.file.api.pojo.request.SysFileInfoRequest;
 import cn.stylefeng.roses.kernel.file.api.pojo.response.SysFileInfoResponse;
+
+import java.io.File;
 
 /**
  * 获取文件信息的api
@@ -91,5 +94,16 @@ public interface FileInfoApi {
      * @date 2022/7/22 23:19
      */
     void removeFile(Long fileId);
+
+    /**
+     * 上传到服务器文件，并保存文件信息到库中
+     *
+     * @param file               原始
+     * @param sysFileInfoRequest 文件附属信息（需要2个参数：是否是机密文件、bucket信息）
+     * @return 返回文件id等信息
+     * @author fengshuonan
+     * @date 2022/10/19 18:24
+     */
+    SysFileInfoResponse uploadFileAndSave(File file, SysFileInfoRequest sysFileInfoRequest);
 
 }
