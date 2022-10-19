@@ -58,7 +58,7 @@ public class IndexUserInfoServiceImpl implements IndexUserInfoService {
     private MenuServiceApi menuServiceApi;
 
     @Override
-    public IndexUserInfoV3 userInfoV3(Integer menuFrontType) {
+    public IndexUserInfoV3 userInfoV3(Integer menuFrontType, Boolean devopsFlag) {
 
         // 获取当前登录用户
         LoginUser loginUser = LoginContext.me().getLoginUser();
@@ -113,7 +113,7 @@ public class IndexUserInfoServiceImpl implements IndexUserInfoService {
         if (ObjectUtil.isEmpty(menuFrontType)) {
             menuFrontType = AntdvFrontTypeEnum.FRONT.getCode();
         }
-        indexUserInfoV3.setAuthorities(menuServiceApi.buildAuthorities(menuFrontType));
+        indexUserInfoV3.setAuthorities(menuServiceApi.buildAuthorities(menuFrontType, devopsFlag));
 
         // 登录人的ws-url
         indexUserInfoV3.setWsUrl(loginUser.getWsUrl());

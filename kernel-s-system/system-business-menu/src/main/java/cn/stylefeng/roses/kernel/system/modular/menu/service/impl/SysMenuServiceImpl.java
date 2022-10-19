@@ -658,10 +658,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<IndexMenuInfo> buildAuthorities(Integer menuFrontType) {
+    public List<IndexMenuInfo> buildAuthorities(Integer menuFrontType, Boolean devopsFlag) {
 
         // 不分离应用查询菜单
-        List<SysAppResult> sortedApps = appServiceApi.getSortedApps();
+        List<SysAppResult> sortedApps = appServiceApi.getSortedApps(devopsFlag);
         List<String> appCodes = sortedApps.stream().map(SysAppResult::getAppCode).collect(Collectors.toList());
         List<SysMenu> currentUserMenus = this.getCurrentUserMenus(appCodes, false, menuFrontType);
 

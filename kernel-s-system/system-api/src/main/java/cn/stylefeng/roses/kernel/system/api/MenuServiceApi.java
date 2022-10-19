@@ -92,7 +92,7 @@ public interface MenuServiceApi {
      * @author fengshuonan
      * @date 2022/4/8 15:59
      */
-    List<IndexMenuInfo> buildAuthorities(Integer menuFrontType);
+    List<IndexMenuInfo> buildAuthorities(Integer menuFrontType, Boolean devopsFlag);
 
     /**
      * 获取角色绑定菜单和按钮权限的树

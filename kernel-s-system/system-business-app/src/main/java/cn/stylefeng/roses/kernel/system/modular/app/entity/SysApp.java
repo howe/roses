@@ -87,16 +87,26 @@ public class SysApp extends BaseEntity {
     private Integer statusFlag;
 
     /**
+     * 排序-升序
+     */
+    @TableField("app_sort")
+    @ChineseDescription("排序-升序")
+    private Integer appSort;
+
+    /**
+     * 是否是devops应用：Y-是，N-否
+     * <p>
+     * devops应用为了在本地集成devops时，做筛选用
+     */
+    @TableField(value = "devops_flag")
+    @ChineseDescription("是否是devops应用：Y-是，N-否")
+    private String devopsFlag;
+
+    /**
      * 是否删除：Y-已删除，N-未删除
      */
     @TableField(value = "del_flag", fill = FieldFill.INSERT)
     @ChineseDescription("是否删除：Y-已删除，N-未删除")
     private String delFlag;
 
-    /**
-     * 排序-升序
-     */
-    @TableField("app_sort")
-    @ChineseDescription("排序-升序")
-    private Integer appSort;
 }

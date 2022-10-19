@@ -265,6 +265,11 @@ public class SysAppServiceImpl extends ServiceImpl<SysAppMapper, SysApp> impleme
 
     @Override
     public List<SysAppResult> getSortedApps() {
+        return this.getSortedApps(false);
+    }
+
+    @Override
+    public List<SysAppResult> getSortedApps(Boolean devopsFlag) {
         LambdaQueryWrapper<SysApp> wrapper = this.createWrapper(new SysAppRequest());
 
         // 只查询应用名称和应用编码
@@ -272,6 +277,11 @@ public class SysAppServiceImpl extends ServiceImpl<SysAppMapper, SysApp> impleme
 
         // 只查询启用的应用
         wrapper.eq(SysApp::getStatusFlag, StatusEnum.ENABLE.getCode());
+
+        // 是否查询运维平台的菜单
+        if (devopsFlag != null && devopsFlag) {
+            wrapper.eq(SysApp::getDevopsFlag, YesOrNotEnum.Y.getCode());
+        }
 
         List<SysApp> list = this.list(wrapper);
 

@@ -83,4 +83,13 @@ public interface AppServiceApi {
      */
     List<SysAppResult> getSortedApps();
 
+    /**
+     * 按顺序获取app的编码和名称
+     *
+     * @param devopsFlag 是否包含运维平台的应用
+     * @author fengshuonan
+     * @date 2022/4/6 22:34
+     */
+    List<SysAppResult> getSortedApps(Boolean devopsFlag);
+
 }
