@@ -135,14 +135,22 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         // 文件请求转换存入数据库的附件信息
         SysFileInfo sysFileInfo = FileInfoFactory.createSysFileInfo(file, sysFileInfoRequest);
 
-        // 默认版本号从1开始
-        sysFileInfo.setFileVersion(1);
-
-        // 文件编码生成
-        sysFileInfo.setFileCode(IdWorker.getId());
-
-        // 保存附件到附件信息表
+        // 保存文件信息
         this.save(sysFileInfo);
+
+        // 存储文件到云或者本地
+        try {
+            byte[] bytes = file.getBytes();
+
+            // 如果是存在数据库库里，单独处理
+            if (FileLocationEnum.DB.getCode().equals(sysFileInfoRequest.getFileLocation())) {
+                sysFileStorageService.saveFile(sysFileInfo.getFileId(), bytes);
+            } else {
+                fileOperatorApi.storageFile(sysFileInfo.getFileBucket(), sysFileInfo.getFileObjectName(), bytes);
+            }
+        } catch (IOException e) {
+            throw new FileException(FileExceptionEnum.ERROR_FILE, e.getMessage());
+        }
 
         // 返回文件信息体
         SysFileInfoResponse fileUploadInfoResult = new SysFileInfoResponse();
@@ -165,30 +173,33 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
 
         Long fileCode = sysFileInfoRequest.getFileCode();
 
-        // 转换存入数据库的附件信息
-        SysFileInfo sysFileInfo = FileInfoFactory.createSysFileInfo(file, sysFileInfoRequest);
-        sysFileInfo.setDelFlag(YesOrNotEnum.Y.getCode());
-        sysFileInfo.setFileCode(fileCode);
-
         // 查询该code下的最新版本号附件信息
         LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysFileInfo::getFileCode, fileCode);
         queryWrapper.eq(SysFileInfo::getDelFlag, YesOrNotEnum.N.getCode());
         queryWrapper.eq(SysFileInfo::getFileStatus, FileStatusEnum.NEW.getCode());
-        SysFileInfo fileInfo = this.getOne(queryWrapper);
-        if (ObjectUtil.isEmpty(fileInfo)) {
+        SysFileInfo oldFileInfo = this.getOne(queryWrapper);
+        if (ObjectUtil.isEmpty(oldFileInfo)) {
             throw new FileException(FileExceptionEnum.NOT_EXISTED);
         }
 
+        // 旧文件状态的改变
+        oldFileInfo.setFileStatus(FileStatusEnum.OLD.getCode());
+        this.updateById(oldFileInfo);
+
+        // 创建新文件信息
+        SysFileInfo newFileInfo = FileInfoFactory.createSysFileInfo(file, sysFileInfoRequest);
+
         // 设置版本号在原本的基础上加一
-        sysFileInfo.setFileVersion(fileInfo.getFileVersion() + 1);
+        newFileInfo.setFileCode(fileCode);
+        newFileInfo.setFileVersion(oldFileInfo.getFileVersion() + 1);
 
         // 存储新版本文件信息
-        this.save(sysFileInfo);
+        this.save(newFileInfo);
 
         // 返回文件信息体
         SysFileInfoResponse fileUploadInfoResult = new SysFileInfoResponse();
-        BeanUtil.copyProperties(sysFileInfo, fileUploadInfoResult);
+        BeanUtil.copyProperties(newFileInfo, fileUploadInfoResult);
         return fileUploadInfoResult;
     }
 
