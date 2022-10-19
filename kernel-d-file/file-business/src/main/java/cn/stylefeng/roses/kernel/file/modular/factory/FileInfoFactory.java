@@ -178,6 +178,7 @@ public class FileInfoFactory {
 
         // 文件大小 kb
         long fileSizeKb = Convert.toLong(NumberUtil.div(new BigDecimal(file.length()), BigDecimal.valueOf(1024)).setScale(0, BigDecimal.ROUND_HALF_UP));
+        sysFileInfo.setFileSizeKb(fileSizeKb);
 
         // 计算文件大小信息
         String fileSizeInfo = FileUtil.readableFileSize(file.length());
@@ -185,7 +186,7 @@ public class FileInfoFactory {
 
         // 最终存储名称
         String finalFileName = sysFileInfo.getFileId() + FILE_POSTFIX_SEPARATOR + fileSuffix;
-        sysFileInfo.setFileObjectName(sysFileInfoRequest.getFileObjectName());
+        sysFileInfo.setFileObjectName(finalFileName);
 
         // 存储的路径
         sysFileInfo.setFilePath(null);
