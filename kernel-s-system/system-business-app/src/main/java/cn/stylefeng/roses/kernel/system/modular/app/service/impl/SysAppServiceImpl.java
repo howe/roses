@@ -279,8 +279,8 @@ public class SysAppServiceImpl extends ServiceImpl<SysAppMapper, SysApp> impleme
         wrapper.eq(SysApp::getStatusFlag, StatusEnum.ENABLE.getCode());
 
         // 是否查询运维平台的菜单
-        if (devopsFlag != null && devopsFlag) {
-            wrapper.eq(SysApp::getDevopsFlag, YesOrNotEnum.Y.getCode());
+        if (devopsFlag == null || !devopsFlag) {
+            wrapper.ne(SysApp::getDevopsFlag, YesOrNotEnum.Y.getCode());
         }
 
         List<SysApp> list = this.list(wrapper);
