@@ -191,6 +191,27 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    public SysRoleDTO getRoleByCode(String roleCode) {
+        if (roleCode == null) {
+            return null;
+        }
+
+        LambdaQueryWrapper<SysRole> sysRoleLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        sysRoleLambdaQueryWrapper.eq(SysRole::getRoleCode, roleCode);
+        sysRoleLambdaQueryWrapper.ne(SysRole::getDelFlag, YesOrNotEnum.Y.getCode());
+        SysRole sysRole = this.getOne(sysRoleLambdaQueryWrapper, false);
+
+        if (sysRole == null) {
+            return null;
+        }
+
+        SysRoleDTO roleResponse = new SysRoleDTO();
+        BeanUtil.copyProperties(sysRole, roleResponse);
+
+        return roleResponse;
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(SysRoleRequest sysRoleRequest) {
         SysRole sysRole = this.querySysRole(sysRoleRequest);

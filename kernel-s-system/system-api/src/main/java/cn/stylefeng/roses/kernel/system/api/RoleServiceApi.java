@@ -161,4 +161,12 @@ public interface RoleServiceApi {
      */
     void grantResourceV2GrantAll(SysRoleRequest sysRoleRequest);
 
+    /**
+     * 通过角色编码获取角色
+     *
+     * @author fengshuonan
+     * @date 2022/10/21 0:18
+     */
+    SysRoleDTO getRoleByCode(String roleCode);
+
 }
