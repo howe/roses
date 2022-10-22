@@ -12,6 +12,7 @@ import cn.stylefeng.roses.kernel.file.api.FileInfoApi;
 import cn.stylefeng.roses.kernel.file.api.pojo.AntdvFileInfo;
 import cn.stylefeng.roses.kernel.file.api.pojo.request.SysFileInfoRequest;
 import cn.stylefeng.roses.kernel.file.modular.service.SysFileInfoService;
+import cn.stylefeng.roses.kernel.rule.callback.ConfigUpdateCallback;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.system.api.ThemeServiceApi;
 import cn.stylefeng.roses.kernel.system.api.constants.SystemConstants;
@@ -56,7 +57,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class SysThemeServiceImpl extends ServiceImpl<SysThemeMapper, SysTheme> implements SysThemeService, ThemeServiceApi {
+public class SysThemeServiceImpl extends ServiceImpl<SysThemeMapper, SysTheme> implements SysThemeService, ThemeServiceApi, ConfigUpdateCallback {
 
     @Resource
     private SysThemeTemplateService sysThemeTemplateService;
@@ -249,6 +250,11 @@ public class SysThemeServiceImpl extends ServiceImpl<SysThemeMapper, SysTheme> i
         themeCacheApi.put(SystemConstants.THEME_GUNS_PLATFORM, result);
 
         return result;
+    }
+
+    @Override
+    public void configUpdate(String code, String value) {
+        clearThemeCache();
     }
 
     /**
