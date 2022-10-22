@@ -45,6 +45,7 @@ import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.file.api.constants.FileConstants;
+import cn.stylefeng.roses.kernel.rule.callback.ConfigUpdateCallback;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.enums.StatusEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
@@ -125,6 +126,16 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
 
         // 4.更新对应常量context
         ConfigContext.me().putConfig(sysConfigParam.getConfigCode(), sysConfigParam.getConfigValue());
+
+        // 5.发布属性修改的事件
+        try {
+            Map<String, ConfigUpdateCallback> beansOfType = SpringUtil.getBeansOfType(ConfigUpdateCallback.class);
+            for (ConfigUpdateCallback value : beansOfType.values()) {
+                value.configUpdate(sysConfig.getConfigCode(), sysConfig.getConfigValue());
+            }
+        } catch (Exception e) {
+            // 忽略找不到Bean的异常
+        }
     }
 
     @Override
