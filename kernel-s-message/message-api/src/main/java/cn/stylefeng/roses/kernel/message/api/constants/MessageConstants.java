@@ -52,4 +52,9 @@ public interface MessageConstants {
      */
     String DEFAULT_WS_URL = "ws://localhost:8080/webSocket/{token}";
 
+    /**
+     * 系统配置中websocket url的变量编码
+     */
+    String WEB_SOCKET_WS_URL_CONFIG_CODE = "WEB_SOCKET_WS_URL";
+
 }

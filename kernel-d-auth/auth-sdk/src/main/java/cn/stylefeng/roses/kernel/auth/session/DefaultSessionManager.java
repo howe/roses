@@ -33,11 +33,15 @@ import cn.stylefeng.roses.kernel.auth.api.cookie.SessionCookieCreator;
 import cn.stylefeng.roses.kernel.auth.api.expander.AuthConfigExpander;
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
+import cn.stylefeng.roses.kernel.message.api.expander.WebSocketConfigExpander;
+import cn.stylefeng.roses.kernel.rule.callback.ConfigUpdateCallback;
 import cn.stylefeng.roses.kernel.rule.util.HttpServletUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+
+import static cn.stylefeng.roses.kernel.message.api.constants.MessageConstants.WEB_SOCKET_WS_URL_CONFIG_CODE;
 
 /**
  * 基于redis的会话管理
@@ -45,7 +49,7 @@ import java.util.*;
  * @author fengshuonan
  * @date 2019-09-28-14:43
  */
-public class DefaultSessionManager implements SessionManagerApi {
+public class DefaultSessionManager implements SessionManagerApi, ConfigUpdateCallback {
 
     /**
      * 登录用户缓存
@@ -215,4 +219,14 @@ public class DefaultSessionManager implements SessionManagerApi {
         return loginUsers;
     }
 
+    @Override
+    public void configUpdate(String code, String value) {
+        // 如果系统配置修改了websocket url，则刷新所有在线用户的配置
+        if (WEB_SOCKET_WS_URL_CONFIG_CODE.equals(code)) {
+            List<LoginUser> loginUsers = this.onlineUserList();
+            for (LoginUser loginUser : loginUsers) {
+                loginUser.setWsUrl(WebSocketConfigExpander.getWebSocketWsUrl());
+            }
+        }
+    }
 }
