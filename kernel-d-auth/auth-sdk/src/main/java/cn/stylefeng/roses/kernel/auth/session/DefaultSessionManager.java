@@ -223,9 +223,10 @@ public class DefaultSessionManager implements SessionManagerApi, ConfigUpdateCal
     public void configUpdate(String code, String value) {
         // 如果系统配置修改了websocket url，则刷新所有在线用户的配置
         if (WEB_SOCKET_WS_URL_CONFIG_CODE.equals(code)) {
-            List<LoginUser> loginUsers = this.onlineUserList();
-            for (LoginUser loginUser : loginUsers) {
+            Map<String, LoginUser> allKeyValues = loginUserCache.getAllKeyValues();
+            for (LoginUser loginUser : allKeyValues.values()) {
                 loginUser.setWsUrl(WebSocketConfigExpander.getWebSocketWsUrl());
+                this.updateSession(loginUser.getToken(), loginUser);
             }
         }
     }
