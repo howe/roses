@@ -24,10 +24,10 @@
  */
 package cn.stylefeng.roses.kernel.config.modular.service;
 
-import cn.stylefeng.roses.kernel.config.api.pojo.ConfigInitItem;
 import cn.stylefeng.roses.kernel.config.api.pojo.ConfigInitRequest;
 import cn.stylefeng.roses.kernel.config.modular.entity.SysConfig;
-import cn.stylefeng.roses.kernel.config.modular.param.SysConfigParam;
+import cn.stylefeng.roses.kernel.config.modular.pojo.InitConfigResponse;
+import cn.stylefeng.roses.kernel.config.modular.pojo.param.SysConfigParam;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -121,7 +121,7 @@ public interface SysConfigService extends IService<SysConfig> {
      * @author fengshuonan
      * @date 2021/7/8 17:49
      */
-    List<ConfigInitItem> getInitConfigs();
+    InitConfigResponse getInitConfigs();
 
     /**
      * 获取后端部署的地址

@@ -24,10 +24,10 @@
  */
 package cn.stylefeng.roses.kernel.config.modular.controller;
 
-import cn.stylefeng.roses.kernel.config.api.pojo.ConfigInitItem;
 import cn.stylefeng.roses.kernel.config.api.pojo.ConfigInitRequest;
 import cn.stylefeng.roses.kernel.config.modular.entity.SysConfig;
-import cn.stylefeng.roses.kernel.config.modular.param.SysConfigParam;
+import cn.stylefeng.roses.kernel.config.modular.pojo.InitConfigResponse;
+import cn.stylefeng.roses.kernel.config.modular.pojo.param.SysConfigParam;
 import cn.stylefeng.roses.kernel.config.modular.service.SysConfigService;
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
@@ -156,7 +156,7 @@ public class SysConfigController {
      * @date 2021/7/8 16:36
      */
     @GetResource(name = "获取需要初始化的配置列表", path = "/sysConfig/getInitConfigList")
-    public ResponseData<List<ConfigInitItem>> getInitConfigList() {
+    public ResponseData<InitConfigResponse> getInitConfigList() {
         return new SuccessResponseData<>(sysConfigService.getInitConfigs());
     }
 

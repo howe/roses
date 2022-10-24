@@ -39,7 +39,9 @@ import cn.stylefeng.roses.kernel.config.api.pojo.ConfigInitItem;
 import cn.stylefeng.roses.kernel.config.api.pojo.ConfigInitRequest;
 import cn.stylefeng.roses.kernel.config.modular.entity.SysConfig;
 import cn.stylefeng.roses.kernel.config.modular.mapper.SysConfigMapper;
-import cn.stylefeng.roses.kernel.config.modular.param.SysConfigParam;
+import cn.stylefeng.roses.kernel.config.modular.pojo.InitConfigGroup;
+import cn.stylefeng.roses.kernel.config.modular.pojo.InitConfigResponse;
+import cn.stylefeng.roses.kernel.config.modular.pojo.param.SysConfigParam;
 import cn.stylefeng.roses.kernel.config.modular.service.SysConfigService;
 import cn.stylefeng.roses.kernel.db.api.factory.PageFactory;
 import cn.stylefeng.roses.kernel.db.api.factory.PageResultFactory;
@@ -234,13 +236,24 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     }
 
     @Override
-    public List<ConfigInitItem> getInitConfigs() {
-        List<ConfigInitItem> configInitItemList = new ArrayList<>();
+    public InitConfigResponse getInitConfigs() {
+
+        InitConfigResponse initConfigResponse = new InitConfigResponse();
+        initConfigResponse.setTitle("首次运行参数生成");
+        initConfigResponse.setDescription("第一次进入Guns系统会配置系统的一些秘钥和部署的url信息，这些秘钥均为随机生成，以确保系统的安全性");
+
+        // 获取所有参数分组下的配置信息
+        List<InitConfigGroup> configGroupList = new ArrayList<>();
         Map<String, ConfigInitStrategyApi> beans = SpringUtil.getBeansOfType(ConfigInitStrategyApi.class);
         for (ConfigInitStrategyApi value : beans.values()) {
-            configInitItemList.addAll(value.getInitConfigs());
+            String title = value.getTitle();
+            String description = value.getDescription();
+            List<ConfigInitItem> initConfigs = value.getInitConfigs();
+            configGroupList.add(new InitConfigGroup(title, description, initConfigs));
         }
-        return configInitItemList;
+        initConfigResponse.setInitConfigGroupList(configGroupList);
+
+        return initConfigResponse;
     }
 
     @Override

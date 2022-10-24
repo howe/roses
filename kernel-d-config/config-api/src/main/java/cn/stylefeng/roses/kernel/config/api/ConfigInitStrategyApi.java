@@ -37,6 +37,22 @@ import java.util.List;
 public interface ConfigInitStrategyApi {
 
     /**
+     * 获取这个配置组下的标题
+     *
+     * @author fengshuonan
+     * @date 2022/10/24 15:03
+     */
+    String getTitle();
+
+    /**
+     * 获取这个配置组的详细说明
+     *
+     * @author fengshuonan
+     * @date 2022/10/24 15:03
+     */
+    String getDescription();
+
+    /**
      * 获取需要被初始化的配置集合
      *
      * @return 需要被初始化的配置集合
