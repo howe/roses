@@ -25,10 +25,7 @@
 package cn.stylefeng.roses.kernel.system.api;
 
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
-import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
-import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuButtonDTO;
-import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuDTO;
-import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleResourceDTO;
+import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.*;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 
 import java.util.List;
@@ -168,5 +165,14 @@ public interface RoleServiceApi {
      * @date 2022/10/21 0:18
      */
     SysRoleDTO getRoleByCode(String roleCode);
+
+    /**
+     * 获取角色的菜单、按钮和资源信息
+     *
+     * @param roleIdList 角色id集合
+     * @author fengshuonan
+     * @date 2022/10/25 15:53
+     */
+    RoleAuthorizeInfo getRoleAuthorizeInfo(List<Long> roleIdList);
 
 }

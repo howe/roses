@@ -50,10 +50,7 @@ import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
 import cn.stylefeng.roses.kernel.system.api.exception.enums.role.SysRoleExceptionEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.MenuAndButtonTreeResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.SysMenuButtonDTO;
-import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
-import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuButtonDTO;
-import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleMenuDTO;
-import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleResourceDTO;
+import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.*;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleMenuButtonRequest;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
 import cn.stylefeng.roses.kernel.system.api.util.DataScopeUtil;
@@ -209,6 +206,60 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         BeanUtil.copyProperties(sysRole, roleResponse);
 
         return roleResponse;
+    }
+
+    @Override
+    public RoleAuthorizeInfo getRoleAuthorizeInfo(List<Long> roleIdList) {
+
+        HashSet<String> result = new HashSet<>();
+
+        for (Long roleId : roleIdList) {
+
+            // 从缓存获取所有角色绑定的资源
+            String key = String.valueOf(roleId);
+            List<String> resourceCodesCache = roleResourceCacheApi.get(key);
+            if (ObjectUtil.isNotEmpty(resourceCodesCache)) {
+                result.addAll(resourceCodesCache);
+                continue;
+            }
+
+            // 从数据库查询角色绑定的资源
+            LambdaQueryWrapper<SysRoleResource> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.select(SysRoleResource::getResourceCode);
+            queryWrapper.eq(SysRoleResource::getRoleId, roleId);
+            List<SysRoleResource> sysRoleResources = sysRoleResourceService.list(queryWrapper);
+            List<String> sysResourceCodes = sysRoleResources.parallelStream().map(SysRoleResource::getResourceCode).collect(Collectors.toList());
+            if (ObjectUtil.isNotEmpty(sysResourceCodes)) {
+                result.addAll(sysResourceCodes);
+                roleResourceCacheApi.put(key, sysResourceCodes);
+            }
+        }
+
+        // 获取角色的所有菜单
+        LambdaQueryWrapper<SysRoleMenu> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(SysRoleMenu::getRoleId, roleIdList);
+        wrapper.select(SysRoleMenu::getMenuId);
+        List<SysRoleMenu> list = this.roleMenuService.list(wrapper);
+        List<Long> menuIds = list.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList());
+
+        // 获取角色绑定的所有按钮
+        LambdaQueryWrapper<SysRoleMenuButton> wrapper2 = new LambdaQueryWrapper<>();
+        wrapper2.in(SysRoleMenuButton::getRoleId, roleIdList);
+        wrapper2.select(SysRoleMenuButton::getButtonId);
+        List<SysRoleMenuButton> roleMenuButtons = this.sysRoleMenuButtonService.list(wrapper2);
+        List<Long> buttonIds = roleMenuButtons.stream().map(SysRoleMenuButton::getButtonId).collect(Collectors.toList());
+
+        // 获取菜单和按钮所有绑定的资源
+        ArrayList<Long> businessIds = new ArrayList<>();
+        businessIds.addAll(menuIds);
+        businessIds.addAll(buttonIds);
+
+        // 获取菜单和按钮
+        List<String> menuButtonResources = menuServiceApi.getResourceCodesByBusinessId(businessIds);
+        result.addAll(menuButtonResources);
+
+        // 封装返回结果
+        return new RoleAuthorizeInfo(menuIds, buttonIds, result);
     }
 
     @Override
@@ -670,54 +721,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public Set<String> getRoleResourceCodeList(List<Long> roleIdList) {
-
-        HashSet<String> result = new HashSet<>();
-
-        for (Long roleId : roleIdList) {
-
-            // 从缓存获取所有角色绑定的资源
-            String key = String.valueOf(roleId);
-            List<String> resourceCodesCache = roleResourceCacheApi.get(key);
-            if (ObjectUtil.isNotEmpty(resourceCodesCache)) {
-                result.addAll(resourceCodesCache);
-                continue;
-            }
-
-            // 从数据库查询角色绑定的资源
-            LambdaQueryWrapper<SysRoleResource> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.select(SysRoleResource::getResourceCode);
-            queryWrapper.eq(SysRoleResource::getRoleId, roleId);
-            List<SysRoleResource> sysRoleResources = sysRoleResourceService.list(queryWrapper);
-            List<String> sysResourceCodes = sysRoleResources.parallelStream().map(SysRoleResource::getResourceCode).collect(Collectors.toList());
-            if (ObjectUtil.isNotEmpty(sysResourceCodes)) {
-                result.addAll(sysResourceCodes);
-                roleResourceCacheApi.put(key, sysResourceCodes);
-            }
-        }
-
-        // 获取角色的所有菜单
-        LambdaQueryWrapper<SysRoleMenu> wrapper = new LambdaQueryWrapper<>();
-        wrapper.in(SysRoleMenu::getRoleId, roleIdList);
-        wrapper.select(SysRoleMenu::getMenuId);
-        List<SysRoleMenu> list = this.roleMenuService.list(wrapper);
-        List<Long> menuIds = list.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList());
-
-        // 获取角色绑定的所有按钮
-        LambdaQueryWrapper<SysRoleMenuButton> wrapper2 = new LambdaQueryWrapper<>();
-        wrapper2.in(SysRoleMenuButton::getRoleId, roleIdList);
-        wrapper2.select(SysRoleMenuButton::getButtonId);
-        List<SysRoleMenuButton> roleMenuButtons = this.sysRoleMenuButtonService.list(wrapper2);
-        List<Long> buttonIds = roleMenuButtons.stream().map(SysRoleMenuButton::getButtonId).collect(Collectors.toList());
-
-        // 获取菜单和按钮所有绑定的资源
-        ArrayList<Long> businessIds = new ArrayList<>();
-        businessIds.addAll(menuIds);
-        businessIds.addAll(buttonIds);
-
-        // 获取菜单和按钮
-        List<String> menuButtonResources = menuServiceApi.getResourceCodesByBusinessId(businessIds);
-        result.addAll(menuButtonResources);
-        return result;
+        RoleAuthorizeInfo roleAuthorizeInfo = this.getRoleAuthorizeInfo(roleIdList);
+        return roleAuthorizeInfo.getResourceCodeList();
     }
 
     @Override
