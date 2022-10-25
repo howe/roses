@@ -136,4 +136,15 @@ public interface MenuServiceApi {
      */
     List<SysMenuButtonDTO> getTotalMenuButtonIdList(AntdvFrontTypeEnum antdvFrontTypeEnum);
 
+    /**
+     * 获取当前用户拥有的菜单类型
+     * <p>
+     * 判断是拥有前台菜单，还是后台菜单，还是都有
+     *
+     * @param menuIds 用户所拥有的的所有菜单集合
+     * @author fengshuonan
+     * @date 2022/10/13 21:38
+     */
+    AntdvFrontTypeEnum getUserMenuType(List<Long> menuIds);
+
 }

@@ -548,6 +548,35 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
+    public AntdvFrontTypeEnum getUserMenuType(List<Long> menuIds) {
+
+        // 用户没有菜单，默认只返回前台菜单类型
+        if (ObjectUtil.isEmpty(menuIds)) {
+            return AntdvFrontTypeEnum.FRONT;
+        }
+
+        // 判断菜单中有多少种类的菜单
+        LambdaQueryWrapper<SysMenu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.select(SysMenu::getAntdvFrontType);
+        queryWrapper.in(SysMenu::getMenuId, menuIds);
+        List<SysMenu> sysMenuList = this.list(queryWrapper);
+
+        // 获取各类菜单的数量
+        long frontTypes = sysMenuList.stream().filter(sysMenu -> AntdvFrontTypeEnum.FRONT.getCode().equals(sysMenu.getAntdvFrontType())).count();
+        long backendTypes = sysMenuList.stream().filter(sysMenu -> AntdvFrontTypeEnum.BACKEND.getCode().equals(sysMenu.getAntdvFrontType())).count();
+
+        if (frontTypes > 0 && backendTypes > 0) {
+            return AntdvFrontTypeEnum.TOTAL_SHOW;
+        } else if (frontTypes > 0) {
+            return AntdvFrontTypeEnum.FRONT;
+        } else if (backendTypes > 0) {
+            return AntdvFrontTypeEnum.BACKEND;
+        }
+
+        return AntdvFrontTypeEnum.FRONT;
+    }
+
+    @Override
     public List<SysMenu> getCurrentUserMenus(List<String> appCodeList, Boolean layuiVisibleFlag, Integer antdvFrontType) {
 
         // 菜单查询条件
