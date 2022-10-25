@@ -1004,26 +1004,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     private SysUser querySysUser(SysUserRequest sysUserRequest) {
 
-        // 先从缓存中获取用户信息
-        String userIdKey = String.valueOf(sysUserRequest.getUserId());
-        SysUserDTO sysUserDTO = sysUserCacheOperatorApi.get(userIdKey);
-        if (sysUserDTO != null) {
-            SysUser tempUser = new SysUser();
-            BeanUtil.copyProperties(sysUserDTO, tempUser, CopyOptions.create().ignoreError());
-            return tempUser;
-        }
-
-        SysUser sysUser = this.getById(sysUserRequest.getUserId());
-        if (ObjectUtil.isNull(sysUser)) {
+        SysUserDTO tempDTO = this.getUserInfoByUserId(sysUserRequest.getUserId());
+        if (ObjectUtil.isNull(tempDTO)) {
             throw new SystemModularException(SysUserExceptionEnum.USER_NOT_EXIST, sysUserRequest.getUserId());
         }
 
-        // 放入缓存
-        SysUserDTO sysUserDTOCache = new SysUserDTO();
-        BeanUtil.copyProperties(sysUser, sysUserDTOCache, CopyOptions.create().ignoreError());
-        sysUserCacheOperatorApi.put(userIdKey, sysUserDTOCache);
-
-        return sysUser;
+        SysUser tempUser = new SysUser();
+        BeanUtil.copyProperties(tempDTO, tempUser, CopyOptions.create().ignoreError());
+        return tempUser;
     }
 
     /**
