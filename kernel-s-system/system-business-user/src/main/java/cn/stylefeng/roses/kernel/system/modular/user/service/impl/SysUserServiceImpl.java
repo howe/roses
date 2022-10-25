@@ -56,6 +56,7 @@ import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.rule.pojo.dict.SimpleDict;
 import cn.stylefeng.roses.kernel.rule.tree.factory.DefaultTreeBuildFactory;
 import cn.stylefeng.roses.kernel.system.api.*;
+import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.enums.DevopsCheckStatusEnum;
 import cn.stylefeng.roses.kernel.system.api.enums.UserStatusEnum;
 import cn.stylefeng.roses.kernel.system.api.exception.SystemModularException;
@@ -64,6 +65,7 @@ import cn.stylefeng.roses.kernel.system.api.expander.SystemConfigExpander;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.DataScopeDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrOrganizationDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrPositionDTO;
+import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.RoleAuthorizeInfo;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.*;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.request.OnlineUserRequest;
@@ -158,6 +160,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Resource(name = "loginErrorCountCacheApi")
     private CacheOperatorApi<Integer> loginErrorCountCacheApi;
+
+    @Resource
+    private MenuServiceApi menuServiceApi;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -768,15 +773,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 4. 获取用户的组织机构和职位信息
         SysUserOrgDTO userOrgInfo = sysUserOrgService.getUserOrgByUserId(userId);
 
+        // 获取角色相关的菜单按钮和资源信息
+        RoleAuthorizeInfo roleAuthorizeInfo = roleServiceApi.getRoleAuthorizeInfo(roleIds);
+
+        // 4.1 获取用户拥有什么类型的菜单id
+        List<Long> menuIdList = roleAuthorizeInfo.getMenuIdList();
+        AntdvFrontTypeEnum userMenuType = menuServiceApi.getUserMenuType(menuIdList);
+
         // 5. 获取用户的所有资源url
-        Set<String> resourceCodeList = roleServiceApi.getRoleResourceCodeList(roleIds);
+        Set<String> resourceCodeList = roleAuthorizeInfo.getResourceCodeList();
         Set<String> resourceUrlsListByCodes = resourceServiceApi.getResourceUrlsListByCodes(resourceCodeList);
 
         // 6. 获取用户的所有按钮code集合
         Set<String> roleButtonCodes = roleServiceApi.getRoleButtonCodes(roleIds);
 
         // 7. 组装响应结果
-        return UserLoginInfoFactory.userLoginInfoDTO(sysUser, roleResponseList, dataScopeResponse, userOrgInfo, resourceUrlsListByCodes, roleButtonCodes);
+        return UserLoginInfoFactory.userLoginInfoDTO(sysUser, roleResponseList, dataScopeResponse, userOrgInfo, resourceUrlsListByCodes, roleButtonCodes, userMenuType);
     }
 
     @Override

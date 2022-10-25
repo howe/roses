@@ -31,6 +31,7 @@ import cn.stylefeng.roses.kernel.auth.api.pojo.login.basic.SimpleRoleInfo;
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.basic.SimpleUserInfo;
 import cn.stylefeng.roses.kernel.auth.api.prop.LoginUserPropExpander;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
+import cn.stylefeng.roses.kernel.system.api.enums.AntdvFrontTypeEnum;
 import cn.stylefeng.roses.kernel.system.api.pojo.login.CurrentUserInfoResponse;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.DataScopeDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleDTO;
@@ -59,6 +60,7 @@ public class UserLoginInfoFactory {
      * @param userOrgInfo             组织机构信息
      * @param resourceUrlsListByCodes 用户的所有资源url
      * @param roleButtonCodes         用户的所拥有的按钮编码
+     * @param userMenuType            用户的菜单类型
      * @author fengshuonan
      * @date 2020/12/26 17:53
      */
@@ -67,7 +69,8 @@ public class UserLoginInfoFactory {
                                                     DataScopeDTO dataScopeResponse,
                                                     SysUserOrgDTO userOrgInfo,
                                                     Set<String> resourceUrlsListByCodes,
-                                                    Set<String> roleButtonCodes) {
+                                                    Set<String> roleButtonCodes,
+                                                    AntdvFrontTypeEnum userMenuType) {
 
         UserLoginInfoDTO userLoginInfoDTO = new UserLoginInfoDTO();
 
@@ -128,6 +131,9 @@ public class UserLoginInfoFactory {
 
         // 设置用户的登录时间
         loginUser.setLoginTime(new Date());
+
+        // 设置登录用户的菜单类型
+        loginUser.setMenuType(userMenuType.getCode());
 
         // 响应dto
         userLoginInfoDTO.setLoginUser(loginUser);

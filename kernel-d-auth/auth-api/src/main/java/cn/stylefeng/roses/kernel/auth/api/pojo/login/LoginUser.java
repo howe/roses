@@ -174,6 +174,12 @@ public class LoginUser implements Serializable {
     @ChineseDescription("是否是C端用户")
     private Boolean customerFlag = false;
 
+    /**
+     * 用户拥有的菜单类型：1-前台 ，2-后台，3-所有
+     */
+    @ChineseDescription("用户拥有的菜单类型：1-前台 ，2-后台，3-所有")
+    private Integer menuType;
+
     public String getWsUrl() {
         if (ObjectUtil.isEmpty(this.wsUrl)) {
             return "";
