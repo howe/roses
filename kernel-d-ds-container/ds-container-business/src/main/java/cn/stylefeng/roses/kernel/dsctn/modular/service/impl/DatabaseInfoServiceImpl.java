@@ -47,6 +47,7 @@ import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupDTO;
 import cn.stylefeng.roses.kernel.group.api.pojo.SysGroupRequest;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
+import cn.stylefeng.roses.kernel.rule.enums.StatusEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -90,6 +91,10 @@ public class DatabaseInfoServiceImpl extends ServiceImpl<DatabaseInfoMapper, Dat
         // 数据库中插入记录
         DatabaseInfo entity = new DatabaseInfo();
         BeanUtil.copyProperties(databaseInfoRequest, entity);
+
+        // 设置状态为启用状态
+        entity.setStatusFlag(StatusEnum.ENABLE.getCode());
+
         this.save(entity);
 
         // 往数据源容器文中添加数据源
