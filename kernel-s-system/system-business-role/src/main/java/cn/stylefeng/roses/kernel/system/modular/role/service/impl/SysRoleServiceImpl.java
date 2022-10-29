@@ -589,9 +589,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_UNCOMMITTED)
     public List<MenuAndButtonTreeResponse> grantRoleMenusGrantAll(SysRoleRequest sysRoleRequest) {
 
+        // 根据参数的前后台类型，获取所有菜单id
+        AntdvFrontTypeEnum antdvFrontTypeEnum = AntdvFrontTypeEnum.parseToEnum(sysRoleRequest.getResourceBizType());
+        List<Long> totalMenuIdList = this.menuServiceApi.getTotalMenuIdList(antdvFrontTypeEnum);
+
         // 删除角色绑定的所有菜单
         LambdaUpdateWrapper<SysRoleMenu> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(SysRoleMenu::getRoleId, sysRoleRequest.getRoleId());
+        wrapper.in(SysRoleMenu::getMenuId, totalMenuIdList);
         this.roleMenuService.remove(wrapper);
 
         // 获取当前角色分配的菜单权限
@@ -601,11 +606,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         if (!sysRoleRequest.getTotalSelectFlag()) {
             return roleBindMenuList;
         }
-
-        // 获取所有前台菜单id
-        AntdvFrontTypeEnum antdvFrontTypeEnum = AntdvFrontTypeEnum.parseToEnum(sysRoleRequest.getResourceBizType());
-        List<Long> totalMenuIdList = this.menuServiceApi.getTotalMenuIdList(antdvFrontTypeEnum);
-
+        
         // 批量保存绑定的菜单集合
         List<SysRoleMenu> sysRoleMenus = new ArrayList<>();
         for (Long menuId : totalMenuIdList) {
