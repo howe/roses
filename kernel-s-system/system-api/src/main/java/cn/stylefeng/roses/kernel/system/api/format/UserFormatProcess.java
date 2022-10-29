@@ -14,6 +14,11 @@ import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserDTO;
  */
 public class UserFormatProcess extends BaseSimpleFieldFormatProcess {
 
+    /**
+     * 未知人员的名称
+     */
+    private static final String NOT_FIND_USER_NAME = "未知人员";
+
     @Override
     public Class<?> getItemClass() {
         return Long.class;
@@ -24,6 +29,9 @@ public class UserFormatProcess extends BaseSimpleFieldFormatProcess {
         Long userId = Convert.toLong(businessId);
         UserServiceApi bean = SpringUtil.getBean(UserServiceApi.class);
         SysUserDTO userInfoByUserId = bean.getUserInfoByUserId(userId);
+        if (userInfoByUserId == null) {
+            return NOT_FIND_USER_NAME;
+        }
         return userInfoByUserId.getRealName();
     }
 
