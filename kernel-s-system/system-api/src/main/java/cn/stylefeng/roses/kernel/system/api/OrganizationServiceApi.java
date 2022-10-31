@@ -57,6 +57,14 @@ public interface OrganizationServiceApi {
     HrOrganizationDTO getOrgDetail(Long orgId);
 
     /**
+     * 批量获取组织机构信息详情
+     *
+     * @author fengshuonan
+     * @date 2022/10/31 20:02
+     */
+    List<HrOrganizationDTO> getOrgDetailList(List<Long> orgIdList);
+
+    /**
      * 获取组织机构下拉选择树
      *
      * @author fengshuonan
@@ -80,7 +88,7 @@ public interface OrganizationServiceApi {
      *
      * @param orgId          指定机构id
      * @param parentLevelNum 上级机构的层级数，从0开始，0代表直接返回本部门
-     * @param detectModeEnum  自上而下还是自下而上
+     * @param detectModeEnum 自上而下还是自下而上
      * @return 上级机构的id
      * @author fengshuonan
      * @date 2022/9/18 15:02
