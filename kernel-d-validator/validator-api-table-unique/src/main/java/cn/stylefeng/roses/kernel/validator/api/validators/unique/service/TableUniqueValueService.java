@@ -164,7 +164,7 @@ public class TableUniqueValueService {
         String tenantCode = loginUser.getTenantCode();
 
         // 如果是主数据源可以忽略
-        if (ObjectUtil.isNotEmpty(tenantCode) || TenantConstants.MASTER_DATASOURCE_NAME.equals(tenantCode)) {
+        if (StrUtil.isBlank(tenantCode) || TenantConstants.MASTER_DATASOURCE_NAME.equals(tenantCode)) {
             return originTableName;
         }
 
