@@ -34,6 +34,7 @@ import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
 import cn.stylefeng.roses.kernel.system.api.enums.OrgTypeEnum;
+import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrOrganizationDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrOrganizationRequest;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.OrganizationTreeNode;
 import cn.stylefeng.roses.kernel.system.modular.organization.entity.HrOrganization;
@@ -239,6 +240,18 @@ public class HrOrganizationController {
     public ResponseData<List<OrganizationTreeNode>> getDeptOrgTree(@Validated(HrOrganizationRequest.detail.class) HrOrganizationRequest hrOrganizationRequest) {
         List<OrganizationTreeNode> list = hrOrganizationService.getDeptOrgTree(hrOrganizationRequest.getOrgId());
         return new SuccessResponseData<>(list);
+    }
+
+    /**
+     * 批量获取组织机构信息列表
+     *
+     * @author fengshuonan
+     * @date 2022/11/2 13:56
+     */
+    @GetResource(name = "批量获取组织机构信息列表", path = "/hrOrganization/getOrgInfoListByIds")
+    public ResponseData<List<HrOrganizationDTO>> getOrgInfoListByIds(@Validated(HrOrganizationRequest.batchQuery.class) HrOrganizationRequest hrOrganizationRequest) {
+        List<HrOrganizationDTO> orgDetailList = hrOrganizationService.getOrgDetailList(hrOrganizationRequest.getOrgIdList());
+        return new SuccessResponseData<>(orgDetailList);
     }
 
 }
