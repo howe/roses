@@ -248,8 +248,8 @@ public class HrOrganizationController {
      * @author fengshuonan
      * @date 2022/11/2 13:56
      */
-    @GetResource(name = "批量获取组织机构信息列表", path = "/hrOrganization/getOrgInfoListByIds")
-    public ResponseData<List<HrOrganizationDTO>> getOrgInfoListByIds(@Validated(HrOrganizationRequest.batchQuery.class) HrOrganizationRequest hrOrganizationRequest) {
+    @PostResource(name = "批量获取组织机构信息列表", path = "/hrOrganization/getOrgInfoListByIds")
+    public ResponseData<List<HrOrganizationDTO>> getOrgInfoListByIds(@RequestBody @Validated(HrOrganizationRequest.batchQuery.class) HrOrganizationRequest hrOrganizationRequest) {
         List<HrOrganizationDTO> orgDetailList = hrOrganizationService.getOrgDetailList(hrOrganizationRequest.getOrgIdList());
         return new SuccessResponseData<>(orgDetailList);
     }
