@@ -33,6 +33,7 @@ import cn.stylefeng.roses.kernel.rule.pojo.response.SuccessResponseData;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.ApiResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.GetResource;
 import cn.stylefeng.roses.kernel.scanner.api.annotation.PostResource;
+import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrPositionDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrPositionRequest;
 import cn.stylefeng.roses.kernel.system.modular.organization.entity.HrPosition;
 import cn.stylefeng.roses.kernel.system.modular.organization.service.HrPositionService;
@@ -152,6 +153,17 @@ public class HrPositionController {
     @GetResource(name = "获取全部系统职位", path = "/hrPosition/list")
     public ResponseData<List<HrPosition>> list(HrPositionRequest hrPositionRequest) {
         return new SuccessResponseData<>(hrPositionService.findList(hrPositionRequest));
+    }
+
+    /**
+     * 获取岗位集合列表，通过岗位id集合
+     *
+     * @author fengshuonan
+     * @date 2022/11/5 15:27
+     */
+    @PostResource(name = "获取岗位集合列表，通过岗位id集合", path = "/hrPosition/getPositionListByIds")
+    public ResponseData<List<HrPositionDTO>> getPositionListByIds(@RequestBody @Validated(HrPositionRequest.batchQuery.class) HrPositionRequest hrPositionRequest) {
+        return new SuccessResponseData<>(hrPositionService.getPositionDetailList(hrPositionRequest.getPositionIds()));
     }
 
 }
