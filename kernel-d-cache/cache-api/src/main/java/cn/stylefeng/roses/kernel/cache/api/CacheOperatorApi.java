@@ -24,7 +24,11 @@
  */
 package cn.stylefeng.roses.kernel.cache.api;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
+import cn.stylefeng.roses.kernel.rule.constants.TenantConstants;
+import cn.stylefeng.roses.kernel.rule.tenant.TenantPrefixApi;
 
 import java.util.Collection;
 import java.util.Map;
@@ -147,10 +151,27 @@ public interface CacheOperatorApi<T> {
      * @date 2021/7/30 21:18
      */
     default String calcKey(String keyParam) {
+
+        // 用户的租户前缀
+        String tenantPrefix = "";
+        try {
+            TenantPrefixApi tenantPrefixApi = SpringUtil.getBean(TenantPrefixApi.class);
+            if (tenantPrefixApi != null) {
+                tenantPrefix = tenantPrefixApi.getTenantPrefix();
+            }
+        } catch (Exception e) {
+            // 如果找不到这个bean，则没有加载多租户插件
+        }
+
+        // 如果租户前缀为空，则设置为主租户的编码
+        if (ObjectUtil.isEmpty(tenantPrefix)) {
+            tenantPrefix = TenantConstants.MASTER_DATASOURCE_NAME;
+        }
+
         if (StrUtil.isBlank(keyParam)) {
-            return getCommonKeyPrefix();
+            return tenantPrefix + ":" + getCommonKeyPrefix();
         } else {
-            return getCommonKeyPrefix() + keyParam.toUpperCase();
+            return tenantPrefix + ":" + getCommonKeyPrefix() + keyParam.toUpperCase();
         }
     }
 

@@ -30,10 +30,10 @@ import cn.stylefeng.roses.kernel.auth.api.context.LoginContext;
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
 import cn.stylefeng.roses.kernel.db.api.DbOperatorApi;
 import cn.stylefeng.roses.kernel.db.api.context.DbOperatorContext;
+import cn.stylefeng.roses.kernel.rule.constants.TenantConstants;
 import cn.stylefeng.roses.kernel.validator.api.exception.ParamValidateException;
 import cn.stylefeng.roses.kernel.validator.api.exception.enums.ValidatorExceptionEnum;
 import cn.stylefeng.roses.kernel.validator.api.pojo.UniqueValidateParam;
-import cn.stylefeng.roses.kernel.validator.api.validators.unique.constants.TenantConstants;
 
 /**
  * 判断表中字段是否是唯一值的业务封装
