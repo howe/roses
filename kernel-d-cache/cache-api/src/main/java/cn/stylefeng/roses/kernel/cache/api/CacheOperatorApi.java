@@ -173,7 +173,7 @@ public interface CacheOperatorApi<T> {
         if (StrUtil.isBlank(keyParam)) {
             return tenantPrefix + CACHE_DELIMITER + getCommonKeyPrefix();
         } else {
-            return tenantPrefix + CACHE_DELIMITER + getCommonKeyPrefix() + keyParam.toUpperCase();
+            return tenantPrefix + CACHE_DELIMITER + getCommonKeyPrefix() + CACHE_DELIMITER + keyParam.toUpperCase();
         }
     }
 
