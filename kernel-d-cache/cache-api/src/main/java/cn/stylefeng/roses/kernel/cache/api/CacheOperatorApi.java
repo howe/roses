@@ -33,6 +33,8 @@ import cn.stylefeng.roses.kernel.rule.tenant.TenantPrefixApi;
 import java.util.Collection;
 import java.util.Map;
 
+import static cn.stylefeng.roses.kernel.cache.api.constants.CacheConstants.CACHE_DELIMITER;
+
 /**
  * 缓存操作的基础接口，可以实现不同种缓存实现
  * <p>
@@ -169,9 +171,9 @@ public interface CacheOperatorApi<T> {
         }
 
         if (StrUtil.isBlank(keyParam)) {
-            return tenantPrefix + ":" + getCommonKeyPrefix();
+            return tenantPrefix + CACHE_DELIMITER + getCommonKeyPrefix();
         } else {
-            return tenantPrefix + ":" + getCommonKeyPrefix() + keyParam.toUpperCase();
+            return tenantPrefix + CACHE_DELIMITER + getCommonKeyPrefix() + keyParam.toUpperCase();
         }
     }
 
