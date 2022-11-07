@@ -54,6 +54,7 @@ import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
 import cn.stylefeng.roses.kernel.auth.api.pojo.sso.SsoLoginCodeRequest;
 import cn.stylefeng.roses.kernel.auth.api.pojo.sso.SsoProperties;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
+import cn.stylefeng.roses.kernel.cache.api.tenant.TenantCacheProxyFactory;
 import cn.stylefeng.roses.kernel.demo.expander.DemoConfigExpander;
 import cn.stylefeng.roses.kernel.jwt.JwtTokenOperator;
 import cn.stylefeng.roses.kernel.jwt.api.context.JwtContext;
@@ -302,7 +303,8 @@ public class AuthServiceImpl implements AuthServiceApi {
         }
 
         // 1.2 判断账号是否密码重试次数过多被冻结
-        Integer loginErrorCount = loginErrorCountCacheApi.get(loginRequest.getAccount());
+        CacheOperatorApi<Integer> tenantCacheProxy = TenantCacheProxyFactory.createTenantCacheProxy(loginRequest.getTenantCode(), loginErrorCountCacheApi);
+        Integer loginErrorCount = tenantCacheProxy.get(loginRequest.getAccount());
         if (loginErrorCount != null && loginErrorCount >= LoginCacheConstants.MAX_ERROR_LOGIN_COUNT) {
             throw new AuthException(AuthExceptionEnum.LOGIN_LOCKED);
         }

@@ -13,13 +13,12 @@ import java.lang.reflect.Proxy;
  * @author fengshuonan
  * @date 2022/11/8 0:45
  */
-@SuppressWarnings("all")
-public class TenantCacheProxy<T> implements InvocationHandler {
+public class TenantCacheProxy implements InvocationHandler {
 
     /**
      * 被代理的缓存操作类
      */
-    private CacheOperatorApi<T> targetCacheObject = null;
+    private CacheOperatorApi<?> targetCacheObject = null;
 
     /**
      * 租户编码
@@ -34,7 +33,7 @@ public class TenantCacheProxy<T> implements InvocationHandler {
      * @author fengshuonan
      * @date 2022/11/8 1:05
      */
-    public CacheOperatorApi<T> bindCacheObject(String tenantCode, CacheOperatorApi<T> target) {
+    public <T> CacheOperatorApi<T> bindCacheObject(String tenantCode, CacheOperatorApi<T> target) {
         this.targetCacheObject = target;
         this.tenantCode = tenantCode;
         return (CacheOperatorApi<T>) Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
