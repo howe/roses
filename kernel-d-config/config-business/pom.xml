@@ -29,6 +29,7 @@
             <groupId>cn.stylefeng.roses</groupId>
             <artifactId>config-sdk-redis</artifactId>
             <version>${roses.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <!--默认系统配置表的sdk-->
