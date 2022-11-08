@@ -29,6 +29,8 @@ import cn.stylefeng.roses.kernel.security.api.DragCaptchaApi;
 import cn.stylefeng.roses.kernel.security.api.ImageCaptchaApi;
 import cn.stylefeng.roses.kernel.security.captcha.DragCaptchaService;
 import cn.stylefeng.roses.kernel.security.captcha.ImageCaptchaService;
+import cn.stylefeng.roses.kernel.security.starter.cache.SecurityMemoryCacheAutoConfiguration;
+import cn.stylefeng.roses.kernel.security.starter.cache.SecurityRedisCacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -43,7 +45,7 @@ import javax.annotation.Resource;
  * @date 2020/12/1 21:44
  */
 @Configuration
-@AutoConfigureAfter(SecurityCacheAutoConfiguration.class)
+@AutoConfigureAfter({SecurityMemoryCacheAutoConfiguration.class, SecurityRedisCacheAutoConfiguration.class})
 public class CaptchaAutoConfiguration {
 
     @Resource(name = "captchaCache")
