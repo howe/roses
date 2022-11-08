@@ -11,6 +11,7 @@ import java.util.Map;
  * @author fengshuonan
  * @date 2022/11/8 0:45
  */
+@SuppressWarnings("all")
 public class TenantCacheProxyFactory {
 
     /**
