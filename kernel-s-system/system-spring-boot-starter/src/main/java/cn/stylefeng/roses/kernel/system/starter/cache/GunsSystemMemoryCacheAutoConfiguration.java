@@ -22,7 +22,7 @@
  * 5.在修改包名，模块名称，项目代码等时，请注明软件出处 https://gitee.com/stylefeng/guns
  * 6.若您的项目无法满足以上几点，可申请商业授权
  */
-package cn.stylefeng.roses.kernel.system.starter;
+package cn.stylefeng.roses.kernel.system.starter.cache;
 
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
@@ -31,17 +31,17 @@ import cn.stylefeng.roses.kernel.system.api.constants.StatisticsCacheConstants;
 import cn.stylefeng.roses.kernel.system.api.constants.SystemCachesConstants;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.user.SysUserOrgDTO;
+import cn.stylefeng.roses.kernel.system.modular.home.cache.InterfaceStatisticsMemoryCache;
 import cn.stylefeng.roses.kernel.system.modular.role.cache.RoleDataScopeMemoryCache;
 import cn.stylefeng.roses.kernel.system.modular.role.cache.RoleMemoryCache;
 import cn.stylefeng.roses.kernel.system.modular.role.cache.RoleResourceMemoryCache;
 import cn.stylefeng.roses.kernel.system.modular.role.entity.SysRole;
-import cn.stylefeng.roses.kernel.system.modular.home.cache.InterfaceStatisticsMemoryCache;
 import cn.stylefeng.roses.kernel.system.modular.theme.cache.ThemeMemoryCache;
 import cn.stylefeng.roses.kernel.system.modular.theme.pojo.DefaultTheme;
 import cn.stylefeng.roses.kernel.system.modular.user.cache.SysUserMemoryCache;
 import cn.stylefeng.roses.kernel.system.modular.user.cache.UserOrgMemoryCache;
 import cn.stylefeng.roses.kernel.system.modular.user.cache.UserRoleMemoryCache;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -55,7 +55,8 @@ import java.util.Map;
  * @date 2021/2/28 10:29
  */
 @Configuration
-public class GunsSystemCacheAutoConfiguration {
+@ConditionalOnMissingClass("org.springframework.data.redis.connection.RedisConnectionFactory")
+public class GunsSystemMemoryCacheAutoConfiguration {
 
     /**
      * 用户的缓存，非在线用户缓存，此缓存为了加快查看用户相关操作
@@ -64,7 +65,6 @@ public class GunsSystemCacheAutoConfiguration {
      * @date 2021/2/28 10:30
      */
     @Bean
-    @ConditionalOnMissingBean(name = "sysUserCacheOperatorApi")
     public CacheOperatorApi<SysUserDTO> sysUserCacheOperatorApi() {
         TimedCache<String, SysUserDTO> sysUserTimedCache = CacheUtil.newTimedCache(SystemCachesConstants.USER_CACHE_TIMEOUT_SECONDS * 1000);
         return new SysUserMemoryCache(sysUserTimedCache);
@@ -77,7 +77,6 @@ public class GunsSystemCacheAutoConfiguration {
      * @date 2021/7/29 23:00
      */
     @Bean
-    @ConditionalOnMissingBean(name = "userRoleCacheApi")
     public CacheOperatorApi<List<Long>> userRoleCacheApi() {
         TimedCache<String, List<Long>> userRoleCache = CacheUtil.newTimedCache(SystemCachesConstants.USER_CACHE_TIMEOUT_SECONDS * 1000);
         return new UserRoleMemoryCache(userRoleCache);
@@ -90,7 +89,6 @@ public class GunsSystemCacheAutoConfiguration {
      * @date 2021/7/29 23:00
      */
     @Bean
-    @ConditionalOnMissingBean(name = "roleInfoCacheApi")
     public CacheOperatorApi<SysRole> roleInfoCacheApi() {
         TimedCache<String, SysRole> roleCache = CacheUtil.newTimedCache(SystemCachesConstants.USER_CACHE_TIMEOUT_SECONDS * 1000);
         return new RoleMemoryCache(roleCache);
@@ -103,7 +101,6 @@ public class GunsSystemCacheAutoConfiguration {
      * @date 2021/7/30 23:09
      */
     @Bean
-    @ConditionalOnMissingBean(name = "userOrgCacheApi")
     public CacheOperatorApi<SysUserOrgDTO> userOrgCacheApi() {
         TimedCache<String, SysUserOrgDTO> roleCache = CacheUtil.newTimedCache(SystemCachesConstants.USER_CACHE_TIMEOUT_SECONDS * 1000);
         return new UserOrgMemoryCache(roleCache);
@@ -116,7 +113,6 @@ public class GunsSystemCacheAutoConfiguration {
      * @date 2021/7/30 23:29
      */
     @Bean
-    @ConditionalOnMissingBean(name = "roleResourceCacheApi")
     public CacheOperatorApi<List<String>> roleResourceCacheApi() {
         TimedCache<String, List<String>> roleCache = CacheUtil.newTimedCache(SystemCachesConstants.USER_CACHE_TIMEOUT_SECONDS * 1000);
         return new RoleResourceMemoryCache(roleCache);
@@ -129,7 +125,6 @@ public class GunsSystemCacheAutoConfiguration {
      * @date 2021/7/31 17:59
      */
     @Bean
-    @ConditionalOnMissingBean(name = "roleDataScopeCacheApi")
     public CacheOperatorApi<List<Long>> roleDataScopeCacheApi() {
         TimedCache<String, List<Long>> roleCache = CacheUtil.newTimedCache(SystemCachesConstants.USER_CACHE_TIMEOUT_SECONDS * 1000);
         return new RoleDataScopeMemoryCache(roleCache);
@@ -142,7 +137,6 @@ public class GunsSystemCacheAutoConfiguration {
      * @date 2021/7/31 17:59
      */
     @Bean
-    @ConditionalOnMissingBean(name = "themeCacheApi")
     public CacheOperatorApi<DefaultTheme> themeCacheApi() {
         TimedCache<String, DefaultTheme> themeCache = CacheUtil.newTimedCache(Long.MAX_VALUE);
         return new ThemeMemoryCache(themeCache);
@@ -155,9 +149,8 @@ public class GunsSystemCacheAutoConfiguration {
      * @date 2022/2/9 16:53
      */
     @Bean
-    @ConditionalOnMissingBean(name = "requestCountCacheApi")
-    public CacheOperatorApi<Map<Long,Integer>> requestCountCacheApi() {
-        TimedCache<String, Map<Long,Integer>> timedCache = CacheUtil.newTimedCache(StatisticsCacheConstants.INTERFACE_STATISTICS_CACHE_TIMEOUT_SECONDS);
+    public CacheOperatorApi<Map<Long, Integer>> requestCountCacheApi() {
+        TimedCache<String, Map<Long, Integer>> timedCache = CacheUtil.newTimedCache(StatisticsCacheConstants.INTERFACE_STATISTICS_CACHE_TIMEOUT_SECONDS);
         return new InterfaceStatisticsMemoryCache(timedCache);
     }
 }
