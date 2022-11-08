@@ -24,16 +24,17 @@
  */
 package cn.stylefeng.roses.kernel.security.starter;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.TimedCache;
+import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 import cn.stylefeng.roses.kernel.security.api.DragCaptchaApi;
 import cn.stylefeng.roses.kernel.security.api.ImageCaptchaApi;
 import cn.stylefeng.roses.kernel.security.captcha.DragCaptchaService;
 import cn.stylefeng.roses.kernel.security.captcha.ImageCaptchaService;
-import cn.stylefeng.roses.kernel.security.captcha.cache.CaptchaMemoryCache;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.Resource;
 
 /**
  * 图形验证码自动配置
@@ -42,7 +43,11 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020/12/1 21:44
  */
 @Configuration
+@AutoConfigureAfter(SecurityCacheAutoConfiguration.class)
 public class CaptchaAutoConfiguration {
+
+    @Resource(name = "captchaCache")
+    private CacheOperatorApi<String> captchaCache;
 
     /**
      * 图形验证码
@@ -54,9 +59,7 @@ public class CaptchaAutoConfiguration {
     @ConditionalOnMissingBean(ImageCaptchaApi.class)
     public ImageCaptchaApi captchaApi() {
         // 验证码过期时间 120秒
-        TimedCache<String, String> timedCache = CacheUtil.newTimedCache(1000 * 120);
-        CaptchaMemoryCache captchaMemoryCache = new CaptchaMemoryCache(timedCache);
-        return new ImageCaptchaService(captchaMemoryCache);
+        return new ImageCaptchaService(captchaCache);
     }
 
     /**
@@ -69,9 +72,7 @@ public class CaptchaAutoConfiguration {
     @ConditionalOnMissingBean(DragCaptchaApi.class)
     public DragCaptchaApi dragCaptchaService() {
         // 验证码过期时间 120秒
-        TimedCache<String, String> timedCache = CacheUtil.newTimedCache(1000 * 120);
-        CaptchaMemoryCache captchaMemoryCache = new CaptchaMemoryCache(timedCache);
-        return new DragCaptchaService(captchaMemoryCache);
+        return new DragCaptchaService(captchaCache);
     }
 
 }
