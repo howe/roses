@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.stylefeng.roses.kernel.customer.starter.GunsCustomerAutoConfiguration
+  cn.stylefeng.roses.kernel.customer.starter.GunsCustomerMemoryAutoConfiguration,\
+  cn.stylefeng.roses.kernel.customer.starter.GunsCustomerRedisAutoConfiguration

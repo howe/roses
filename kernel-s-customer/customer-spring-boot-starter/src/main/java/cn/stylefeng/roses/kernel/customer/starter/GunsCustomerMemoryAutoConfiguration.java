@@ -30,7 +30,7 @@ import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 import cn.stylefeng.roses.kernel.customer.api.expander.CustomerConfigExpander;
 import cn.stylefeng.roses.kernel.customer.api.pojo.CustomerInfo;
 import cn.stylefeng.roses.kernel.customer.modular.cache.CustomerMemoryCache;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -41,7 +41,8 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021/6/7 11:32
  */
 @Configuration
-public class GunsCustomerAutoConfiguration {
+@ConditionalOnMissingClass("org.springframework.data.redis.connection.RedisConnectionFactory")
+public class GunsCustomerMemoryAutoConfiguration {
 
     /**
      * C端用户的缓存
@@ -50,7 +51,6 @@ public class GunsCustomerAutoConfiguration {
      * @date 2021/6/8 22:41
      */
     @Bean
-    @ConditionalOnMissingBean(name = "customerInfoCacheOperatorApi")
     public CacheOperatorApi<CustomerInfo> customerInfoCacheOperatorApi() {
         TimedCache<String, CustomerInfo> customerInfoTimedCache = CacheUtil.newTimedCache(CustomerConfigExpander.getCustomerCacheExpiredSeconds() * 1000);
         return new CustomerMemoryCache(customerInfoTimedCache);

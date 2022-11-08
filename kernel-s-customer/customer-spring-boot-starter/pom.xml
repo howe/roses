@@ -24,11 +24,18 @@
             <version>${roses.version}</version>
         </dependency>
 
-        <!--默认内存缓存使用-->
+        <!--内存或者redis的缓存-->
         <dependency>
             <groupId>cn.stylefeng.roses</groupId>
             <artifactId>cache-sdk-memory</artifactId>
             <version>${roses.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.stylefeng.roses</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${roses.version}</version>
+            <optional>true</optional>
         </dependency>
 
     </dependencies>
