@@ -35,9 +35,9 @@ import cn.stylefeng.roses.kernel.security.api.constants.CounterConstants;
  * @author fengshuonan
  * @date 2020/11/15 15:26
  */
-public class DefaultCountValidateCache extends AbstractMemoryCacheOperator<Long> {
+public class CountValidateMemoryCache extends AbstractMemoryCacheOperator<Long> {
 
-    public DefaultCountValidateCache(TimedCache<String, Long> timedCache) {
+    public CountValidateMemoryCache(TimedCache<String, Long> timedCache) {
         super(timedCache);
     }
 
