@@ -33,8 +33,10 @@ import cn.stylefeng.roses.kernel.auth.api.cookie.SessionCookieCreator;
 import cn.stylefeng.roses.kernel.auth.api.expander.AuthConfigExpander;
 import cn.stylefeng.roses.kernel.auth.api.pojo.login.LoginUser;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
+import cn.stylefeng.roses.kernel.cache.api.tenant.TenantCacheProxyFactory;
 import cn.stylefeng.roses.kernel.message.api.expander.WebSocketConfigExpander;
 import cn.stylefeng.roses.kernel.rule.callback.ConfigUpdateCallback;
+import cn.stylefeng.roses.kernel.rule.constants.TenantConstants;
 import cn.stylefeng.roses.kernel.rule.util.HttpServletUtil;
 
 import javax.servlet.http.Cookie;
@@ -123,7 +125,8 @@ public class DefaultSessionManager implements SessionManagerApi, ConfigUpdateCal
 
     @Override
     public LoginUser getSession(String token) {
-        return loginUserCache.get(token);
+        CacheOperatorApi<LoginUser> tenantCacheProxy = TenantCacheProxyFactory.createTenantCacheProxy(TenantConstants.MASTER_DATASOURCE_NAME, loginUserCache);
+        return tenantCacheProxy.get(token);
     }
 
     @Override
