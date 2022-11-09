@@ -63,6 +63,7 @@ import cn.stylefeng.roses.kernel.jwt.api.pojo.config.JwtConfig;
 import cn.stylefeng.roses.kernel.jwt.api.pojo.payload.DefaultJwtPayload;
 import cn.stylefeng.roses.kernel.log.api.LoginLogServiceApi;
 import cn.stylefeng.roses.kernel.message.api.expander.WebSocketConfigExpander;
+import cn.stylefeng.roses.kernel.rule.tenant.RequestTenantCodeHolder;
 import cn.stylefeng.roses.kernel.rule.util.HttpServletUtil;
 import cn.stylefeng.roses.kernel.scanner.api.exception.ScannerException;
 import cn.stylefeng.roses.kernel.scanner.api.exception.enums.ScannerExceptionEnum;
@@ -306,6 +307,9 @@ public class AuthServiceImpl implements AuthServiceApi {
         if (loginErrorCount != null && loginErrorCount >= LoginCacheConstants.MAX_ERROR_LOGIN_COUNT) {
             throw new AuthException(AuthExceptionEnum.LOGIN_LOCKED);
         }
+
+        // 1.3 暂存多租户编码
+        RequestTenantCodeHolder.setTenantCode(loginRequest.getTenantCode());
 
         // 2. 如果开启了验证码校验，则验证当前请求的验证码是否正确
         if (SecurityConfigExpander.getCaptchaOpen()) {
