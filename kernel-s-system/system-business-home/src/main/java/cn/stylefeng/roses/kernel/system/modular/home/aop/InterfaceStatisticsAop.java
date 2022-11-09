@@ -43,7 +43,7 @@ public class InterfaceStatisticsAop implements Ordered {
      * @author fengshuonan
      * @date 2022/2/10 20:25
      */
-    @Pointcut("execution(* *..controller.*.*(..))")
+    @Pointcut("execution(* *..controller.*.*(..)) || execution(* *..*Controller.*(..))")
     public void flowControl() {
     }
 

@@ -80,7 +80,7 @@ public class RequestApiLogRecordAop implements Ordered {
     /**
      * 切所有controller包
      */
-    @Pointcut("execution(* *..controller.*.*(..))")
+    @Pointcut("execution(* *..controller.*.*(..)) || execution(* *..*Controller.*(..))")
     public void cutService() {
     }
 
