@@ -94,16 +94,19 @@ public class DefaultSessionManager implements SessionManagerApi, ConfigUpdateCal
     @Override
     public void createSession(String token, LoginUser loginUser, Boolean createCookie) {
 
+        CacheOperatorApi<LoginUser> tenantCacheProxy = TenantCacheProxyFactory.createTenantCacheProxy(loginUser.getTenantCode(), loginUserCache);
+        CacheOperatorApi<Set<String>> allPlaceLoginTokenCacheProxy = TenantCacheProxyFactory.createTenantCacheProxy(loginUser.getTenantCode(), allPlaceLoginTokenCache);
+
         // 装配用户信息的缓存
-        loginUserCache.put(token, loginUser, sessionExpiredSeconds);
+        tenantCacheProxy.put(token, loginUser, sessionExpiredSeconds);
 
         // 装配用户token的缓存
-        Set<String> theUserTokens = allPlaceLoginTokenCache.get(loginUser.getUserId().toString());
+        Set<String> theUserTokens = allPlaceLoginTokenCacheProxy.get(loginUser.getUserId().toString());
         if (theUserTokens == null) {
             theUserTokens = new HashSet<>();
         }
         theUserTokens.add(token);
-        allPlaceLoginTokenCache.put(loginUser.getUserId().toString(), theUserTokens);
+        allPlaceLoginTokenCacheProxy.put(loginUser.getUserId().toString(), theUserTokens);
 
         // 如果开启了cookie存储会话信息，则需要给HttpServletResponse添加一个cookie
         if (createCookie) {
