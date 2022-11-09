@@ -330,7 +330,7 @@ public class AuthServiceImpl implements AuthServiceApi {
             throw new AuthException(AuthExceptionEnum.LOGIN_LOCKED);
         }
 
-        // 1.3 暂存多租户编码
+        // 1.3 暂存多租户编码（v7.3.2增加，方便缓存调用过程中获取多租户的前缀）
         RequestTenantCodeHolder.setTenantCode(loginRequest.getTenantCode());
 
         // 2. 如果开启了验证码校验，则验证当前请求的验证码是否正确
