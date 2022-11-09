@@ -55,6 +55,8 @@ import cn.stylefeng.roses.kernel.auth.api.pojo.sso.SsoLoginCodeRequest;
 import cn.stylefeng.roses.kernel.auth.api.pojo.sso.SsoProperties;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 import cn.stylefeng.roses.kernel.demo.expander.DemoConfigExpander;
+import cn.stylefeng.roses.kernel.dsctn.api.constants.DatasourceContainerConstants;
+import cn.stylefeng.roses.kernel.dsctn.api.context.CurrentDataSourceContext;
 import cn.stylefeng.roses.kernel.jwt.JwtTokenOperator;
 import cn.stylefeng.roses.kernel.jwt.api.context.JwtContext;
 import cn.stylefeng.roses.kernel.jwt.api.exception.JwtException;
@@ -63,6 +65,7 @@ import cn.stylefeng.roses.kernel.jwt.api.pojo.config.JwtConfig;
 import cn.stylefeng.roses.kernel.jwt.api.pojo.payload.DefaultJwtPayload;
 import cn.stylefeng.roses.kernel.log.api.LoginLogServiceApi;
 import cn.stylefeng.roses.kernel.message.api.expander.WebSocketConfigExpander;
+import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.tenant.RequestTenantCodeHolder;
 import cn.stylefeng.roses.kernel.rule.util.HttpServletUtil;
 import cn.stylefeng.roses.kernel.scanner.api.exception.ScannerException;
@@ -270,13 +273,32 @@ public class AuthServiceImpl implements AuthServiceApi {
     }
 
     @Override
-    public LoginUser createNewLoginInfo(String token, String account) {
+    public LoginUser createNewLoginInfo(String token, DefaultJwtPayload defaultJwtPayload) {
 
         // 获取用户的信息
-        UserLoginInfoDTO userLoginInfo = userServiceApi.getUserLoginInfo(account);
+        String account = defaultJwtPayload.getAccount();
 
-        // 创建用户会话信息
-        sessionManagerApi.updateSession(token, userLoginInfo.getLoginUser());
+        // 获取用户租户信息
+        String tenantCode = defaultJwtPayload.getTenantCode();
+
+        UserLoginInfoDTO userLoginInfo;
+        try {
+            // 如果有特定租户则进行切换操作
+            if (StrUtil.isNotEmpty(tenantCode) && !DatasourceContainerConstants.MASTER_DATASOURCE_NAME.equals(tenantCode)) {
+                CurrentDataSourceContext.setDataSourceName(RuleConstants.TENANT_DB_PREFIX + tenantCode);
+            }
+
+            // 获取用户信息
+            userLoginInfo = userServiceApi.getUserLoginInfo(account);
+            LoginUser loginUser = userLoginInfo.getLoginUser();
+            loginUser.setTenantCode(tenantCode);
+
+            // 创建用户会话信息
+            sessionManagerApi.updateSession(token, loginUser);
+        } finally {
+            // 清除租户信息
+            CurrentDataSourceContext.clearDataSourceName();
+        }
 
         return userLoginInfo.getLoginUser();
     }
