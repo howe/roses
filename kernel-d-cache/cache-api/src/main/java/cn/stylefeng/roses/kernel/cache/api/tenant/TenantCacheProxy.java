@@ -37,7 +37,7 @@ public class TenantCacheProxy implements InvocationHandler {
     public <T> CacheOperatorApi<T> bindCacheObject(String tenantCode, CacheOperatorApi<T> target) {
         this.targetCacheObject = target;
         this.tenantCode = tenantCode;
-        return (CacheOperatorApi<T>) Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
+        return (CacheOperatorApi<T>) Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getSuperclass().getInterfaces(), this);
     }
 
     @Override
