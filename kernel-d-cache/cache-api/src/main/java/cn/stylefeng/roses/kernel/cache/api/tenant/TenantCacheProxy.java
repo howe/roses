@@ -1,7 +1,7 @@
 package cn.stylefeng.roses.kernel.cache.api.tenant;
 
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
-import cn.stylefeng.roses.kernel.rule.tenant.TenantCodeHolder;
+import cn.stylefeng.roses.kernel.rule.tenant.OnceTenantCodeHolder;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -45,13 +45,13 @@ public class TenantCacheProxy implements InvocationHandler {
         Object result = null;
         try {
             // 设置租户编码
-            TenantCodeHolder.setTenantCode(tenantCode);
+            OnceTenantCodeHolder.setTenantCode(tenantCode);
 
             // 执行原有缓存操作类
             result = method.invoke(targetCacheObject, args);
         } finally {
             // 清除租户编码
-            TenantCodeHolder.clearTenantCode();
+            OnceTenantCodeHolder.clearTenantCode();
         }
         return result;
     }
