@@ -380,7 +380,7 @@ public class AuthServiceImpl implements AuthServiceApi {
         LoginUser loginUser = userValidateInfo.getLoginUser();
 
         // 9. 生成用户的token
-        DefaultJwtPayload defaultJwtPayload = new DefaultJwtPayload(loginUser.getUserId(), loginUser.getAccount(), loginRequest.getRememberMe(), caToken);
+        DefaultJwtPayload defaultJwtPayload = new DefaultJwtPayload(loginUser.getUserId(), loginUser.getAccount(), loginRequest.getRememberMe(), caToken, loginRequest.getTenantCode());
         String jwtToken = JwtContext.me().generateTokenDefaultPayload(defaultJwtPayload);
         loginUser.setToken(jwtToken);
 

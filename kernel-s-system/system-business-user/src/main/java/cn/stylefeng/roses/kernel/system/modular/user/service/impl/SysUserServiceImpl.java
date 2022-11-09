@@ -656,7 +656,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         LoginUser loginUser = userValidateInfo.getLoginUser();
 
         // 生成用户的token
-        DefaultJwtPayload defaultJwtPayload = new DefaultJwtPayload(loginUser.getUserId(), loginUser.getAccount(), false, null);
+        DefaultJwtPayload defaultJwtPayload = new DefaultJwtPayload(loginUser.getUserId(), loginUser.getAccount(), false, null, null);
         String jwtToken = JwtContext.me().generateTokenDefaultPayload(defaultJwtPayload);
         loginUser.setToken(jwtToken);
 

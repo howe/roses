@@ -201,7 +201,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         LoginUser loginUser = CustomerFactory.createLoginUser(customer, fileOperatorApi);
 
         // 生成用户的token
-        DefaultJwtPayload defaultJwtPayload = new DefaultJwtPayload(loginUser.getUserId(), loginUser.getAccount(), loginRequest.getRememberMe(), null);
+        DefaultJwtPayload defaultJwtPayload = new DefaultJwtPayload(loginUser.getUserId(), loginUser.getAccount(), loginRequest.getRememberMe(), null, null);
         String jwtToken = JwtContext.me().generateTokenDefaultPayload(defaultJwtPayload);
         loginUser.setToken(jwtToken);
 
