@@ -143,6 +143,20 @@ public interface CacheOperatorApi<T> {
     String getCommonKeyPrefix();
 
     /**
+     * 是否按租户维度去切割缓存（不推荐开启）
+     * <p>
+     * key的组成方式：租户前缀:业务前缀:业务key
+     * <p>
+     * 如果不开启租户切割，则租户前缀一直会为master:
+     *
+     * @author fengshuonan
+     * @date 2022/11/9 19:02
+     */
+    default Boolean divideByTenant() {
+        return false;
+    }
+
+    /**
      * 获取最终的计算前缀
      * <p>
      * key的组成方式：租户前缀:业务前缀:业务key
@@ -200,6 +214,14 @@ public interface CacheOperatorApi<T> {
      * @date 2022/11/9 10:35
      */
     default String getTenantPrefix() {
+
+        // 缓存是否按租户维度切分
+        Boolean divideByTenantFlag = divideByTenant();
+
+        // 如果不按租户维度切分，则默认都返回为master
+        if (!divideByTenantFlag) {
+            return TenantConstants.MASTER_DATASOURCE_NAME;
+        }
 
         // 用户的租户前缀
         String tenantPrefix = "";
