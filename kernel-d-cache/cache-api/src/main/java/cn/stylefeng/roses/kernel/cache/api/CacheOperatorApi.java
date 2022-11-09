@@ -143,9 +143,25 @@ public interface CacheOperatorApi<T> {
     String getCommonKeyPrefix();
 
     /**
+     * 获取最终的计算前缀
+     * <p>
+     * key的组成方式：租户前缀:业务前缀:业务key
+     *
+     * @author fengshuonan
+     * @date 2022/11/9 10:41
+     */
+    default String getFinalPrefix() {
+        // 获取租户前缀
+        String tenantPrefix = getTenantPrefix();
+
+        // 计算最终前缀
+        return tenantPrefix + CACHE_DELIMITER + getCommonKeyPrefix() + CACHE_DELIMITER;
+    }
+
+    /**
      * 计算最终插入缓存的key值
      * <p>
-     * key的组成： 缓存前缀 + keyParam.toUpperCase
+     * key的组成方式：租户前缀:业务前缀:业务key
      *
      * @param keyParam 用户传递的key参数
      * @return 最终插入缓存的key值
@@ -153,6 +169,37 @@ public interface CacheOperatorApi<T> {
      * @date 2021/7/30 21:18
      */
     default String calcKey(String keyParam) {
+        if (StrUtil.isEmpty(keyParam)) {
+            return getFinalPrefix();
+        } else {
+            return getFinalPrefix() + keyParam;
+        }
+    }
+
+    /**
+     * 删除缓存key的前缀，返回用户最原始的key
+     *
+     * @param finalKey 最终存在CacheOperator的key
+     * @return 用户最原始的key
+     * @author fengshuonan
+     * @date 2022/11/9 10:31
+     */
+    default String removePrefix(String finalKey) {
+
+        if (ObjectUtil.isEmpty(finalKey)) {
+            return "";
+        }
+
+        return StrUtil.removePrefix(finalKey, getFinalPrefix());
+    }
+
+    /**
+     * 获取租户前缀
+     *
+     * @author fengshuonan
+     * @date 2022/11/9 10:35
+     */
+    default String getTenantPrefix() {
 
         // 用户的租户前缀
         String tenantPrefix = "";
@@ -170,11 +217,7 @@ public interface CacheOperatorApi<T> {
             tenantPrefix = TenantConstants.MASTER_DATASOURCE_NAME;
         }
 
-        if (StrUtil.isBlank(keyParam)) {
-            return tenantPrefix + CACHE_DELIMITER + getCommonKeyPrefix();
-        } else {
-            return tenantPrefix + CACHE_DELIMITER + getCommonKeyPrefix() + CACHE_DELIMITER + keyParam.toUpperCase();
-        }
+        return tenantPrefix;
     }
 
 }

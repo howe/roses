@@ -26,7 +26,6 @@ package cn.stylefeng.roses.kernel.cache.redis;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -83,10 +82,10 @@ public abstract class AbstractRedisCacheOperator<T> implements CacheOperatorApi<
 
     @Override
     public Collection<String> getAllKeys() {
-        Set<String> keys = redisTemplate.keys(getCommonKeyPrefix() + "*");
+        Set<String> keys = redisTemplate.keys(getFinalPrefix() + "*");
         if (keys != null) {
             // 去掉缓存key的common prefix前缀
-            return keys.stream().map(key -> StrUtil.removePrefix(key, getCommonKeyPrefix())).collect(Collectors.toSet());
+            return keys.stream().map(this::removePrefix).collect(Collectors.toSet());
         } else {
             return CollectionUtil.newHashSet();
         }
