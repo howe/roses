@@ -15,7 +15,7 @@ public class GunsResourceCodeUtil {
     /**
      * Guns默认的资源前缀标识
      */
-    public static final String GUNS_RES_PREFIX = "guns$";
+    public static final String GUNS_RES_PREFIX = "guns\\$";
 
     /**
      * 将参数的资源编码，改为携带新的应用编码的资源编码
@@ -28,10 +28,20 @@ public class GunsResourceCodeUtil {
      * @date 2022/11/16 23:09
      */
     public static String replace(String resourceCode, String newAppCode) {
+
+        // 前缀为空则直接返回空串
         if (StrUtil.isEmpty(resourceCode)) {
             return "";
         }
-        String newPrefix = newAppCode + "$";
+
+        // 计算出新的前缀
+        String newPrefix = newAppCode + "\\$";
+
+        // 如果资源编码已经是新的前缀则直接返回
+        if (resourceCode.startsWith(newPrefix)) {
+            return resourceCode;
+        }
+
         return resourceCode.replaceFirst(GUNS_RES_PREFIX, newPrefix);
     }
 
