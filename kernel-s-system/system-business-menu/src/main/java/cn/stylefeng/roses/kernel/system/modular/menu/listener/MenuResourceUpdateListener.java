@@ -30,7 +30,7 @@ public class MenuResourceUpdateListener extends ApplicationStartedListener imple
         String springApplicationName = environment.getProperty("spring.application.name");
 
         // 获取所有menu_resource表记录
-        sysMenuResourceService.updateNewAppCode(springApplicationName);
+        sysMenuResourceService.updateNewAppCode(true, springApplicationName);
 
     }
 

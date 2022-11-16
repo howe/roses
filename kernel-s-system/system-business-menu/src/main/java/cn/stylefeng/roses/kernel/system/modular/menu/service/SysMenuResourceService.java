@@ -60,9 +60,11 @@ public interface SysMenuResourceService extends IService<SysMenuResource> {
     /**
      * 更新本表的所有资源编码，改为新的应用code前缀
      *
+     * @param decisionFirstStart 判断是否是第一次启动，参数传true，则判断必须是第一次启动才执行update操作
+     * @param newAppCode         新应用编码
      * @author fengshuonan
      * @date 2022/11/16 23:13
      */
-    void updateNewAppCode(String newAppCode);
+    void updateNewAppCode(Boolean decisionFirstStart, String newAppCode);
 
 }

@@ -25,6 +25,7 @@
 package cn.stylefeng.roses.kernel.system.modular.menu.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.roses.kernel.config.api.InitConfigApi;
 import cn.stylefeng.roses.kernel.rule.util.GunsResourceCodeUtil;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.SysMenuResourceRequest;
 import cn.stylefeng.roses.kernel.system.modular.menu.entity.SysMenuResource;
@@ -54,6 +55,9 @@ public class SysMenuResourceServiceImpl extends ServiceImpl<SysMenuResourceMappe
 
     @Resource
     private SysResourceService sysResourceService;
+
+    @Resource
+    private InitConfigApi initConfigApi;
 
     @Override
     public List<ResourceTreeNode> getMenuResourceTree(Long businessId) {
@@ -93,7 +97,15 @@ public class SysMenuResourceServiceImpl extends ServiceImpl<SysMenuResourceMappe
     }
 
     @Override
-    public void updateNewAppCode(String newAppCode) {
+    public void updateNewAppCode(Boolean decisionFirstStart, String newAppCode) {
+
+        // 判断是否是第一次启动项目
+        if (decisionFirstStart) {
+            Boolean initConfigFlag = initConfigApi.getInitConfigFlag();
+            if (initConfigFlag) {
+                return;
+            }
+        }
 
         // 获取所有菜单资源表信息
         List<SysMenuResource> list = this.list();
