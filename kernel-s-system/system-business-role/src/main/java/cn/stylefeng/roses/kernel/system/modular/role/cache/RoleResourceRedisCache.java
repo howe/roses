@@ -47,4 +47,8 @@ public class RoleResourceRedisCache extends AbstractRedisCacheOperator<List<Stri
         return SystemCachesConstants.ROLE_RESOURCE_CACHE_PREFIX;
     }
 
+    @Override
+    public Boolean divideByTenant() {
+        return true;
+    }
 }

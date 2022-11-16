@@ -47,4 +47,9 @@ public class RoleDataScopeRedisCache extends AbstractRedisCacheOperator<List<Lon
         return SystemCachesConstants.ROLE_DATA_SCOPE_CACHE_PREFIX;
     }
 
+    @Override
+    public Boolean divideByTenant() {
+        return true;
+    }
+
 }
