@@ -27,9 +27,11 @@ package cn.stylefeng.roses.kernel.system.modular.role.service.impl;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
+import cn.stylefeng.roses.kernel.config.api.InitConfigApi;
 import cn.stylefeng.roses.kernel.db.api.context.DbOperatorContext;
 import cn.stylefeng.roses.kernel.rule.constants.RuleConstants;
 import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
+import cn.stylefeng.roses.kernel.rule.util.GunsResourceCodeUtil;
 import cn.stylefeng.roses.kernel.system.api.ResourceServiceApi;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.dto.SysRoleResourceDTO;
 import cn.stylefeng.roses.kernel.system.api.pojo.role.request.SysRoleRequest;
@@ -61,6 +63,9 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
 
     @Resource
     private ResourceServiceApi resourceServiceApi;
+
+    @Resource
+    private InitConfigApi initConfigApi;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -194,6 +199,30 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
                 this.saveBatch(sysRoleResourceList);
             }
         }
+    }
+
+    @Override
+    public void updateNewAppCode(Boolean decisionFirstStart, String newAppCode) {
+
+        // 判断是否是第一次启动项目
+        if (decisionFirstStart) {
+            Boolean initConfigFlag = initConfigApi.getInitConfigFlag();
+            if (initConfigFlag) {
+                return;
+            }
+        }
+
+        // 获取所有角色资源表信息
+        List<SysRoleResource> list = this.list();
+
+        // 批量更新资源编码
+        for (SysRoleResource sysRoleResource : list) {
+            String newResourceCode = GunsResourceCodeUtil.replace(sysRoleResource.getResourceCode(), newAppCode);
+            sysRoleResource.setResourceCode(newResourceCode);
+        }
+
+        this.updateBatchById(list);
+
     }
 
 }
