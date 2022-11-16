@@ -57,4 +57,12 @@ public interface SysMenuResourceService extends IService<SysMenuResource> {
      */
     void addMenuResourceBind(SysMenuResourceRequest sysMenuResourceRequest);
 
+    /**
+     * 更新本表的所有资源编码，改为新的应用code前缀
+     *
+     * @author fengshuonan
+     * @date 2022/11/16 23:13
+     */
+    void updateNewAppCode(String newAppCode);
+
 }

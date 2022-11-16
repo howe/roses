@@ -25,6 +25,7 @@
 package cn.stylefeng.roses.kernel.system.modular.menu.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.roses.kernel.rule.util.GunsResourceCodeUtil;
 import cn.stylefeng.roses.kernel.system.api.pojo.menu.SysMenuResourceRequest;
 import cn.stylefeng.roses.kernel.system.modular.menu.entity.SysMenuResource;
 import cn.stylefeng.roses.kernel.system.modular.menu.mapper.SysMenuResourceMapper;
@@ -89,6 +90,22 @@ public class SysMenuResourceServiceImpl extends ServiceImpl<SysMenuResourceMappe
             }
             this.saveBatch(menuResources, menuResources.size());
         }
+    }
+
+    @Override
+    public void updateNewAppCode(String newAppCode) {
+
+        // 获取所有菜单资源表信息
+        List<SysMenuResource> list = this.list();
+
+        // 批量更新资源编码
+        for (SysMenuResource sysMenuResource : list) {
+            String newResourceCode = GunsResourceCodeUtil.replace(sysMenuResource.getResourceCode(), newAppCode);
+            sysMenuResource.setResourceCode(newResourceCode);
+        }
+
+        this.updateBatchById(list);
+
     }
 
 }

@@ -4,3 +4,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   cn.stylefeng.roses.kernel.system.starter.cache.GunsResourceMemoryCacheAutoConfiguration,\
   cn.stylefeng.roses.kernel.system.starter.cache.GunsResourceRedisCacheAutoConfiguration,\
   cn.stylefeng.roses.kernel.system.starter.GunsSystemHomeStatisticsAutoConfiguration
+org.springframework.context.ApplicationListener=\
+  cn.stylefeng.roses.kernel.system.modular.menu.listener.MenuResourceUpdateListener
