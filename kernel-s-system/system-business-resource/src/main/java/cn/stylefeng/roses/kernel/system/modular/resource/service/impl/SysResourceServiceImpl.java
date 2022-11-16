@@ -42,6 +42,7 @@ import cn.stylefeng.roses.kernel.rule.enums.DbTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.ResBizTypeEnum;
 import cn.stylefeng.roses.kernel.rule.enums.YesOrNotEnum;
 import cn.stylefeng.roses.kernel.rule.tree.factory.DefaultTreeBuildFactory;
+import cn.stylefeng.roses.kernel.rule.util.GunsResourceCodeUtil;
 import cn.stylefeng.roses.kernel.scanner.api.ResourceReportApi;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ReportResourceParam;
 import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ResourceDefinition;
@@ -276,6 +277,20 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         LambdaQueryWrapper<SysResource> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysResource::getProjectCode, projectCode);
         this.remove(wrapper);
+    }
+
+    @Override
+    public void updateResourceAppCode(String newAppCode) {
+        // 获取所有资源表信息
+        List<SysResource> list = this.list();
+
+        // 批量更新资源编码
+        for (SysResource sysResource : list) {
+            String newResourceCode = GunsResourceCodeUtil.replace(sysResource.getResourceCode(), newAppCode);
+            sysResource.setResourceCode(newResourceCode);
+        }
+
+        this.updateBatchById(list);
     }
 
     @Override
