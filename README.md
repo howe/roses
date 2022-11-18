@@ -3,7 +3,7 @@
     <br>      
     <br>      
     <p align="center">
-        Roses基于Spring Boot 2，是<a target="_blank" href="[https://gitee.com/stylefeng/guns](https://github.com/howe/guns)">开源项目Guns</a>的核心支撑层，亦可用于任何java项目支撑内核。
+        Roses基于Spring Boot 2，是<a target="_blank" href="https://github.com/howe/guns">开源项目Guns</a>的核心支撑层，亦可用于任何java项目支撑内核。
         <br>      
         <br>      
         <span>
