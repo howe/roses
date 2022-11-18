@@ -4,13 +4,6 @@
     <br>      
     <p align="center">
         Roses基于Spring Boot 2，是<a target="_blank" href="https://github.com/howe/guns">开源项目Guns</a>的核心支撑层，亦可用于任何java项目支撑内核。
-        <br>      
-        <br>      
-        <span>
-            <span>
-                 Guns官方交流群：254550081(满)   684163663(满)   207434260(满)(三个群已满，扫下方二维码加官方微信群)
-            </span>
-        </span>
         <br>
         <br>
         <a href="http://spring.io/projects/spring-boot">
@@ -41,13 +34,3 @@
 # 安装到本地maven仓库
 mvn clean install -Dmaven.test.skip=true
 ```
-
-### 扫码关注官方公众号和官方微信群
-<table>
-    <tr>
-        <td>官方公众号</td>
-        <td><img src="https://images.gitee.com/uploads/images/2019/0415/104911_9bc924a5_551203.png" width="120"/></td>
-        <td>扫码邀请入群</td>
-        <td><img src="https://images.gitee.com/uploads/images/2019/0419/103622_d6e9fa5d_551203.png" width="120"/></td>
-    </tr>
-</table>
