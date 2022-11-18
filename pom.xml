@@ -413,9 +413,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git@gitee.com:stylefeng/roses.git</connection>
-        <developerConnection>scm:git@gitee.com:stylefeng/roses.git</developerConnection>
-        <url>https://gitee.com/stylefeng/roses</url>
+        <connection>scm:git@github.com:howe/roses.git</connection>
+        <developerConnection>scm:git@github.com:howe/roses.git</developerConnection>
+        <url>https://github.com/howe/roses</url>
     </scm>
 
     <distributionManagement>
