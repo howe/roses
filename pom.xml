@@ -57,6 +57,9 @@
 
         <!--office模块-->
         <module>kernel-d-office</module>
+		
+		<!--open api适配-->
+        <module>kernel-d-openapi</module>
 
         <!--拼音工具模块-->
         <module>kernel-d-pinyin</module>
@@ -155,6 +158,7 @@
         <openfeign.version>2.2.6.RELEASE</openfeign.version>
         <seata.all.version>1.3.0</seata.all.version>
         <bcprov.version>1.68</bcprov.version>
+		<springdoc.version>1.6.12</springdoc.version>
     </properties>
 
     <dependencyManagement>
@@ -326,6 +330,13 @@
                 <groupId>com.gettyio</groupId>
                 <artifactId>getty-expansion</artifactId>
                 <version>${getty.version}</version>
+            </dependency>
+			
+			<!-- openapi接口文档 -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-webmvc-core</artifactId>
+                <version>${springdoc.version}</version>
             </dependency>
 
         </dependencies>

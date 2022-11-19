@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>kernel-d-openapi</artifactId>
+        <groupId>cn.stylefeng.roses</groupId>
+        <version>7.3.2</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>openapi-spring-boot-starter</artifactId>
+
+    <packaging>jar</packaging>
+
+
+    <dependencies>
+
+        <!-- openapi接口文档springdoc实现 -->
+        <dependency>
+            <groupId>cn.stylefeng.roses</groupId>
+            <artifactId>openapi-sdk-springdoc</artifactId>
+            <version>${roses.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
