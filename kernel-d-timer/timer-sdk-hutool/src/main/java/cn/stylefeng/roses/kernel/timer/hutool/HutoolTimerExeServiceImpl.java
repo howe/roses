@@ -36,11 +36,14 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * hutool方式的定时任务执行
+ * <p>
+ * 使用TimerExeServiceImpl替代，解决spring cloud双上下文执行重复的问题
  *
  * @author fengshuonan
  * @date 2020/10/27 14:05
  */
 @Slf4j
+@Deprecated
 public class HutoolTimerExeServiceImpl implements TimerExeService {
 
     @Override
