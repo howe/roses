@@ -26,7 +26,7 @@
 
 ### 配套手册
 
-[https://javaguns.com/contents/guns/roses_kernel/summary/1_module.html](https://javaguns.com/contents/guns/roses_kernel/summary/1_module.html)
+[https://ixianwan.feishu.cn/docx/T6E9d6nTkoos0ZxzrT5c901pnqf)
 
 ### 使用方式
 
