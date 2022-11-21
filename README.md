@@ -26,7 +26,7 @@
 
 ### 配套手册
 
-[https://ixianwan.feishu.cn/docx/T6E9d6nTkoos0ZxzrT5c901pnqf)
+[https://ixianwan.feishu.cn/docx/T6E9d6nTkoos0ZxzrT5c901pnqf](https://ixianwan.feishu.cn/docx/T6E9d6nTkoos0ZxzrT5c901pnqf)
 
 ### 使用方式
 
