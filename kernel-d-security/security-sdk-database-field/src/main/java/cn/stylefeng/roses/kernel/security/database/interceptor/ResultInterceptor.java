@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.sql.Statement;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -36,7 +35,7 @@ public class ResultInterceptor implements Interceptor {
 
         //取出查询的结果
         Object resultObject = invocation.proceed();
-        if (Objects.isNull(resultObject)) {
+        if (ObjectUtil.isEmpty(resultObject)) {
             return null;
         }
 
@@ -67,6 +66,11 @@ public class ResultInterceptor implements Interceptor {
      * @date 2021/7/5 9:52
      **/
     private void objectProcessing(Object result) throws IllegalAccessException {
+
+        if (result == null) {
+            return;
+        }
+
         Class<?> resultClass = result.getClass();
         // 是否加注解了
         ProtectedData annotation = AnnotationUtils.findAnnotation(resultClass, ProtectedData.class);

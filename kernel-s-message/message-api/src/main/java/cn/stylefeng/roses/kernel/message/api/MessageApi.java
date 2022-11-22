@@ -26,10 +26,9 @@ package cn.stylefeng.roses.kernel.message.api;
 
 import cn.stylefeng.roses.kernel.db.api.pojo.page.PageResult;
 import cn.stylefeng.roses.kernel.message.api.enums.MessageReadFlagEnum;
-import cn.stylefeng.roses.kernel.message.api.pojo.response.MessageResponse;
-import cn.stylefeng.roses.kernel.message.api.pojo.request.MessageSendRequest;
 import cn.stylefeng.roses.kernel.message.api.pojo.request.MessageRequest;
-
+import cn.stylefeng.roses.kernel.message.api.pojo.request.MessageSendRequest;
+import cn.stylefeng.roses.kernel.message.api.pojo.response.MessageResponse;
 
 import java.util.List;
 
@@ -77,6 +76,7 @@ public interface MessageApi {
      * @date 2021/1/4 21:21
      */
     void batchReadFlagByMessageIds(String messageIds, MessageReadFlagEnum flagEnum);
+
     /**
      * 删除系统消息
      *
@@ -164,6 +164,5 @@ public interface MessageApi {
      * @date 2021/1/11 21:21
      */
     Integer queryCountCurrentUser(MessageRequest messageRequest);
-
 
 }
