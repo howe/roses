@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.message.api.pojo.request;
 
+import cn.stylefeng.roses.kernel.message.api.enums.MessagePriorityLevelEnum;
 import cn.stylefeng.roses.kernel.message.api.enums.MessageTypeEnum;
 import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
@@ -80,7 +81,7 @@ public class MessageSendRequest extends BaseRequest {
      * 消息优先级
      */
     @ChineseDescription("消息优先级")
-    private String priorityLevel;
+    private String priorityLevel = MessagePriorityLevelEnum.LOW.getCode();
 
     /**
      * 业务id
