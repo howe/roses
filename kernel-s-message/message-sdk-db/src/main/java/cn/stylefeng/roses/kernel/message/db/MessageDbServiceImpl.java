@@ -79,7 +79,7 @@ public class MessageDbServiceImpl implements MessageApi {
     public void sendMessage(MessageSendRequest messageSendRequest) {
 
         String receiveUserIds = messageSendRequest.getReceiveUserIds();
-        LoginUser loginUser = LoginContext.me().getLoginUser();
+        LoginUser loginUser = LoginContext.me().getLoginUserNullable();
 
         List<SysMessage> sendMsgList = new ArrayList<>();
         List<Long> userIds;
@@ -100,16 +100,27 @@ public class MessageDbServiceImpl implements MessageApi {
 
         Set<Long> userIdSet = new HashSet<>(userIds);
         for (Long userId : userIdSet) {
+
             // 判断用户是否存在
-            if (userServiceApi.userExist(userId)) {
-                SysMessage sysMessage = new SysMessage();
-                BeanUtil.copyProperties(messageSendRequest, sysMessage);
-                // 初始化默认值
-                sysMessage.setReadFlag(MessageReadFlagEnum.UNREAD.getCode());
-                sysMessage.setSendUserId(loginUser.getUserId());
-                sysMessage.setReceiveUserId(userId);
-                sendMsgList.add(sysMessage);
+            if (!userServiceApi.userExist(userId)) {
+                continue;
             }
+
+            SysMessage sysMessage = new SysMessage();
+            BeanUtil.copyProperties(messageSendRequest, sysMessage);
+
+            // 设置默认未读
+            sysMessage.setReadFlag(MessageReadFlagEnum.UNREAD.getCode());
+
+            // 设置发件人
+            if (loginUser != null) {
+                sysMessage.setSendUserId(loginUser.getUserId());
+            }
+
+            // 设置收信人
+            sysMessage.setReceiveUserId(userId);
+
+            sendMsgList.add(sysMessage);
         }
         sysMessageService.saveBatch(sendMsgList);
 
