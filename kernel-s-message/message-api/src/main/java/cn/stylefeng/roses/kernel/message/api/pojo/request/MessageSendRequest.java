@@ -24,6 +24,7 @@
  */
 package cn.stylefeng.roses.kernel.message.api.pojo.request;
 
+import cn.stylefeng.roses.kernel.message.api.enums.MessageTypeEnum;
 import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import lombok.Data;
@@ -64,10 +65,16 @@ public class MessageSendRequest extends BaseRequest {
     private String messageContent;
 
     /**
-     * 消息类型
+     * 消息类型，是普通的还是带URL的
      */
-    @ChineseDescription("消息类型")
-    private String messageType;
+    @ChineseDescription("消息类型，是普通的还是带URL的")
+    private String messageType = MessageTypeEnum.NORMAL.getCode();
+
+    /**
+     * 消息跳转的URL
+     */
+    @ChineseDescription("消息跳转的URL")
+    private String messageUrl;
 
     /**
      * 消息优先级

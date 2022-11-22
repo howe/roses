@@ -84,6 +84,12 @@ public class SysMessage extends BaseEntity {
     private String messageType;
 
     /**
+     * 消息跳转的URL
+     */
+    @TableField(value = "message_url")
+    private String messageUrl;
+
+    /**
      * 消息优先级
      */
     @TableField(value = "priority_level")
