@@ -24,10 +24,16 @@
  */
 package cn.stylefeng.roses.kernel.cache.api;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
+import cn.stylefeng.roses.kernel.rule.constants.TenantConstants;
+import cn.stylefeng.roses.kernel.rule.tenant.TenantPrefixApi;
 
 import java.util.Collection;
 import java.util.Map;
+
+import static cn.stylefeng.roses.kernel.cache.api.constants.CacheConstants.CACHE_DELIMITER;
 
 /**
  * 缓存操作的基础接口，可以实现不同种缓存实现
@@ -137,9 +143,39 @@ public interface CacheOperatorApi<T> {
     String getCommonKeyPrefix();
 
     /**
+     * 是否按租户维度去切割缓存（不推荐开启）
+     * <p>
+     * key的组成方式：租户前缀:业务前缀:业务key
+     * <p>
+     * 如果不开启租户切割，则租户前缀一直会为master:
+     *
+     * @author fengshuonan
+     * @date 2022/11/9 19:02
+     */
+    default Boolean divideByTenant() {
+        return false;
+    }
+
+    /**
+     * 获取最终的计算前缀
+     * <p>
+     * key的组成方式：租户前缀:业务前缀:业务key
+     *
+     * @author fengshuonan
+     * @date 2022/11/9 10:41
+     */
+    default String getFinalPrefix() {
+        // 获取租户前缀
+        String tenantPrefix = getTenantPrefix();
+
+        // 计算最终前缀
+        return tenantPrefix + CACHE_DELIMITER + getCommonKeyPrefix() + CACHE_DELIMITER;
+    }
+
+    /**
      * 计算最终插入缓存的key值
      * <p>
-     * key的组成： 缓存前缀 + keyParam.toUpperCase
+     * key的组成方式：租户前缀:业务前缀:业务key
      *
      * @param keyParam 用户传递的key参数
      * @return 最终插入缓存的key值
@@ -147,11 +183,63 @@ public interface CacheOperatorApi<T> {
      * @date 2021/7/30 21:18
      */
     default String calcKey(String keyParam) {
-        if (StrUtil.isBlank(keyParam)) {
-            return getCommonKeyPrefix();
+        if (StrUtil.isEmpty(keyParam)) {
+            return getFinalPrefix();
         } else {
-            return getCommonKeyPrefix() + keyParam.toUpperCase();
+            return getFinalPrefix() + keyParam;
         }
+    }
+
+    /**
+     * 删除缓存key的前缀，返回用户最原始的key
+     *
+     * @param finalKey 最终存在CacheOperator的key
+     * @return 用户最原始的key
+     * @author fengshuonan
+     * @date 2022/11/9 10:31
+     */
+    default String removePrefix(String finalKey) {
+
+        if (ObjectUtil.isEmpty(finalKey)) {
+            return "";
+        }
+
+        return StrUtil.removePrefix(finalKey, getFinalPrefix());
+    }
+
+    /**
+     * 获取租户前缀
+     *
+     * @author fengshuonan
+     * @date 2022/11/9 10:35
+     */
+    default String getTenantPrefix() {
+
+        // 缓存是否按租户维度切分
+        Boolean divideByTenantFlag = divideByTenant();
+
+        // 如果不按租户维度切分，则默认都返回为master
+        if (!divideByTenantFlag) {
+            return TenantConstants.MASTER_DATASOURCE_NAME;
+        }
+
+        // 用户的租户前缀
+        String tenantPrefix = "";
+        try {
+            TenantPrefixApi tenantPrefixApi = SpringUtil.getBean(TenantPrefixApi.class);
+            if (tenantPrefixApi != null) {
+                tenantPrefix = tenantPrefixApi.getTenantPrefix();
+            }
+        } catch (Exception e) {
+            // 如果找不到这个bean，则没有加载多租户插件
+        }
+
+        // 如果租户前缀为空，则设置为主租户的编码
+        if (ObjectUtil.isEmpty(tenantPrefix)) {
+            tenantPrefix = TenantConstants.MASTER_DATASOURCE_NAME;
+        }
+
+        return tenantPrefix;
     }
 
 }

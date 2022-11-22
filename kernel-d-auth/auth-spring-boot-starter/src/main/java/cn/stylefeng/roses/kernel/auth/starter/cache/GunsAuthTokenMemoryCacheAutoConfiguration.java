@@ -22,7 +22,7 @@
  * 5.在修改包名，模块名称，项目代码等时，请注明软件出处 https://gitee.com/stylefeng/guns
  * 6.若您的项目无法满足以上几点，可申请商业授权
  */
-package cn.stylefeng.roses.kernel.auth.starter;
+package cn.stylefeng.roses.kernel.auth.starter.cache;
 
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
@@ -34,7 +34,7 @@ import cn.stylefeng.roses.kernel.auth.session.cache.catoken.MemoryCaClientTokenC
 import cn.stylefeng.roses.kernel.auth.session.cache.logintoken.MemoryLoginTokenCache;
 import cn.stylefeng.roses.kernel.auth.session.cache.loginuser.MemoryLoginUserCache;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -50,7 +50,8 @@ import static cn.stylefeng.roses.kernel.cache.api.constants.CacheConstants.NONE_
  * @date 2020/11/30 22:16
  */
 @Configuration
-public class GunsAuthTokenCacheAutoConfiguration {
+@ConditionalOnMissingClass("org.springframework.data.redis.connection.RedisConnectionFactory")
+public class GunsAuthTokenMemoryCacheAutoConfiguration {
 
     /**
      * 登录用户的缓存，默认使用内存方式
@@ -61,7 +62,6 @@ public class GunsAuthTokenCacheAutoConfiguration {
      * @date 2021/1/31 21:04
      */
     @Bean
-    @ConditionalOnMissingBean(name = "loginUserCache")
     public CacheOperatorApi<LoginUser> loginUserCache() {
         Long sessionExpiredSeconds = AuthConfigExpander.getSessionExpiredSeconds();
         TimedCache<String, LoginUser> loginUsers = CacheUtil.newTimedCache(1000L * sessionExpiredSeconds);
@@ -77,7 +77,6 @@ public class GunsAuthTokenCacheAutoConfiguration {
      * @date 2021/1/31 21:04
      */
     @Bean
-    @ConditionalOnMissingBean(name = "allPlaceLoginTokenCache")
     public CacheOperatorApi<Set<String>> allPlaceLoginTokenCache() {
         TimedCache<String, Set<String>> loginTokens = CacheUtil.newTimedCache(NONE_EXPIRED_TIME);
         return new MemoryLoginTokenCache(loginTokens);
@@ -90,7 +89,6 @@ public class GunsAuthTokenCacheAutoConfiguration {
      * @date 2022/3/15 17:25
      */
     @Bean
-    @ConditionalOnMissingBean(name = "loginErrorCountCacheApi")
     public CacheOperatorApi<Integer> loginErrorCountCacheApi() {
         TimedCache<String, Integer> loginTimeCache = CacheUtil.newTimedCache(LoginCacheConstants.LOGIN_CACHE_TIMEOUT_SECONDS * 1000);
         return new LoginErrorCountMemoryCache(loginTimeCache);
@@ -103,7 +101,6 @@ public class GunsAuthTokenCacheAutoConfiguration {
      * @date 2022/5/20 11:52
      */
     @Bean
-    @ConditionalOnMissingBean(name = "caClientTokenCacheApi")
     public CacheOperatorApi<String> caClientTokenCacheApi() {
         TimedCache<String, String> loginTimeCache = CacheUtil.newTimedCache(NONE_EXPIRED_TIME);
         return new MemoryCaClientTokenCache(loginTimeCache);

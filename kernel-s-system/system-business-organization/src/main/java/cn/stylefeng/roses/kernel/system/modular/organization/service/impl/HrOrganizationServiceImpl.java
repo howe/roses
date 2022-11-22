@@ -239,8 +239,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
             }
         }
 
-        if (ObjectUtil.isNotEmpty(hrOrganizationRequest.getOrgName())
-                || ObjectUtil.isNotEmpty(hrOrganizationRequest.getOrgCode())) {
+        if (ObjectUtil.isNotEmpty(hrOrganizationRequest.getOrgName()) || ObjectUtil.isNotEmpty(hrOrganizationRequest.getOrgCode())) {
             return treeNodeList;
         } else {
             return new DefaultTreeBuildFactory<OrganizationTreeNode>().doTreeBuild(treeNodeList);
@@ -373,6 +372,16 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
             BeanUtil.copyProperties(detail, hrOrganizationDTO, CopyOptions.create().ignoreError());
         }
         return hrOrganizationDTO;
+    }
+
+    @Override
+    public List<HrOrganizationDTO> getOrgDetailList(List<Long> orgIdList) {
+        ArrayList<HrOrganizationDTO> organizationDTOS = new ArrayList<>();
+        for (Long orgId : orgIdList) {
+            HrOrganizationDTO orgDetail = this.getOrgDetail(orgId);
+            organizationDTOS.add(orgDetail);
+        }
+        return organizationDTOS;
     }
 
     @Override
@@ -519,8 +528,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
             HrOrganization parentOrganization = this.queryOrganization(hrOrganizationRequest);
 
             // 设置本节点的父ids为 (上一个节点的pids + (上级节点的id) )
-            hrOrganization.setOrgPids(
-                    parentOrganization.getOrgPids() + SymbolConstant.LEFT_SQUARE_BRACKETS + parentOrganization.getOrgId() + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA);
+            hrOrganization.setOrgPids(parentOrganization.getOrgPids() + SymbolConstant.LEFT_SQUARE_BRACKETS + parentOrganization.getOrgId() + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA);
         }
     }
 

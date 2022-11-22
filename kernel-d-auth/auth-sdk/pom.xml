@@ -7,7 +7,7 @@
     <parent>
         <groupId>cn.stylefeng.roses</groupId>
         <artifactId>kernel-d-auth</artifactId>
-        <version>7.3.1</version>
+        <version>7.3.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -109,13 +109,13 @@
             <groupId>cn.stylefeng.roses</groupId>
             <artifactId>cache-sdk-memory</artifactId>
             <version>${roses.version}</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>cn.stylefeng.roses</groupId>
             <artifactId>cache-sdk-redis</artifactId>
             <version>${roses.version}</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <!--系统消息业务模块的api-->

@@ -113,4 +113,13 @@ public interface SysResourceService extends IService<SysResource> {
      * @date 2020/11/24 20:46
      */
     void deleteResourceByProjectCode(String projectCode);
+
+    /**
+     * 更新资源编码前缀，将guns$前缀改为新的
+     *
+     * @author fengshuonan
+     * @date 2022/11/17 0:17
+     */
+    void updateResourceAppCode(String newAppCode);
+
 }

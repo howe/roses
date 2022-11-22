@@ -22,38 +22,38 @@
  * 5.在修改包名，模块名称，项目代码等时，请注明软件出处 https://gitee.com/stylefeng/guns
  * 6.若您的项目无法满足以上几点，可申请商业授权
  */
-package cn.stylefeng.roses.kernel.system.starter;
+package cn.stylefeng.roses.kernel.customer.starter;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.TimedCache;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
-import cn.stylefeng.roses.kernel.cache.api.constants.CacheConstants;
-import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ResourceDefinition;
-import cn.stylefeng.roses.kernel.system.modular.resource.cache.MemoryResourceCache;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import cn.stylefeng.roses.kernel.cache.redis.util.CreateRedisTemplateUtil;
+import cn.stylefeng.roses.kernel.customer.api.pojo.CustomerInfo;
+import cn.stylefeng.roses.kernel.customer.modular.cache.CustomerRedisCache;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
- * 资源缓存自动配置
+ * C端自动装配，Redis缓存
  *
  * @author fengshuonan
- * @date 2021/5/17 16:44
+ * @date 2021/6/7 11:32
  */
 @Configuration
-public class GunsResourceCacheAutoConfiguration {
+@ConditionalOnClass(name = "org.springframework.data.redis.connection.RedisConnectionFactory")
+public class GunsCustomerRedisAutoConfiguration {
 
     /**
-     * 资源缓存
+     * C端用户缓存，Redis缓存
      *
      * @author fengshuonan
-     * @date 2021/5/17 16:44
+     * @date 2022/11/8 22:11
      */
     @Bean
-    @ConditionalOnMissingBean(name = "resourceCache")
-    public CacheOperatorApi<ResourceDefinition> resourceCache() {
-        TimedCache<String, ResourceDefinition> timedCache = CacheUtil.newTimedCache(CacheConstants.NONE_EXPIRED_TIME);
-        return new MemoryResourceCache(timedCache);
+    public CacheOperatorApi<CustomerInfo> customerInfoCacheOperatorApi(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, CustomerInfo> redisTemplate = CreateRedisTemplateUtil.createObject(redisConnectionFactory);
+        return new CustomerRedisCache(redisTemplate);
     }
 
 }

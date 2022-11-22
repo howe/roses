@@ -201,6 +201,13 @@ public class SysRoleRequest extends BaseRequest {
     private String adminFlag;
 
     /**
+     * 角色id集合
+     */
+    @ChineseDescription("角色id集合")
+    @NotEmpty(message = "角色id集合不能为空", groups = {batchQuery.class})
+    private List<Long> roleIdList;
+
+    /**
      * 参数校验分组：授权菜单和按钮
      */
     public @interface grantMenuButton {
@@ -265,6 +272,13 @@ public class SysRoleRequest extends BaseRequest {
      * 角色分配菜单，绑定全部菜单或取消绑定全部菜单
      */
     public @interface grantAll {
+    }
+
+    /**
+     * 批量查询角色
+     */
+    public @interface batchQuery {
+
     }
 
 }

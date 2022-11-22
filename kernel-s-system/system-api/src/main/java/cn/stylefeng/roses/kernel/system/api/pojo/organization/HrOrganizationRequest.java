@@ -29,11 +29,11 @@ import cn.stylefeng.roses.kernel.rule.annotation.ChineseDescription;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import cn.stylefeng.roses.kernel.validator.api.validators.status.StatusValue;
 import cn.stylefeng.roses.kernel.validator.api.validators.unique.TableUniqueValue;
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
@@ -156,6 +156,13 @@ public class HrOrganizationRequest extends BaseRequest {
     private List<Long> orgIdLimit;
 
     /**
+     * 组织机构id集合
+     */
+    @ChineseDescription("组织机构id集合")
+    @NotEmpty(message = "组织机构id集合不能为空", groups = batchQuery.class)
+    private List<Long> orgIdList;
+
+    /**
      * 组织机构树zTree形式
      */
     public @interface roleBindOrgScope {
@@ -165,6 +172,12 @@ public class HrOrganizationRequest extends BaseRequest {
      * 查询用户的数据范围
      */
     public @interface userBindOrgScope {
+    }
+
+    /**
+     * 批量根据id查询
+     */
+    public @interface batchQuery {
     }
 
 }

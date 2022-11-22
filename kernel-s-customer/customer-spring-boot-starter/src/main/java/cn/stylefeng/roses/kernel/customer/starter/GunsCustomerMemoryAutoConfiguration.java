@@ -22,28 +22,38 @@
  * 5.在修改包名，模块名称，项目代码等时，请注明软件出处 https://gitee.com/stylefeng/guns
  * 6.若您的项目无法满足以上几点，可申请商业授权
  */
-package cn.stylefeng.roses.kernel.security.count.cache;
+package cn.stylefeng.roses.kernel.customer.starter;
 
+import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
-import cn.stylefeng.roses.kernel.cache.memory.AbstractMemoryCacheOperator;
-import cn.stylefeng.roses.kernel.security.api.constants.CounterConstants;
-
+import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
+import cn.stylefeng.roses.kernel.customer.api.expander.CustomerConfigExpander;
+import cn.stylefeng.roses.kernel.customer.api.pojo.CustomerInfo;
+import cn.stylefeng.roses.kernel.customer.modular.cache.CustomerMemoryCache;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * 计数用的缓存
+ * C端自动装配
  *
  * @author fengshuonan
- * @date 2020/11/15 15:26
+ * @date 2021/6/7 11:32
  */
-public class DefaultCountValidateCache extends AbstractMemoryCacheOperator<Long> {
+@Configuration
+@ConditionalOnMissingClass("org.springframework.data.redis.connection.RedisConnectionFactory")
+public class GunsCustomerMemoryAutoConfiguration {
 
-    public DefaultCountValidateCache(TimedCache<String, Long> timedCache) {
-        super(timedCache);
-    }
-
-    @Override
-    public String getCommonKeyPrefix() {
-        return CounterConstants.COUNT_VALIDATE_CACHE_KEY_PREFIX;
+    /**
+     * C端用户的缓存
+     *
+     * @author fengshuonan
+     * @date 2021/6/8 22:41
+     */
+    @Bean
+    public CacheOperatorApi<CustomerInfo> customerInfoCacheOperatorApi() {
+        TimedCache<String, CustomerInfo> customerInfoTimedCache = CacheUtil.newTimedCache(CustomerConfigExpander.getCustomerCacheExpiredSeconds() * 1000);
+        return new CustomerMemoryCache(customerInfoTimedCache);
     }
 
 }

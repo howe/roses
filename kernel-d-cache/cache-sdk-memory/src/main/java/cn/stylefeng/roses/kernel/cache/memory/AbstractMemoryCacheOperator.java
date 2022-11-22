@@ -28,7 +28,6 @@ import cn.hutool.cache.impl.CacheObj;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
 
 import java.util.*;
@@ -90,7 +89,7 @@ public abstract class AbstractMemoryCacheOperator<T> implements CacheOperatorApi
         while (cacheObjIterator.hasNext()) {
             // 去掉缓存key的common prefix前缀
             String key = cacheObjIterator.next().getKey();
-            keys.add(StrUtil.removePrefix(key, getCommonKeyPrefix()));
+            keys.add(removePrefix(key));
         }
         return keys;
     }

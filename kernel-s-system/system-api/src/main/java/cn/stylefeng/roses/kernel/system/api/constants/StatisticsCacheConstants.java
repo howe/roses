@@ -11,7 +11,7 @@ public interface StatisticsCacheConstants {
     /**
      * 前缀
      */
-    String INTERFACE_STATISTICS_PREFIX = "inter:";
+    String INTERFACE_STATISTICS_PREFIX = "inter";
 
     /**
      * 超时时间

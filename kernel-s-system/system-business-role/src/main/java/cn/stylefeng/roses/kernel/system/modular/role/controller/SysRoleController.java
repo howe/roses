@@ -228,4 +228,15 @@ public class SysRoleController {
         return new SuccessResponseData<>(sysRoleService.getRoleSelectList(sysRoleRequest));
     }
 
+    /**
+     * 获取角色信息集合
+     *
+     * @author fengshuonan
+     * @date 2022/11/2 14:08
+     */
+    @PostResource(name = "获取角色信息集合", path = "/sysRole/getRoleInfoListByIds")
+    public ResponseData<List<SysRoleDTO>> getRoleInfoListByIds(@RequestBody @Validated(SysRoleRequest.batchQuery.class) SysRoleRequest sysRoleRequest) {
+        return new SuccessResponseData<>(sysRoleService.getRolesByIds(sysRoleRequest.getRoleIdList()));
+    }
+
 }

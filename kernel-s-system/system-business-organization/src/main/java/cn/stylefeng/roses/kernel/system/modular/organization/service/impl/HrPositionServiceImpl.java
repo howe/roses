@@ -48,6 +48,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -145,6 +146,16 @@ public class HrPositionServiceImpl extends ServiceImpl<HrPositionMapper, HrPosit
             BeanUtil.copyProperties(detail, hrPositionDTO, CopyOptions.create().ignoreError());
         }
         return hrPositionDTO;
+    }
+
+    @Override
+    public List<HrPositionDTO> getPositionDetailList(List<Long> positionIdList) {
+        ArrayList<HrPositionDTO> hrPositionDTOS = new ArrayList<>();
+        for (Long positionId : positionIdList) {
+            HrPositionDTO positionDetail = this.getPositionDetail(positionId);
+            hrPositionDTOS.add(positionDetail);
+        }
+        return hrPositionDTOS;
     }
 
     /**

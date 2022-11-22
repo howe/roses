@@ -46,4 +46,9 @@ public class UserOrgMemoryCache extends AbstractMemoryCacheOperator<SysUserOrgDT
         return SystemCachesConstants.USER_ORG_CACHE_PREFIX;
     }
 
+    @Override
+    public Boolean divideByTenant() {
+        return true;
+    }
+
 }

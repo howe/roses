@@ -22,38 +22,38 @@
  * 5.在修改包名，模块名称，项目代码等时，请注明软件出处 https://gitee.com/stylefeng/guns
  * 6.若您的项目无法满足以上几点，可申请商业授权
  */
-package cn.stylefeng.roses.kernel.customer.starter;
+package cn.stylefeng.roses.kernel.system.starter.cache;
 
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
 import cn.stylefeng.roses.kernel.cache.api.CacheOperatorApi;
-import cn.stylefeng.roses.kernel.customer.api.expander.CustomerConfigExpander;
-import cn.stylefeng.roses.kernel.customer.api.pojo.CustomerInfo;
-import cn.stylefeng.roses.kernel.customer.modular.cache.CustomerMemoryCache;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import cn.stylefeng.roses.kernel.cache.api.constants.CacheConstants;
+import cn.stylefeng.roses.kernel.scanner.api.pojo.resource.ResourceDefinition;
+import cn.stylefeng.roses.kernel.system.modular.resource.cache.MemoryResourceCache;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * C端自动装配
+ * 资源缓存自动配置
  *
  * @author fengshuonan
- * @date 2021/6/7 11:32
+ * @date 2021/5/17 16:44
  */
 @Configuration
-public class GunsCustomerAutoConfiguration {
+@ConditionalOnMissingClass("org.springframework.data.redis.connection.RedisConnectionFactory")
+public class GunsResourceMemoryCacheAutoConfiguration {
 
     /**
-     * C端用户的缓存
+     * 资源缓存
      *
      * @author fengshuonan
-     * @date 2021/6/8 22:41
+     * @date 2021/5/17 16:44
      */
     @Bean
-    @ConditionalOnMissingBean(name = "customerInfoCacheOperatorApi")
-    public CacheOperatorApi<CustomerInfo> customerInfoCacheOperatorApi() {
-        TimedCache<String, CustomerInfo> customerInfoTimedCache = CacheUtil.newTimedCache(CustomerConfigExpander.getCustomerCacheExpiredSeconds() * 1000);
-        return new CustomerMemoryCache(customerInfoTimedCache);
+    public CacheOperatorApi<ResourceDefinition> resourceCache() {
+        TimedCache<String, ResourceDefinition> timedCache = CacheUtil.newTimedCache(CacheConstants.NONE_EXPIRED_TIME);
+        return new MemoryResourceCache(timedCache);
     }
 
 }

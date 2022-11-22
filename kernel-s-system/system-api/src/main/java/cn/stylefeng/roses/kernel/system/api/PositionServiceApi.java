@@ -2,6 +2,8 @@ package cn.stylefeng.roses.kernel.system.api;
 
 import cn.stylefeng.roses.kernel.system.api.pojo.organization.HrPositionDTO;
 
+import java.util.List;
+
 /**
  * 职位api
  *
@@ -25,4 +27,13 @@ public interface PositionServiceApi {
      * @date 2022/3/8 23:33
      */
     HrPositionDTO getPositionDetail(Long positionId);
+
+    /**
+     * 获取职位详情列表
+     *
+     * @author fengshuonan
+     * @date 2022/10/31 20:33
+     */
+    List<HrPositionDTO> getPositionDetailList(List<Long> positionIdList);
+
 }

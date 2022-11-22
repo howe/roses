@@ -128,12 +128,12 @@ public interface AuthServiceApi {
     /**
      * 为指定token创建新的登录信息
      *
-     * @param token   用户旧的token
-     * @param account 用户账号
+     * @param token             用户旧的token
+     * @param defaultJwtPayload jwt的payload信息
      * @return 新的当前登录用户
      * @author fengshuonan
      * @date 2022/10/17 0:04
      */
-    LoginUser createNewLoginInfo(String token, String account);
+    LoginUser createNewLoginInfo(String token, DefaultJwtPayload defaultJwtPayload);
 
 }

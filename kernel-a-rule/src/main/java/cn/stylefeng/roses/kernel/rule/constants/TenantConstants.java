@@ -1,4 +1,4 @@
-package cn.stylefeng.roses.kernel.validator.api.validators.unique.constants;
+package cn.stylefeng.roses.kernel.rule.constants;
 
 /**
  * 租户数据常量，如果租户业务变了这里也需要修改

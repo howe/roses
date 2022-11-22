@@ -7,7 +7,7 @@
     <parent>
         <groupId>cn.stylefeng.roses</groupId>
         <artifactId>kernel-d-config</artifactId>
-        <version>7.3.1</version>
+        <version>7.3.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -29,6 +29,7 @@
             <groupId>cn.stylefeng.roses</groupId>
             <artifactId>config-sdk-redis</artifactId>
             <version>${roses.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <!--默认系统配置表的sdk-->

@@ -98,8 +98,14 @@ public class HrPositionRequest extends BaseRequest {
     /**
      * 职位id集合（用在批量操作）
      */
-    @NotNull(message = "职位id集合不能为空", groups = {batchDelete.class})
+    @NotNull(message = "职位id集合不能为空", groups = {batchDelete.class, batchQuery.class})
     @ChineseDescription("职位id集合（用在批量操作）")
     private List<Long> positionIds;
+
+    /**
+     * 参数校验分组：批量查询
+     */
+    public @interface batchQuery {
+    }
 
 }

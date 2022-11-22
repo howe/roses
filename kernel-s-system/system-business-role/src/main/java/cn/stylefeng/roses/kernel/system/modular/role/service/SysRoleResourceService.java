@@ -91,4 +91,14 @@ public interface SysRoleResourceService extends IService<SysRoleResource> {
      */
     void batchSaveResCodes(Long roleId, List<SysRoleResourceDTO> totalResourceCode);
 
+    /**
+     * 更新本表的资源编码，替换为新的app编码
+     *
+     * @param decisionFirstStart 判断是否是第一次启动，参数传true，则判断必须是第一次启动才执行update操作
+     * @param newAppCode         新应用编码
+     * @author fengshuonan
+     * @date 2022/11/16 23:37
+     */
+    void updateNewAppCode(Boolean decisionFirstStart, String newAppCode);
+
 }

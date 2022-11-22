@@ -35,9 +35,9 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @author fengshuonan
  * @date 2020/11/15 15:26
  */
-public class WhiteListRedisCache extends AbstractRedisCacheOperator<Long> {
+public class WhiteListRedisCache extends AbstractRedisCacheOperator<String> {
 
-    public WhiteListRedisCache(RedisTemplate<String, Long> redisTemplate) {
+    public WhiteListRedisCache(RedisTemplate<String, String> redisTemplate) {
         super(redisTemplate);
     }
 

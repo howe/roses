@@ -47,4 +47,9 @@ public class RoleResourceMemoryCache extends AbstractMemoryCacheOperator<List<St
         return SystemCachesConstants.ROLE_RESOURCE_CACHE_PREFIX;
     }
 
+    @Override
+    public Boolean divideByTenant() {
+        return true;
+    }
+
 }
