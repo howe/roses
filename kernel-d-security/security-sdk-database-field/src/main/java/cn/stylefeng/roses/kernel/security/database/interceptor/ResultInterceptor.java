@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -35,7 +36,7 @@ public class ResultInterceptor implements Interceptor {
 
         //取出查询的结果
         Object resultObject = invocation.proceed();
-        if (ObjectUtil.isEmpty(resultObject)) {
+        if (Objects.isNull(resultObject)) {
             return null;
         }
 
