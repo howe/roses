@@ -50,7 +50,7 @@ public class ImageCaptchaService implements ImageCaptchaApi {
         SpecCaptcha specCaptcha = new SpecCaptcha(130, 48, 5);
         String verCode = specCaptcha.text().toLowerCase();
         String verKey = IdUtil.simpleUUID();
-        cacheOperatorApi.put(verKey, verCode);
+        cacheOperatorApi.put(verKey, verCode, 120L);
         return ImageCaptcha.builder().verImage(specCaptcha.toBase64()).verKey(verKey).build();
     }
 
