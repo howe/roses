@@ -124,6 +124,12 @@ public class MessageResponse implements Serializable {
      */
     @ChineseDescription("阅读状态：0-未读，1-已读")
     private String readFlagValue;
+	
+	/**
+     * 消息跳转的URL
+     */
+    @ChineseDescription("消息跳转的URL")
+    private String messageUrl;
 
     public String getPriorityLevelValue() {
         AtomicReference<String> value = new AtomicReference<>("");

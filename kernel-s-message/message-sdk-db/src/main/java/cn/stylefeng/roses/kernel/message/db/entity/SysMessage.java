@@ -78,7 +78,7 @@ public class SysMessage extends BaseEntity {
     private String messageContent;
 
     /**
-     * 消息类型
+     * 消息类型（是普通消息 或是带url的消息）
      */
     @TableField(value = "message_type")
     private String messageType;
