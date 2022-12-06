@@ -241,7 +241,14 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         AntdMenusFactory.fillLeafFlag(sysMenuList);
 
         // 将结果集处理成树
-        return new DefaultTreeBuildFactory<SysMenu>().doTreeBuild(sysMenuList);
+        List<SysMenu> treeMenus = new DefaultTreeBuildFactory<SysMenu>().doTreeBuild(sysMenuList);
+
+        // 如果树节点构建失败，则返回平级节点
+        if (ObjectUtil.isEmpty(treeMenus)) {
+            return sysMenuList;
+        } else {
+            return treeMenus;
+        }
     }
 
     @Override
