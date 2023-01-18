@@ -89,7 +89,7 @@ public class PageFactory {
 
         if (ObjectUtil.isNotEmpty(baseRequest)) {
             pageNo = baseRequest.getPageNo() == null ? pageNo : baseRequest.getPageNo();
-            pageSize = baseRequest.getPageSize() == null ? pageNo : baseRequest.getPageSize();
+            pageSize = baseRequest.getPageSize() == null ? pageSize : baseRequest.getPageSize();
         }
         return new Page<>(pageNo, pageSize);
     }
